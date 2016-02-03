@@ -19,6 +19,8 @@ class Driver final
         auto init( Vector2D<int> screen_res) -> void;
         auto render() -> void;
         auto close() -> void;
+	auto changePixelColor(int r, int g, int b, int pos_x, int pos_y) -> void;
+
     private:
         std::unique_ptr<Window>     window;
         SDL_Surface* screenSurface;
