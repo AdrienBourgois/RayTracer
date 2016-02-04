@@ -1,3 +1,13 @@
-/logs
+# Compilation files
+*.o
+*.d
+
+# Editor files
+*~
 *.swp
-*.swo
+
+# Folders
+bin/
+obj/
+assets/
+logs/
