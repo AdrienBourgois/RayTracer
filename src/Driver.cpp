@@ -1,26 +1,35 @@
 #include <iostream>
 #include "Driver.h"
 #include "Window.h"
+#include "Log.h"
 
 Driver::Driver()
 {
+    Log* log = Log::getInstance();
+    log->info("Driver creation...");
     this->window.reset(new Window);
     this->screenSurface = nullptr;
     this->format = nullptr;
+    log->info("Driver created.");
 }
 
 Driver::~Driver()
 {
+    Log* log = Log::getInstance();
+    log->info("Driver destroying...");
     this->window = nullptr;
     this->screenSurface = nullptr;
     this->format = nullptr;
     SDL_Quit();
+    log->info("Driver destroyed.");
 }
 
 auto Driver::init(Vector2D<int> screen_res) -> void
 {
+    Log* log = Log::getInstance();
+    log->info("Driver initialization...");
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
-        std::cout<<"SDL init failed"<<std::endl;
+        log->error("Error: in method Driver::init() SDL initialization failed.");
     else
         this->window->init("RayTracing", screen_res);
 
@@ -29,13 +38,14 @@ auto Driver::init(Vector2D<int> screen_res) -> void
     this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 0, 0);
     SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 
-	this->changePixelColor(0, 0, 255, 240, 300);
+	this->changePixelColor(0, 255, 0, 240, 300);
 
 	Uint8 r = 0, g = 0, b = 0;
 	this->getPixelColor(240, 300, &r, &g, &b);
 	std::cout << "r value :" << (unsigned int)r << std::endl; 
 	std::cout << "g value :" << (unsigned int)g << std::endl;
 	std::cout << "b value :" << (unsigned int)b << std::endl;
+    log->info("Driver initialized.");
 }
 
 auto Driver::render() -> void
@@ -45,7 +55,10 @@ auto Driver::render() -> void
 
 auto Driver::close() -> void
 {
+    Log* log = Log::getInstance();
+    log->info("Driver closing...");
     this->window->close();
+    log->info("Driver closed.");
 }
 
 auto Driver::changePixelColor(Uint8 r, Uint8 g, Uint8 b, int pos_x, int pos_y) -> void
