@@ -4,10 +4,7 @@ SRC = 	main.cpp \
 		Device.cpp \
 		Driver.cpp \
 		Window.cpp \
-		Matrix.cpp \
-		SceneNode.cpp \
-		Ray.cpp \
-		Collision.cpp \
+		Camera.cpp \
 		Log.cpp \
 
 LIBS = SDL2 pthread SDL2_image

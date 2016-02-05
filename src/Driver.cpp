@@ -35,9 +35,16 @@ auto Driver::init(Vector2D<int> screen_res) -> void
 
     this->screenSurface = SDL_GetWindowSurface(this->window->getWindow());
     this->format = this->screenSurface->format;
-    this->mapRGB = SDL_MapRGB(this->screenSurface->format, 0, 0, 0);
+    this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 0, 0);
     SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 
+	this->changePixelColor(0, 255, 0, 240, 300);
+
+	Uint8 r = 0, g = 0, b = 0;
+	this->getPixelColor(240, 300, &r, &g, &b);
+	std::cout << "r value :" << (unsigned int)r << std::endl; 
+	std::cout << "g value :" << (unsigned int)g << std::endl;
+	std::cout << "b value :" << (unsigned int)b << std::endl;
     log->info("Driver initialized.");
 }
 
