@@ -1,6 +1,8 @@
 #ifndef __VECTOR_DECLARATION__
 #define __VECTOR_DECLARATION__
 
+#include <iostream>
+
 template <typename T>
 class Vector2D
 {
@@ -14,8 +16,8 @@ class Vector2D
         ~Vector2D() = default;
 
         Vector2D& 	operator =(Vector2D const& a) = default;
-        Vector2D& 	operator +(Vector2D const& a);
-        Vector2D& 	operator -(Vector2D const& a);
+        Vector2D   	operator +(Vector2D const& a);
+        Vector2D 	operator -(Vector2D const& a);
         Vector2D& 	operator +=(Vector2D const& a);
         Vector2D& 	operator -=(Vector2D const& a);
         bool 		operator ==(Vector2D const& a);
@@ -23,6 +25,9 @@ class Vector2D
     private:
 
 };
+
+template <typename T>
+std::ostream&   operator <<(std::ostream& os, Vector2D<T> const& a);
 
 
 template <typename T>
@@ -37,16 +42,20 @@ class Vector3D
         Vector3D(Vector3D const&) = default;
         ~Vector3D() = default;
 
-        Vector3D&   operator =(Vector3D const& a) = default;
-        Vector3D&   operator +(Vector3D const& a); 
-        Vector3D&   operator -(Vector3D const& a); 
+        Vector3D&   operator =(Vector3D const& a);
+        Vector3D    operator +(Vector3D const& a); 
+        Vector3D    operator -(Vector3D const& a); 
         Vector3D&   operator +=(Vector3D const& a); 
-        Vector3D&   operator -=(Vector3D const& a); 
+        Vector3D&   operator -=(Vector3D const& a);
+        Vector3D    operator *(Vector3D const& a);
         bool        operator ==(Vector3D const& a); 
 
     private:
 
 };
+
+template <typename T>
+std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
 
 
 template <typename T>
@@ -62,8 +71,8 @@ class Vector4D
         ~Vector4D() = default;
 
         Vector4D&   operator =(Vector4D const& a) = default;
-        Vector4D&   operator +(Vector4D const& a); 
-        Vector4D&   operator -(Vector4D const& a); 
+        Vector4D    operator +(Vector4D const& a); 
+        Vector4D    operator -(Vector4D const& a); 
         Vector4D&   operator +=(Vector4D const& a); 
         Vector4D&   operator -=(Vector4D const& a); 
         bool        operator ==(Vector4D const& a); 
@@ -71,6 +80,9 @@ class Vector4D
     private:
 
 };
+
+template <typename T>
+std::ostream&   operator <<(std::ostream& os, Vector4D<T> const& a);
 
 #include "Vector.inl"
 
