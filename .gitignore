@@ -1,0 +1,9 @@
+bin/
+obj/
+media/
+*.o
+*.d
+*.swp
+*.swo
+*.swn
+src/main.cpp
