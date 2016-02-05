@@ -6,8 +6,6 @@ Window::Window()
     Log* log = Log::getInstance();
     log->info("Window creation...");
     this->window = nullptr;
-    //this->screenSurface = nullptr;
-    //this->format = nullptr;
     log->info("Window created.");
 }
 
