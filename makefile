@@ -8,6 +8,7 @@ SRC = 	main.cpp \
 		SceneNode.cpp \
 		Ray.cpp \
 		Collision.cpp \
+		Log.cpp \
 
 LIBS = SDL2 pthread SDL2_image
 

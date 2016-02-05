@@ -6,7 +6,7 @@
 class Camera
 {
 public:
-	Camera() {;this->init;}
+	Camera();
 	~Camera();
 
 private:

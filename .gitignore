@@ -1,9 +1,13 @@
-bin/
-obj/
-media/
+# Compilation files
 *.o
 *.d
+
+# Editor files
+*~
 *.swp
-*.swo
-*.swn
-src/main.cpp
+
+# Folders
+bin/
+obj/
+assets/
+logs/
