@@ -34,7 +34,7 @@ auto SceneNode::init(ModelType kind) -> void
 		case ModelType::SPHERE:
 		{
 		this->type = ModelType::SPHERE;
-		this->radius = 3.0f;
+		this->radius = 2.0f;
 		double r = (double)this->radius;
 
 		for (double phi = 0.; phi < 2*M_PI; phi += M_PI/10.) // Azimuth [0, 2PI]

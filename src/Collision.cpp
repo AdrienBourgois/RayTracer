@@ -70,3 +70,16 @@ auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 	}
 	return false;
 }
+
+auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
+{
+	Vector3D<float> pos = plane.getPosition();
+	Vector3D<float> ray_dir = ray.getRayDirection();
+
+	float intersec = DOT(pos, ray_dir);
+
+	if (intersec < 0 || intersec > 0)
+		return true;
+
+	return false;
+}

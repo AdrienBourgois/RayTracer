@@ -39,11 +39,15 @@ auto Device::init() -> void
 
 	SceneNode node_test = SceneNode(ModelType::SPHERE);
 	std::cout << node_test.getVerticeSize() << std::endl;
-	node_test.setPosition(Vector3D<float>(0.f, 2.f, -5.f)); 
+	node_test.setPosition(Vector3D<float>(-3.f, -5.f, -5.f)); 
 	
 	Ray ray = Ray(Vector3D<float>(0.f, 0.f, 5.f), Vector3D<float>(0.f, 0.f, 3.f));
 	Collision collision = Collision();
 //	bool result = collision.rayCircleCollision(ray, node_test); 
+
+	SceneNode plan_test = SceneNode(ModelType::PLANE);
+	plan_test.setPosition(Vector3D<float>(0.f, -8.f, -100.f));
+
 
 	unsigned int x_count = 0, y_count = 0;
 
@@ -56,9 +60,14 @@ auto Device::init() -> void
 
 			ray.setRayDirection(Vector3D<float>(rx, ry, -1.f));
 			bool result = collision.rayCircleCollision(ray, node_test);
+//			bool result2 = collision.rayPlaneCollision(ray, plan_test);
+
 
 			if (result)
 				this->driver->changePixelColor(255, 255, 255, x_count, y_count);
+//			if (result2)
+//				this->driver->changePixelColor(255, 0, 0, x_count, y_count);
+
 			++x_count;
 		}
 		++y_count;

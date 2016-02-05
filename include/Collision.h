@@ -11,6 +11,7 @@ public:
 	~Collision() = default;
 
 	auto rayCircleCollision(Ray ray, SceneNode circle) -> bool;
+	auto rayPlaneCollision(Ray ray, SceneNode plane) -> bool;
 private:
 
 };
