@@ -19,21 +19,25 @@ Vector2D<T>::Vector2D(T a, T b)
 }
 
 template <typename T>
-Vector2D<T>& Vector2D<T>::operator +(Vector2D const& a)
+Vector2D<T> Vector2D<T>::operator +(Vector2D const& a)
 {
-	this->x = this->x + a.x;
-	this->y = this->y + a.y;
+    Vector2D<T> res;
 
-	return *this;
+	res.x = this->x + a.x;
+	res.y = this->y + a.y;
+
+	return res;
 }
 
 template <typename T>
-Vector2D<T>& Vector2D<T>::operator -(Vector2D const& a)
+Vector2D<T> Vector2D<T>::operator -(Vector2D const& a)
 {
-	this->x = this->x - a.x;
-	this->y = this->y - a.y;
+    Vector2D<T> res;
+
+	res.x = this->x - a.x;
+	res.y = this->y - a.y;
 	
-	return *this;
+	return res;
 }
 
 template <typename T>
@@ -61,6 +65,13 @@ bool Vector2D<T>::operator ==(Vector2D const& a)
 		return true;
 	else
 		return false;
+}
+
+template <typename T>
+std::ostream& operator <<(std::ostream& os, Vector2D<T> const& a)
+{
+    os<<"( "<<a.x<<" ; "<<a.y<<" )";
+    return os;
 }
 
 
@@ -153,19 +164,19 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
 }
 
 template <typename T>
-std::ostream& operator <<(std::ostream& os, Vector3D<T> const& a)
-{
-    os<<"( "<<a.x<<" ; "<<a.y<<" ; "<<a.z<<" )";
-    return os;
-}
-
-template <typename T>
 bool Vector3D<T>::operator ==(Vector3D const& a)
 {
     if(this->x == a.x && this->y == a.y && this->z == a.z)
         return true;
     else
         return false;
+}
+
+template <typename T>
+std::ostream& operator <<(std::ostream& os, Vector3D<T> const& a)
+{
+    os<<"( "<<a.x<<" ; "<<a.y<<" ; "<<a.z<<" )";
+    return os;
 }
 
 
@@ -196,25 +207,29 @@ Vector4D<T>::Vector4D(T a, T b, T c, T d)
 }
 
 template <typename T>
-Vector4D<T>& Vector4D<T>::operator +(Vector4D const& a)
+Vector4D<T> Vector4D<T>::operator +(Vector4D const& a)
 {
-    this->x = this->x + a.x;
-    this->y = this->y + a.y;
-    this->z = this->z + a.z;
-	this->w = this->w + a.w;
+    Vector4D<T> res;
 
-    return *this;
+    res.x = this->x + a.x;
+    res.y = this->y + a.y;
+    res.z = this->z + a.z;
+	res.w = this->w + a.w;
+
+    return res;
 }
 
 template <typename T>
-Vector4D<T>& Vector4D<T>::operator -(Vector4D const& a)
+Vector4D<T> Vector4D<T>::operator -(Vector4D const& a)
 {
-    this->x = this->x - a.x;
-    this->y = this->y - a.y;
-    this->z = this->z - a.z;
-	this->w = this->w - a.w;
+    Vector4D<T> res;
 
-    return *this;
+    res.x = this->x - a.x;
+    res.y = this->y - a.y;
+    res.z = this->z - a.z;
+	res.w = this->w - a.w;
+
+    return res;
 }
 
 template <typename T>
@@ -247,3 +262,11 @@ bool Vector4D<T>::operator ==(Vector4D const& a)
     else
         return false;
 }
+
+template <typename T>
+std::ostream& operator <<(std::ostream& os, Vector4D<T> const& a)
+{
+    os<<"( "<<a.x<<" ; "<<a.y<<" ; "<<a.z<<" ; "<<a.w<<" )";
+    return os;
+}
+
