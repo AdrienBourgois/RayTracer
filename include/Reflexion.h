@@ -15,8 +15,13 @@ public:
 	
 	auto	init()	->	void;
 
+	auto	calculateReflexion()	->	void;
+	auto	calculateRefraction()	->	void;
+
 private:
 
+	float			oriMedium;
+	float			newMedium;
 	Vector3D<float>	originalRay;
 	Vector3D<float> reflexionRay;
 	Vector3D<float> refractionRay;

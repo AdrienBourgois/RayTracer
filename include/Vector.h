@@ -1,6 +1,8 @@
 #ifndef __VECTOR_DECLARATION__
 #define __VECTOR_DECLARATION__
 
+#include <iostream>
+
 template <typename T>
 class Vector2D
 {
@@ -37,16 +39,21 @@ class Vector3D
         Vector3D(Vector3D const&) = default;
         ~Vector3D() = default;
 
-        Vector3D&   operator =(Vector3D const& a) = default;
-        Vector3D&   operator +(Vector3D const& a); 
-        Vector3D&   operator -(Vector3D const& a); 
-        Vector3D&   operator +=(Vector3D const& a); 
-        Vector3D&   operator -=(Vector3D const& a); 
-        bool        operator ==(Vector3D const& a); 
+        Vector3D&   operator =	(Vector3D const& a);
+        Vector3D   	operator +	(Vector3D const& a); 
+        Vector3D   	operator -	(Vector3D const& a); 
+        Vector3D&   operator +=	(Vector3D const& a); 
+        Vector3D&   operator -=	(Vector3D const& a);
+        Vector3D	operator *	(Vector3D const& a);
+		Vector3D	operator /	(Vector3D const& a);
+        bool        operator ==	(Vector3D const& a); 
 
     private:
 
 };
+
+template <typename T>
+std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
 
 
 template <typename T>
