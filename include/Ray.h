@@ -3,6 +3,8 @@
 
 #include "Vector.h"
 
+class RenderBuffer;
+
 class Ray
 {
 public:
