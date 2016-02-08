@@ -23,7 +23,7 @@ auto Ray::findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -
     
 }
 
-auto Ray::run() -> void
+auto Ray::run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void
 {
     
 }
