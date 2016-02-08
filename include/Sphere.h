@@ -6,7 +6,7 @@
 class Sphere
 {
     public:
-        Sphere(Vector3D, float);
+        Sphere(Vector3D<float>, float);
         ~Sphere() = default;
 
         Sphere(Sphere const&) = delete;
