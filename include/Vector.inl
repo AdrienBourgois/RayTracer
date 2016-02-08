@@ -89,35 +89,23 @@ Vector3D<T>::Vector3D(T a, T b, T c)
 }
 
 template <typename T>
-Vector3D<T>& Vector3D<T>::operator =(Vector3D const& a)
+Vector3D<T>& Vector3D<T>::operator +(Vector3D const& a)
 {
-    this->x = a.x;
-    this->y = a.y;
-    this->z = a.z;
+    this->x = this->x + a.x;
+    this->y = this->y + a.y;
+	this->z = this->z + a.z;
+
     return *this;
 }
 
 template <typename T>
-Vector3D<T> Vector3D<T>::operator +(Vector3D const& a)
+Vector3D<T>& Vector3D<T>::operator -(Vector3D const& a)
 {
-    Vector3D<T> res;
+    this->x = this->x - a.x;
+    this->y = this->y - a.y;
+	this->z = this->z - a.z;    
 
-    res.x = this->x + a.x;
-    res.y = this->y + a.y;
-	res.z = this->z + a.z;
-
-    return res;
-}
-
-template <typename T>
-Vector3D<T> Vector3D<T>::operator -(Vector3D const& a)
-{
-    Vector3D<T> res;
-    res.x = this->x - a.x;
-    res.y = this->y - a.y;
-	res.z = this->z - a.z;    
-
-    return res;
+    return *this;
 }
 
 template <typename T>
@@ -138,25 +126,6 @@ Vector3D<T>& Vector3D<T>::operator -=(Vector3D const& a)
 	this->z = this->z - a.z;
  
 	return *this;
-}
-
-template <typename T>
-Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
-{
-    Vector3D<T> res;
-
-    res.x = (this->y * a.z) - (this->z * a.y);
-    res.y = (this->z * a.x) - (this->x * a.z);
-    res.z = (this->x * a.y) - (this->y * a.x);
-
-    return res;
-}
-
-template <typename T>
-std::ostream& operator <<(std::ostream& os, Vector3D<T> const& a)
-{
-    os<<"( "<<a.x<<" ; "<<a.y<<" ; "<<a.z<<" )";
-    return os;
 }
 
 template <typename T>

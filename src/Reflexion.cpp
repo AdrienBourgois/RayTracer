@@ -8,9 +8,10 @@ Reflexion::Reflexion()
     Log* log = Log::getInstance();
     log->info("Reflexion creation...");
 
-	this->outputDir = Vector3D<float> (0.f, 0.f, 0.f);
-	this->inputDir  = Vector3D<float> (0.f, 0.f, 0.f);
-	this->normal	= Vector3D<float> (0.f, 0.f, 0.f);
+	this->originalRay 	= Vector3D<float> (0.f, 0.f, 0.f);
+	this->reflexionRay  = Vector3D<float> (0.f, 0.f, 0.f);
+	this->refractionRay = Vector3D<float> (0.f, 0.f, 0.f);
+	this->normal		= Vector3D<float> (0.f, 0.f, 0.f);
 
     log->info("Reflexion created.");
 }
@@ -21,9 +22,10 @@ Reflexion::~Reflexion()
     Log* log = Log::getInstance();
     log->info("Reflexion destroying...");
 	
-	this->outputDir = nullptr;
-	this->inputDir = nullptr;
-	this->normal = nullptr;
+	this->originalRay   = nullptr;
+	this->reflexionRay  = nullptr;
+	this->refractionRay = nullptr;
+	this->normal 		= nullptr;
    
 	log->info("Reflexion destroyed.");
 }

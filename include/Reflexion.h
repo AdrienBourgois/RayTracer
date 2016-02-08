@@ -17,8 +17,9 @@ public:
 
 private:
 
-	Vector3D<float>	outputDir;
-	Vector3D<float> inputDir;
+	Vector3D<float>	originalRay;
+	Vector3D<float> reflexionRay;
+	Vector3D<float> refractionRay;
 	Vector3D<float> normal;
 	
 	
