@@ -1,17 +1,22 @@
 #ifndef __RAY_DECLARATION__
 #define __RAY_DECLARATION__
 
+#include "Vector.h"
+
 class Ray
 {
 public:
-	Ray();
-	~Ray();
-
+    
+	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff);
+	~Ray() = default;
+    auto findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
+    auto run() -> void;
 
 private:
-	Vector3D<float> start_posi;
-	Vector3D<float> dir;
-	float dist_max = 100.0f;
+	Vector3D<float> start_point;
+    Vector3D<float> dest_point;
+	Vector3D<float> direction;
+	float dist_max;
 };
 
 #endif
