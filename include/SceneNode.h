@@ -30,9 +30,15 @@ public:
 	auto getScale() const -> Vector3D<float> {return this->scale;}
 
 	auto getMatrix() const -> Matrix4x4;
+	auto getVertice() const -> std::vector<float> {return this->vertice;}
 	auto getVerticeSize() -> unsigned int {return (unsigned int)this->vertice.size();}
 
 	auto getRadius() -> float;
+	auto getNodeType() -> ModelType {return this->type;}
+
+	auto getRectAPoint() -> Vector3D<float>;
+	auto getRectBPoint() -> Vector3D<float>;
+	auto getRectCPoint() -> Vector3D<float>;
 
 private:
 	ModelType type;

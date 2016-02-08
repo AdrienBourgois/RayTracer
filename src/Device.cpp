@@ -43,39 +43,42 @@ auto Device::init() -> void
     log->info("Device initialized.");
 
 	SceneNode node_test = SceneNode(ModelType::SPHERE);
-	std::cout << node_test.getVerticeSize() << std::endl;
-	node_test.setPosition(Vector3D<float>(-3.f, -5.f, -5.f)); 
+	node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
 	
-	Ray ray = Ray(Vector3D<float>(0.f, 0.f, 5.f), Vector3D<float>(0.f, 0.f, 3.f));
+	Ray ray = Ray(Vector3D<float>(0.f, 0.f, 5.f), Vector3D<float>(0.f, 0.f, -1.f));
 	Collision collision = Collision();
-//	bool result = collision.rayCircleCollision(ray, node_test); 
 
 	SceneNode plan_test = SceneNode(ModelType::PLANE);
-	plan_test.setPosition(Vector3D<float>(0.f, -8.f, -100.f));
+	plan_test.setPosition(Vector3D<float>(0.f, -4.f, -5.f));
 
 
-	unsigned int x_count = 0, y_count = 0;
 
-	for (float i = 2; i > 0; i -= 1.0f/240.f)
+/*	for (float i = 2; i > 0; i -= 1.0f/240.f)
 	{
 		for (float j = 0; j < 2; j += 1.0f/320.f)
+*/
+	float rx = -1;
+	float ry = 1;
+	for (unsigned int i = 0; i < 480; ++i)
+	{
+		ry = ry - (1.0f/240.f);
+		for (unsigned int j = 0; j < 640; ++j)
 		{
-			float rx = (float)(-1 + j);
-			float ry = (float)(1 - i);
+			rx = rx + (1.0f/320.f);
 
 			ray.setRayDirection(Vector3D<float>(rx, ry, -1.f));
 			bool result = collision.rayCircleCollision(ray, node_test);
-//			bool result2 = collision.rayPlaneCollision(ray, plan_test);
-
+			bool result2 = collision.rayPlaneCollision(ray, plan_test);
+(void)result2;
 
 			if (result)
-				this->driver->changePixelColor(255, 255, 255, x_count, y_count);
+				this->driver->changePixelColor(255, 255, 255, j, i);
+//				this->driver->changePixelColor(255, 255, 255, x_count, y_count);
 //			if (result2)
 //				this->driver->changePixelColor(255, 0, 0, x_count, y_count);
 
-			++x_count;
 		}
-		++y_count;
+		rx = -1;
 	}
 }
 

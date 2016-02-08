@@ -1,4 +1,5 @@
 #include <math.h>
+#include <vector>
 
 #include "Collision.h"
 #include "Ray.h"
@@ -40,7 +41,6 @@ auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 	float ray_length = ray.getRayMaxLenght();
 	float circle_radius = circle.getRadius(); // get rad
 
-
 	float A = DOT(ray_dir, ray_dir);
 
 	Vector3D<float> dist = ray_origin - circle_posi;
@@ -73,13 +73,38 @@ auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 
 auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 {
-	Vector3D<float> pos = plane.getPosition();
 	Vector3D<float> ray_dir = ray.getRayDirection();
+	Vector3D<float> ray_origin = ray.getRayOrigin();
 
-	float intersec = DOT(pos, ray_dir);
+	Vector3D<float> a_point = plane.getRectAPoint();
+	Vector3D<float> b_point = plane.getRectBPoint();
+	Vector3D<float> c_point = plane.getRectCPoint();
 
-	if (intersec < 0 || intersec > 0)
+	float ray_length = ray.getRayMaxLenght();
+
+//	std::cout << "a : " << a_point << std::endl;
+//	std::cout << "b : " << b_point << std::endl;
+//	std::cout << "c : " << c_point << std::endl;
+
+	Vector3D<float> ab = b_point - a_point;
+	Vector3D<float> ac = c_point - a_point;
+
+//	std::cout << "ab : " << ab << std::endl;
+//	std::cout << "ac : " << ac << std::endl;
+
+	Vector3D<float> n = ab * ac;
+	float d = -(n.x * a_point.x + n.y * a_point.y + n.z * a_point.z);
+//	std::cout << "d : " << d << std::endl;
+
+	if (DOT(ray_dir, n) < -001.f && DOT(ray_dir, n) > 0.001f)
+		return false;
+	
+	float t = -(DOT(ray_origin, n) + d) / (DOT(ray_dir, n));
+//	std::cout << "t : " << t << std::endl;
+
+	if ((t > 0.001f) && (t < ray_length))
 		return true;
 
 	return false;
 }
+

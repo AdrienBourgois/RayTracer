@@ -58,10 +58,10 @@ auto Driver::changePixelColor(Uint8 r, Uint8 g, Uint8 b, int pos_x, int pos_y) -
 {
 	Uint32 *_pixels = (Uint32 *)this->screenSurface->pixels;
 	
-	Uint32 pixel = _pixels[(1 * this->screenSurface->w) + 1];// copy of a screen pixel
+	Uint32 pixel = _pixels[(0 * this->screenSurface->w) + 0];// copy of a screen pixel
 	pixel = SDL_MapRGB(this->format, r, g, b);// new pixel color : RGB format
 
-	_pixels[( pos_y * this->screenSurface->w) + pos_x] = pixel;//x = screen length, y = screen width
+	_pixels[(pos_y * this->screenSurface->w) + pos_x] = pixel;//x = screen length, y = screen width
 								   //(y * surface->w) + x
 }
 
