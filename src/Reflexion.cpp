@@ -32,9 +32,18 @@ Reflexion::~Reflexion()
 	log->info("Reflexion destroyed.");
 }
 
+Reflexion::calculateReflexion()		->	void
+{
+	this->reflexionCalc		= -dot_product(this->normal, this->originalRay);
+
+	this->reflexionRay		= this->originalRay + (2 * this->normal * this->reflexionCalc);
+}
+
 Reflexion::calculateRefraction()	->	void
 {
-	float	IndRefraction	= this->oriMedium / this->newMedium;
+	float	indRefraction	= this->oriMedium / this->newMedium;
 
+	this->refractionCalc 	= sqrt( 1 - pow(indRefraction, 2) * (1 - pow(this->reflexionCalc, 2)));
 
+	this->refractionRay		= (indRefraction * this->originalRay) + (indRefraction * this->reflexionRay - this->refractionRay) * this->normal;
 }
