@@ -50,6 +50,7 @@ class Vector3D
         Vector3D    operator *(Vector3D const& a);
         bool        operator ==(Vector3D const& a); 
         float       norm();
+        Vector3D    project(Vector3D<float>);
 
     private:
 
