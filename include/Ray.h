@@ -12,7 +12,7 @@ public:
 	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff);
 	~Ray() = default;
     auto findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
-    auto run() -> void;
+    auto run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
 
 private:
     RenderBuffer* render_buffer;
