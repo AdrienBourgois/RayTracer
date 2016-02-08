@@ -13,6 +13,7 @@ public:
     auto run() -> void;
 
 private:
+    RenderBuffer* render_buffer;
 	Vector3D<float> start_point;
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
