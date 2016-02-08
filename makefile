@@ -5,6 +5,8 @@ SRC = 	main.cpp \
 		Driver.cpp \
 		Window.cpp \
 		Camera.cpp \
+		Ray.cpp \
+		RenderBuffer.cpp \
 		Log.cpp \
 
 LIBS = SDL2 pthread SDL2_image

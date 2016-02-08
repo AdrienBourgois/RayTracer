@@ -5,6 +5,7 @@
 #include "Vector.h"
 
 class Driver;
+class RenderBuffer;
 class Camera;
 class Device final
 {
@@ -24,8 +25,8 @@ class Device final
 
     private:
         std::unique_ptr<Driver>     driver;
+        std::unique_ptr<RenderBuffer> render_buffer;
         std::unique_ptr<Camera>     camera;
-
         Vector2D<int>             screen_size;
 
         bool                        running;
