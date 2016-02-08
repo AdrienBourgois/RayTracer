@@ -181,6 +181,12 @@ float Vector3D<T>::norm()
 }
 
 template <typename T>
+float Vector3D<T>::project()
+{
+    return ((v * u) / v.norm()) * v;
+}
+
+template <typename T>
 std::ostream& operator <<(std::ostream& os, Vector3D<T> const& a)
 {
     os<<"( "<<a.x<<" ; "<<a.y<<" ; "<<a.z<<" )";
