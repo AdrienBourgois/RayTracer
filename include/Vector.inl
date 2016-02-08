@@ -1,3 +1,5 @@
+#include <cmath>
+
 template <typename T>
 Vector2D<T>::Vector2D()
 {
@@ -170,6 +172,12 @@ bool Vector3D<T>::operator ==(Vector3D const& a)
         return true;
     else
         return false;
+}
+
+template <typename T>
+float Vector3D<T>::norm()
+{
+    return std::sqrt((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
 }
 
 template <typename T>
