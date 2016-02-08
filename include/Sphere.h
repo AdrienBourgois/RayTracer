@@ -14,7 +14,7 @@ class Sphere
         auto operator=(Sphere const&) -> Sphere = delete;
         auto operator=(Sphere &&) -> Sphere = delete;
 
-        auto ray_collide(Vector3D, Vector3D) -> bool;
+        auto ray_collide(Vector3D<float>, Vector3D<float>) -> bool;
 
     private:
         float radius;
