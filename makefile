@@ -10,6 +10,7 @@ SRC = 	main.cpp \
 		Collision.cpp \
 		Camera.cpp \
 		Log.cpp \
+		Sphere.cpp \
 
 LIBS = SDL2 pthread SDL2_image
 
