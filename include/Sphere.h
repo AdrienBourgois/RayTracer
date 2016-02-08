@@ -15,6 +15,8 @@ class Sphere
         auto operator=(Sphere &&) -> Sphere = delete;
 
         auto ray_collide(Vector3D<float>, Vector3D<float>) -> bool;
+        auto project(Vector3D<float>, Vector3D<float>) -> Vector3D<float>;
+        auto distance_to_ray(Vector3D<float>, Vector3D<float>) -> float;
 
     private:
         float radius;
