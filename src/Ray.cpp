@@ -1,6 +1,6 @@
 #include "Ray.h"
 #include "RenderBuffer.h"
-Ray::Ray(Vector3D<float> position, Vector2D<int> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff)
+Ray::Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff)
 {
     this->render_buffer = rend_buff;
     this->start_point = position;
