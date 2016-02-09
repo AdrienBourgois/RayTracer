@@ -121,6 +121,15 @@ Vector3D<T> Vector3D<T>::operator -(Vector3D const& a)
 }
 
 template <typename T>
+float Vector3D<T>::operator -(double a)
+{
+	float res;
+	res = this->x - a;
+
+	return res;	
+}
+
+template <typename T>
 Vector3D<T>& Vector3D<T>::operator +=(Vector3D const& a)
 {
     this->x = this->x + a.x;
@@ -150,6 +159,18 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
     res.z = (this->x * a.y) - (this->y * a.x);
 
     return res;
+}
+
+template <typename T>
+Vector3D<T>	Vector3D<T>::operator *(float a)
+{
+	Vector3D<T> res;
+
+	res.x =	this->x * a;	
+	res.y = this->y * a;
+	res.z = this->z * a;
+
+	return res;
 }
 
 template <typename T>
