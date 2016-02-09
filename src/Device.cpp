@@ -42,7 +42,7 @@ auto Device::init() -> void
     log->info("Device initialized.");
 
     Vector3D<float> vec = Vector3D<float>(4.f, 3.f, 9.f);
-    float res = 2 * vec;
+    Vector3D<float> res = 2.f * vec;
 
 	//SceneNode node_test = SceneNode(ModelType::SPHERE);
 	//node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
