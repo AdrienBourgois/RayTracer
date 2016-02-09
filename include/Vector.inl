@@ -166,12 +166,18 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
 template <typename T>
 Vector3D<T> Vector3D<T>::operator *(T a)
 {
-    Vector3D<T> res;
+    if(!std::is_same<T, T>::value)
+    {
+        std::cout<<"ciao"<<std::endl;
+    }
+    else
+    {
+        Vector3D<T> res;
     
-    res.x = this->x * a;
-    res.y = this->y * a;
-    res.z = this->z * a;
-
+        res.x = this->x * a;
+        res.y = this->y * a;
+        res.z = this->z * a;
+    }
     return res;
 }    
 
