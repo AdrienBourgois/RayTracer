@@ -15,6 +15,8 @@ public:
 	
 	auto	init()	->	void;
 
+	auto	dot_product(Vector3D<float> vec1, Vector3D<float> vec2)	->	float;
+ 
 	auto	calculateReflexion()	->	void;
 	auto	calculateRefraction()	->	void;
 
@@ -22,8 +24,9 @@ private:
 
 	float			oriMedium;
 	float			newMedium;
-	Vector3D<float> reflexionCalc;
-	Vector3D<float> refractionCalc;
+	float			indRefraction;
+	float 			reflexionCalc;
+	float 			refractionCalc;
 	Vector3D<float>	originalRay;
 	Vector3D<float> reflexionRay;
 	Vector3D<float> refractionRay;
