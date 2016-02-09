@@ -22,7 +22,7 @@ class Device final
         auto run() -> void;
         auto quit() -> void;
         auto close() -> void;
-        auto convert(Vector3D<int> vec) -> Vector3D<float>;
+        auto convert(Vector2D<int> vec) -> Vector2D<float>;
 
         auto getDriver() const -> Driver const*     {return driver.get(); }
 
