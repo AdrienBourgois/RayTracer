@@ -28,7 +28,6 @@ private:
     Vector3D<float> v;
     Vector2D<float> screen_size;
     //Vector3D<float> coordNDC;
-    Ray* ray;
     float FOV;
 };
 
