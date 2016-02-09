@@ -43,7 +43,7 @@ auto Device::init() -> void
 
     int num = 2;
     Vector3D<float> vec = Vector3D<float>(4.f, 3.f, 9.f);
-    Vector3D<float> res =  vec * 2;
+    Vector3D<float> res =  vec * num;
     std::cout<<"Res = "<<res<<std::endl;
 
 	//SceneNode node_test = SceneNode(ModelType::SPHERE);
