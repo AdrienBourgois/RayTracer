@@ -41,10 +41,15 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
-	//SceneNode node_test = SceneNode(ModelType::SPHERE);
-	//node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
-	
-    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), 1.f, 1.f, this->render_buffer.get());
+	SceneNode node_test = SceneNode(ModelType::SPHERE);
+	node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
+
+    
+
+
+    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), 1.f, 1.f, this->render_buffer.get(), &node_test);
+
+    
 
 }
 
