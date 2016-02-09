@@ -74,6 +74,9 @@ auto Device::convert(Vector3D<int> vec) -> Vector3D<float>
 {
     Vector3D<float> res;
 
-    res.x = (float)
+    res.x = float(vec.x);
+    res.y = float(vec.y);
+    res.z = float(vec.z);
 
+    return res;
 }
