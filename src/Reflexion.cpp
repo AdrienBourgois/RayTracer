@@ -52,7 +52,7 @@ auto	Reflexion::calculateRefraction()	->	void
 {
 	this->indRefraction		= this->oriMedium / this->newMedium;
 
-	this->refractionCalc 	= sqrt((1.f - pow(indRefraction, 2)) * (1.f - pow(this->reflexionCalc, 2)));
+	this->refractionCalc 	= sqrt((1.f - static_cast<float>(pow(indRefraction, 2)) * (1.f - pow(this->reflexionCalc, 2)));
 
 	this->refractionRay		= (this->originalRay * this->indRefraction) + (this->reflexionRay * this->indRefraction - this->refractionCalc) * this->normal;
 }
