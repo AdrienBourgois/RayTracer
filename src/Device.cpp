@@ -70,7 +70,7 @@ auto Device::close() -> void
     log->info("Device closed.");
 }
 
-auto Device::convert(Vector3D<int> vec) -> Vector3D<float>
+auto Device::convert(Vector2D<int> vec) -> Vector2D<float>
 {
     Vector3D<float> res;
 
