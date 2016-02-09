@@ -41,7 +41,7 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
-    char num = "2";
+    const char num = "2";
     Vector3D<float> vec = Vector3D<float>(4.f, 3.f, 9.f);
     Vector3D<float> res =  vec * num;
     std::cout<<"Res = "<<res<<std::endl;
