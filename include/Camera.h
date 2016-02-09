@@ -18,6 +18,9 @@ public:
     auto render() -> void;
     auto shot() -> void;
 
+    auto getPosition() -> Vector3D<float> { return this->position; }
+
+
 private:
     RenderBuffer* render_buffer;
 	Vector3D<float> position;
