@@ -164,6 +164,16 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
 }
 
 template <typename T>
+Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
+{
+    Vector3D<T> res;
+    
+    res.x = 
+
+    return res;
+}    
+
+template <typename T>
 bool Vector3D<T>::operator ==(Vector3D const& a)
 {
     if(this->x == a.x && this->y == a.y && this->z == a.z)
