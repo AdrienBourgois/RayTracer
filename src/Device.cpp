@@ -69,3 +69,11 @@ auto Device::close() -> void
     this->driver->close();
     log->info("Device closed.");
 }
+
+auto Device::convert(Vector3D<int> vec) -> Vector3D<float>
+{
+    Vector3D<float> res;
+
+    res.x = (float)
+
+}
