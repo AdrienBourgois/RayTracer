@@ -3,6 +3,9 @@
 #include "Vector.h"
 #include "Log.h"
 
+#include <vector>
+#include <cmath>
+
 Reflexion::Reflexion()
 {
     Log* log = Log::getInstance();
@@ -14,6 +17,7 @@ Reflexion::Reflexion()
 	this->reflexionRay  = Vector3D<float> (0.f, 0.f, 0.f);
 	this->refractionRay = Vector3D<float> (0.f, 0.f, 0.f);
 	this->normal		= Vector3D<float> (0.f, 0.f, 0.f);
+	this->indRefraction	= 0.f;
 
     log->info("Reflexion created.");
 }
@@ -32,18 +36,23 @@ Reflexion::~Reflexion()
 	log->info("Reflexion destroyed.");
 }
 
-Reflexion::calculateReflexion()		->	void
+auto	Reflexion::dot_product(Vector3D<float> vec1, Vector3D<float> vec2)	->float	
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
+}
+
+auto	Reflexion::calculateReflexion()		->	void
 {
 	this->reflexionCalc		= -dot_product(this->normal, this->originalRay);
 
-	this->reflexionRay		= this->originalRay + (2 * this->normal * this->reflexionCalc);
+	this->reflexionRay		= this->originalRay + (this->normal * this->reflexionCalc * 2.f);
 }
 
-Reflexion::calculateRefraction()	->	void
+auto	Reflexion::calculateRefraction()	->	void
 {
-	float	indRefraction	= this->oriMedium / this->newMedium;
+	this->indRefraction		= this->oriMedium / this->newMedium;
 
-	this->refractionCalc 	= sqrt( 1 - pow(indRefraction, 2) * (1 - pow(this->reflexionCalc, 2)));
+	this->refractionCalc 	= sqrt((1.f - pow(indRefraction, 2)) * (1.f - pow(this->reflexionCalc, 2)));
 
-	this->refractionRay		= (indRefraction * this->originalRay) + (indRefraction * this->reflexionRay - this->refractionRay) * this->normal;
+	this->refractionRay		= (this->originalRay * this->indRefraction) + (this->reflexionRay * this->indRefraction - this->refractionCalc) * this->normal;
 }
