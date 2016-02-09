@@ -2,6 +2,7 @@
 #include "Driver.h"
 #include "Window.h"
 #include "Log.h"
+#include "Reflexion.h"
 
 Driver::Driver()
 {
@@ -39,6 +40,11 @@ auto Driver::init(Vector2D<int> screen_res) -> void
     SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 
 	this->changePixelColor(0, 255, 0, 240, 300);
+
+	this->reflexion = new Reflexion();
+
+	this->reflexion->calculateReflexion();
+	this->reflexion->calculateRefraction();
 
 	Uint8 r = 0, g = 0, b = 0;
 	this->getPixelColor(240, 300, &r, &g, &b);

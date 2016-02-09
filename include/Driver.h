@@ -8,6 +8,8 @@
 
 class Window;
 
+class Reflexion;
+
 class Driver final
 {
     public:
@@ -25,6 +27,7 @@ class Driver final
  
     private:
         std::unique_ptr<Window>     window;
+		Reflexion*					reflexion;
         SDL_Surface* screenSurface;
         SDL_PixelFormat* format;
         Uint32 mapRGB;

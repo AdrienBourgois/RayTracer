@@ -5,6 +5,7 @@
 #include "Vector.h"
 
 class Driver;
+class Reflexion;
 
 class Device final
 {
