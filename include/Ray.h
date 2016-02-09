@@ -8,17 +8,19 @@
 
 class RenderBuffer;
 class SceneNode;
+class Driver;
 
 class Ray
 {
 public:
     
-	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff, SceneNode* node);
+	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff, SceneNode* node, Driver* drv);
 	~Ray() = default;
     auto findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
     auto run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
 
-    auto collision() -> void;
+    auto collision() -> bool;
+    auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 private:
     RenderBuffer* render_buffer;
 
@@ -27,6 +29,8 @@ private:
 	Vector3D<float> direction;
 
     SceneNode* scene_node;
+
+    Driver* driver;
 
 	float lenght_max;
 

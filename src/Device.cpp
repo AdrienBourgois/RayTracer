@@ -18,7 +18,7 @@ Device::Device()
     this->driver.reset(new Driver);
     this->render_buffer.reset(new RenderBuffer);
     this->camera.reset(new Camera);
-    this->screen_size = Vector2D<int>(640.f, 480.f);
+    this->screen_size = Vector2D<int>(100.f, 100.f);
     this->running = true;
     this->ray = nullptr;
     log->info("Device created.");
@@ -47,7 +47,9 @@ auto Device::init() -> void
     
 
 
-    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), 1.f, 1.f, this->render_buffer.get(), &node_test);
+    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), 0.f, 0.f, this->render_buffer.get(), &node_test, this->driver.get());
+
+    //this->driver->changePixelColor(255, 0, 0, 0, 0);
 
     
 

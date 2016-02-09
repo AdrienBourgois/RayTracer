@@ -35,7 +35,7 @@ auto Driver::init(Vector2D<int> screen_res) -> void
 
     this->screenSurface = SDL_GetWindowSurface(this->window->getWindow());
     this->format = this->screenSurface->format;
-    this->mapRGB = SDL_MapRGB(this->screenSurface->format, 0, 255, 0);
+    this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 255, 255);
     SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 
     log->info("Driver initialized.");
