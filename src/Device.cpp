@@ -76,7 +76,6 @@ auto Device::convert(Vector2D<int> vec) -> Vector2D<float>
 
     res.x = float(vec.x);
     res.y = float(vec.y);
-    res.z = float(vec.z);
 
     return res;
 }
