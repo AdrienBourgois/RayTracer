@@ -7,6 +7,8 @@
 class Driver;
 class RenderBuffer;
 class Camera;
+class Ray;
+
 class Device final
 {
     public:
