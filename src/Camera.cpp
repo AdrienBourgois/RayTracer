@@ -6,7 +6,7 @@ Camera::Camera()
 {
     this->FOV = 0;
     this->lookAt = Vector3D<float> (0.f, 0.f, 0.f);
-    this->ray = nullptr;
+    //this->ray = nullptr;
 }
 
 auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
