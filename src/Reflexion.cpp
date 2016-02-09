@@ -4,6 +4,7 @@
 #include "Log.h"
 
 #include <vector>
+#include <iostream>
 #include <cmath>
 
 Reflexion::Reflexion()
@@ -45,7 +46,11 @@ auto	Reflexion::calculateReflexion()		->	void
 {
 	this->reflexionCalc		= -dot_product(this->normal, this->originalRay);
 
+	std::cout << "ReflexionCalc = " << this->reflexionCalc << std::endl;
+
 	this->reflexionRay		= this->originalRay + (this->normal * this->reflexionCalc * 2.f);
+
+	std::cout << "ReflexionRay = " << this->reflexionRay << std::endl;
 }
 
 auto	Reflexion::calculateRefraction()	->	void
