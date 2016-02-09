@@ -72,7 +72,7 @@ auto Device::close() -> void
 
 auto Device::convert(Vector2D<int> vec) -> Vector2D<float>
 {
-    Vector3D<float> res;
+    Vector2D<float> res;
 
     res.x = float(vec.x);
     res.y = float(vec.y);
