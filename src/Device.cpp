@@ -2,7 +2,6 @@
 
 #include "Device.h"
 #include "Driver.h"
-#include "Camera.h"
 #include "Log.h"
 
 //Log* log = Log::getInstance();
@@ -11,12 +10,9 @@ Device::Device()
 {
     Log* log = Log::getInstance();
     log->info("Device creation...");
-
     this->driver.reset(new Driver);
-    this->camera.reset(new Camera);
     this->screen_size = Vector2D<int>(640.f, 480.f);
     this->running = true;
-
     log->info("Device created.");
 }
 
@@ -34,8 +30,8 @@ auto Device::init() -> void
     Log* log = Log::getInstance();
     log->info("Device initialization...");
     this->driver->init(this->screen_size);
-    this->camera->init(this->screen_size);
     log->info("Device initialized.");
+	
 }
 
 auto Device::run() -> void
