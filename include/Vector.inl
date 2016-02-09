@@ -164,7 +164,7 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
 }
 
 template <typename T>
-Vector3D<T>	Vector3D<T>::operator *(float a)
+Vector3D<T>	Vector3D<T>::operator *(T a)
 {
 	Vector3D<T> res;
 
