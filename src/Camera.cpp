@@ -25,10 +25,10 @@ auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
 
 auto Camera::render() -> void
 {
-    if (this->ray == nullptr)
+    /*if (this->ray == nullptr)
     {
-        this->ray = new Ray(this->position, this->screen_size, 1.f /* idx_x*/, 1.f /*idx_y*/, this->render_buffer);
-    }
+        this->ray = new Ray(this->position, this->screen_size, 1.f , 1.f , this->render_buffer);
+    }*/
 }
 
 auto Camera::shot() -> void
