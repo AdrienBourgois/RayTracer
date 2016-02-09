@@ -41,6 +41,8 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
+    Vector3D<float> vec = Vector3D<float>(4.f, 3.f, 9.f);
+
 	//SceneNode node_test = SceneNode(ModelType::SPHERE);
 	//node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
 	
