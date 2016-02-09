@@ -21,6 +21,8 @@ class Window final
 
     private:
         SDL_Window* window;
+        //SDL_Surface* screenSurface;
+        //SDL_PixelFormat* format;
         Vector2D<int> screen_size;
 };
 #endif

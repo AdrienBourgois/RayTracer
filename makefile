@@ -6,6 +6,7 @@ SRC = 	main.cpp \
 		Window.cpp \
 		Camera.cpp \
 		Log.cpp \
+		Reflexion.cpp \
 
 LIBS = SDL2 pthread SDL2_image
 
