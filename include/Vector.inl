@@ -168,7 +168,9 @@ Vector3D<T> Vector3D<T>::operator *(float const& a)
 {
     Vector3D<T> res;
     
-    res.x = 
+    res.x = this->x * a;
+    res.y = this->y * a;
+    res.z = this->z * a;
 
     return res;
 }    
