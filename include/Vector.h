@@ -54,10 +54,6 @@ class Vector3D
         auto        convert() -> void;
     private:
 
-        //static_cast<float>(i)
-
-            //if(std::is_same<T, float>::value)
-
 };
 
 template <typename T>
