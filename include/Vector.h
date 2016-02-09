@@ -53,9 +53,9 @@ class Vector3D
 
     private:
 
-        static_cast<float>(i)
+        //static_cast<float>(i)
 
-            if(std::is_same<T, float>::value)
+            //if(std::is_same<T, float>::value)
 
 };
 
