@@ -1,6 +1,8 @@
 #ifndef __SCENENODE_DECLARATION__
 #define __SCENENODE_DECLARATION__
 
+#include <vector>
+
 #include "Matrix.h"
 #include "Vector.h"
 
@@ -15,7 +17,7 @@ class SceneNode
 {
 public:
 	SceneNode(ModelType kind) {this->init(kind);}
-	~SceneNode();
+	~SceneNode() = default;
 	
 	auto init(ModelType kind) -> void;
 
@@ -28,6 +30,15 @@ public:
 	auto getScale() const -> Vector3D<float> {return this->scale;}
 
 	auto getMatrix() const -> Matrix4x4;
+	auto getVertice() const -> std::vector<float> {return this->vertice;}
+	auto getVerticeSize() -> unsigned int {return (unsigned int)this->vertice.size();}
+
+	auto getRadius() -> float;
+	auto getNodeType() -> ModelType {return this->type;}
+
+	auto getRectAPoint() -> Vector3D<float>;
+	auto getRectBPoint() -> Vector3D<float>;
+	auto getRectCPoint() -> Vector3D<float>;
 
 private:
 	ModelType type;
@@ -36,6 +47,7 @@ private:
 	Vector3D<float> rotation;
 	Vector3D<float> scale;
 	
+	float radius;	
 };
 
 #endif

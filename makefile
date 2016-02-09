@@ -4,8 +4,10 @@ SRC = 	main.cpp \
 		Device.cpp \
 		Driver.cpp \
 		Window.cpp \
-		Camera.cpp \
+		Matrix.cpp \
+		SceneNode.cpp \
 		Ray.cpp \
+		Camera.cpp \
 		RenderBuffer.cpp \
 		Log.cpp \
 

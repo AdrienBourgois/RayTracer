@@ -6,7 +6,9 @@
 #include "Camera.h"
 #include "Log.h"
 
-//Log* log = Log::getInstance();
+#include "SceneNode.h"
+#include "Ray.h"
+//#include "Collision.h"
 
 Device::Device()
 {
@@ -38,6 +40,10 @@ auto Device::init() -> void
     this->driver->init(this->screen_size);
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
+
+	//SceneNode node_test = SceneNode(ModelType::SPHERE);
+	//node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
+	
 }
 
 auto Device::run() -> void

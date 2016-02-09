@@ -1,6 +1,9 @@
 #ifndef __RAY_DECLARATION__
 #define __RAY_DECLARATION__
 
+
+#include <vector>
+
 #include "Vector.h"
 
 class RenderBuffer;
@@ -20,6 +23,9 @@ private:
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
 	float dist_max;
+
+private:
+
 };
 
 #endif
