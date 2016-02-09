@@ -48,7 +48,7 @@ class Vector3D
         Vector3D&   operator +=(Vector3D const& a); 
         Vector3D&   operator -=(Vector3D const& a);
         Vector3D    operator *(Vector3D const& a);
-        Vector3D    operator *(float  a);
+        Vector3D    operator *(T a);
         bool        operator ==(Vector3D const& a); 
 
     private:
