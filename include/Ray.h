@@ -14,11 +14,11 @@ class Ray
 {
 public:
     
-	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff, SceneNode* node, Driver* drv);
+	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv);
 	~Ray() = default;
-    auto findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
+    auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
-    auto run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
+    auto run() -> void;
 
     auto collision() -> bool;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
@@ -28,6 +28,7 @@ public:
 private:
     RenderBuffer* render_buffer;
 
+    Vector2D<float> screen_size;
 	Vector3D<float> start_point;
     Vector3D<float> dest_point;
 	Vector3D<float> direction;

@@ -4,27 +4,24 @@
 #include "RenderBuffer.h"
 #include "SceneNode.h"
 #include "Driver.h"
-Ray::Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff, SceneNode* node, Driver* drv)
+Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv)
 {
+    this->screen_size = screen_res;
     this->driver = drv;
     this->scene_node = node;
     this->lenght_max = 1000.f;
     this->render_buffer = rend_buff;
     this->start_point = position;
     
-    this->findDestPoint(screen_size, idx_x, idx_y);
-
-    this->direction = this->dest_point - start_point;
-
 }
 
-auto Ray::findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void
+auto Ray::findDestPoint(float idx_x, float idx_y) -> void
 {
 
-    float NDC_x = (idx_x +0.5f) / screen_size.x;
-    float NDC_y = (idx_y +0.5f) / screen_size.y;
+    float NDC_x = (idx_x +0.5f) / this->screen_size.x;
+    float NDC_y = (idx_y +0.5f) / this->screen_size.y;
 
-    this->dest_point.x = ((2.f * NDC_x) - 1.f) * (screen_size.x / screen_size.y);
+    this->dest_point.x = ((2.f * NDC_x) - 1.f) * (this->screen_size.x / this->screen_size.y);
     this->dest_point.y = 1.f - (2.f * NDC_y);
 
     this->findDirection();
@@ -35,31 +32,9 @@ auto Ray::findDirection() -> void
     this->direction = this->dest_point - this->start_point;
 }
 
-auto Ray::run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void
+auto Ray::run() -> void
 {
-    bool collision_result = false;
-    Ray* ray = nullptr;
-    (void)ray;
 
-    this->findDestPoint(screen_size, idx_x, idx_y);
-    this->direction = this->dest_point - start_point;
-    collision_result = this->collision();
-
-    if(collision_result)
-        this->driver->changePixelColor(255, 0, 0, int(idx_y), int(idx_x));
-
-        if(idx_y <= screen_size.y)
-        {
-            if(idx_x < screen_size.x)
-                ++idx_x;
-            else if(idx_x == screen_size.x)
-            {
-                idx_x = 0.f;
-                ++idx_y;
-            }
-            std::cout<<"idx_x = "<<idx_x<<"   "<<"idx_y = "<<idx_y<<std::endl;
-            ray = new Ray(this->start_point, screen_size, idx_x, idx_y, this->render_buffer, this->scene_node, this->driver);
-        }       
 }
 
 auto Ray::collision() -> bool
