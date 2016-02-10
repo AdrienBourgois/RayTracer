@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <memory>
+#include <vector>
 
 #include "Vector.h"
 
@@ -20,7 +21,7 @@ class Driver final
         auto render() -> void;
         auto close() -> void;
 
-	auto changePixelColor(Uint8 r, Uint8 g, Uint8 b, int pos_x, int pos_y) -> void;
+	auto changePixelColor(Uint8 r, Uint8 g, Uint8 b, std::vector<Vector2D<float>>) -> void;
 	auto getPixelColor(int pos_x, int pos_y, Uint8* r, Uint8* g, Uint8* b) -> void;
  
     private:

@@ -12,7 +12,7 @@ Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* ren
     this->lenght_max = 1000.f;
     this->render_buffer = rend_buff;
     this->start_point = position;
-    
+    this->collision_result = false;   
 }
 
 auto Ray::findDestPoint(float idx_x, float idx_y) -> void
@@ -34,7 +34,20 @@ auto Ray::findDirection() -> void
 
 auto Ray::run() -> void
 {
-
+    for (float idx_y = 0.f; idx_y < this->screen_size.y; ++idx_y)
+    {
+        for (float idx_x = 0.f; idx_x < this->screen_size.x; ++idx_x)
+        {
+            this->findDestPoint(idx_x, idx_y);
+            if(this->collision())
+            {
+                this->render_buffer->setColorList(Vector3D<float>(255.f, 0.f, 0.f));
+                this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+            }
+            //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
+                
+        }
+    }
 }
 
 auto Ray::collision() -> bool

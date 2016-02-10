@@ -55,19 +55,21 @@ auto Device::run() -> void
     log->info("Device running...");
     while(running)
     {
-       for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
-       {
-           for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
-            {
-                this->ray->findDestPoint(idx_x, idx_y);
-                this->collision_result = this->ray->collision();
+        this->ray->run();
+       //for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
+       //{
+           //for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
+            //{
+                //this->ray->findDestPoint(idx_x, idx_y);
+                //this->collision_result = this->ray->collision();
                 //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
-                if(this->collision_result)
-                {
-                    this->driver->changePixelColor(255, 0, 0, int (idx_x), int (idx_y));
-                }
-            }
-       }
+                //if(this->ray->getCollisionRes() == true)
+                //{
+                    //std::cout<<"collision"<<std::endl;
+                    this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
+                //}
+            //}
+       //}
 
         driver->render();
     }

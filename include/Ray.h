@@ -24,6 +24,7 @@ public:
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
     auto getDirection() -> Vector3D<float>;
+    auto getCollisionRes() -> bool { return this->collision_result; }
 
 private:
     RenderBuffer* render_buffer;
@@ -39,6 +40,7 @@ private:
 
 	float lenght_max;
 
+    bool collision_result;
 private:
 
 };
