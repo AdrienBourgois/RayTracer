@@ -16,7 +16,6 @@ Ray::Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, flo
 
     this->direction = this->dest_point - start_point;
 
-    this->run(screen_size, idx_x, idx_y);
 }
 
 auto Ray::findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void
@@ -27,7 +26,13 @@ auto Ray::findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -
 
     this->dest_point.x = ((2.f * NDC_x) - 1.f) * (screen_size.x / screen_size.y);
     this->dest_point.y = 1.f - (2.f * NDC_y);
-    
+
+    this->findDirection();
+}
+
+auto Ray::findDirection() -> void
+{
+    this->direction = this->dest_point - this->start_point;
 }
 
 auto Ray::run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void

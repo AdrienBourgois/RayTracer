@@ -17,10 +17,14 @@ public:
 	Ray(Vector3D<float> position, Vector2D<float> screen_size, float idx_x, float idx_y, RenderBuffer* rend_buff, SceneNode* node, Driver* drv);
 	~Ray() = default;
     auto findDestPoint(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
+    auto findDirection() -> void;
     auto run(Vector2D<float> screen_size, float idx_x, float idx_y) -> void;
 
     auto collision() -> bool;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
+
+    auto getDirection() -> Vector3D<float>;
+
 private:
     RenderBuffer* render_buffer;
 

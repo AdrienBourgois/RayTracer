@@ -14,7 +14,7 @@ auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
     this->render_buffer = rend_buffer;
     std::cout<<"LookAt = "<<this->lookAt<<std::endl;
 
-	this->position = Vector3D<float>(0.f, 0.f, -1.0f);
+	this->position = Vector3D<float>(0.f, 0.f, 1.0f);
     this->viewDirection = this->lookAt - this->position;
     this->up = Vector3D<float> (0.f, 1.f, 0.f);
     this->screen_size.x = float (screen_res.x);

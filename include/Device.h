@@ -31,11 +31,12 @@ class Device final
         std::unique_ptr<RenderBuffer> render_buffer;
         std::unique_ptr<Camera>     camera;
 
-        Vector2D<int>             screen_size;
-
+        Vector2D<int>               screen_size;
+        Vector2D<float>             f_screen_size;
         Ray*                        ray;
         
         bool                        running;
+        bool                        collision_result;
 };
 
 #endif
