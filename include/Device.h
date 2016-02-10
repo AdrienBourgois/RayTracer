@@ -8,6 +8,7 @@ class Driver;
 class RenderBuffer;
 class Camera;
 class Ray;
+class SceneNode;
 
 class Device final
 {
@@ -34,6 +35,8 @@ class Device final
         Vector2D<int>               screen_size;
         Vector2D<float>             f_screen_size;
         Ray*                        ray;
+
+        SceneNode*                  node_test;
         
         bool                        running;
         bool                        collision_result;

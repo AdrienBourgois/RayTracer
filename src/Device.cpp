@@ -43,30 +43,10 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
-	SceneNode node_test = SceneNode(ModelType::SPHERE);
-	node_test.setPosition(Vector3D<float>(0.f, 0.f, -5.f)); 
+	this->node_test = new SceneNode(ModelType::SPHERE);
+	node_test->setPosition(Vector3D<float>(0.f, 0.f, -5.f)); 
 
-    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), &node_test, this->driver.get());
-
-    for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
-    {
-        //std::cout<<"before 2st for"<<std::endl;
-        for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
-        {
-            this->ray->findDestPoint(idx_x, idx_y);
-            this->collision_result = this->ray->collision();
-           
-            //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
-
-            if(this->collision_result)
-            {
-                this->driver->changePixelColor(255, 0, 0, int (idx_x), int (idx_y));
-            }
-        }
-    }
-
-    
-
+    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), node_test, this->driver.get());
 }
 
 auto Device::run() -> void
@@ -75,6 +55,20 @@ auto Device::run() -> void
     log->info("Device running...");
     while(running)
     {
+       for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
+       {
+           for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
+            {
+                this->ray->findDestPoint(idx_x, idx_y);
+                this->collision_result = this->ray->collision();
+                //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
+                if(this->collision_result)
+                {
+                    this->driver->changePixelColor(255, 0, 0, int (idx_x), int (idx_y));
+                }
+            }
+       }
+
         driver->render();
     }
 }
