@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "Matrix.h"
 #include "Vector.h"
 
 enum class ModelType
@@ -29,7 +28,6 @@ public:
 	auto getRotation() const -> Vector3D<float> {return this->rotation;}
 	auto getScale() const -> Vector3D<float> {return this->scale;}
 
-	auto getMatrix() const -> Matrix4x4;
 	auto getVertice() const -> std::vector<float> {return this->vertice;}
 	auto getVerticeSize() -> unsigned int {return (unsigned int)this->vertice.size();}
 

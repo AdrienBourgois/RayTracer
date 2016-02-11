@@ -64,17 +64,6 @@ auto SceneNode::init(ModelType kind) -> void
     log->info("SceneNode created and initialized.");
 }
 
-auto SceneNode::getMatrix() const -> Matrix4x4
-{
-	Matrix4x4 matrix = Matrix4x4::identity;
-
-	matrix *= Matrix4x4::identity.translate(this->position);
-	matrix *= Matrix4x4::identity.rotate(this->rotation);
-	matrix *= Matrix4x4::identity.scale(this->scale);
-
-	return matrix;	
-}
-
 auto SceneNode::getRadius() -> float
 {
 	if (this->type == ModelType::SPHERE)

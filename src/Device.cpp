@@ -5,7 +5,6 @@
 #include "RenderBuffer.h"
 #include "Camera.h"
 #include "Log.h"
-
 #include "SceneNode.h"
 #include "Ray.h"
 
