@@ -2,10 +2,14 @@
 #include <iostream>
 
 #include "SceneNode.h"
+#include "Log.h"
 
 auto SceneNode::init(ModelType kind) -> void
 {
-	this->position = Vector3D<float>(0.f, 0.f, 0.f);
+    Log* log = Log::getInstance();
+    log->info("SceneNode creation and initialization");
+
+    this->position = Vector3D<float>(0.f, 0.f, 0.f);
 	this->rotation = Vector3D<float>(0.f, 0.f, 0.f);
 	this->scale = Vector3D<float>(1.f, 1.f, 1.f);
 
@@ -57,6 +61,7 @@ auto SceneNode::init(ModelType kind) -> void
 		0.f, 0.f, 0.f,
 		}; break;
 	}
+    log->info("SceneNode created and initialized.");
 }
 
 auto SceneNode::getMatrix() const -> Matrix4x4
