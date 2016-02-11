@@ -4,13 +4,13 @@
 int main()
 {
     Gui_class* gui = new Gui_class();
-    gui.open();
+    gui->open();
 
-    while(gui.updateEvent())
+    while(gui->updateEvent())
     {
-        gui.newFrame();
-        gui.configWindow();
-        gui.render();
+        gui->newFrame();
+        gui->configWindow();
+        gui->render();
     }
 
     /* Device* dev = new Device();
