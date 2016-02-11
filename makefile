@@ -10,8 +10,9 @@ SRC = 	main.cpp \
 		Camera.cpp \
 		RenderBuffer.cpp \
 		Log.cpp \
+		gui.cpp \
 
-LIBS = SDL2 pthread SDL2_image
+LIBS = SDL2 SDL2_image GL GLEW
 
 MODE = release
 BIN_DIR = bin/$(MODE)/
