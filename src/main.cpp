@@ -1,4 +1,5 @@
 #include "Device.h"
+#include "gui.h"
 
 int main()
 {
