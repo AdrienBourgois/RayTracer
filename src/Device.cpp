@@ -5,8 +5,10 @@
 #include "RenderBuffer.h"
 #include "Camera.h"
 #include "Log.h"
+
 #include "SceneNode.h"
 #include "Ray.h"
+//#include "Collision.h"
 
 Device::Device()
 {
@@ -30,6 +32,11 @@ Device::~Device()
     log->info("Device destruction...");
     this->driver = nullptr;
     this->running = false;
+    this->camera = nullptr;
+    this->render_buffer = nullptr;
+    this->ray = nullptr;
+    this->node_test = nullptr;
+
     log->info("Device destructed.");
 }
 
@@ -55,6 +62,7 @@ auto Device::run() -> void
     {
         this->ray->run();
         this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
+
         driver->render();
     }
 }
@@ -68,7 +76,13 @@ auto Device::close() -> void
 {
     Log* log = Log::getInstance();
     log->info("Device closing...");
+
     this->driver->close();
+    this->camera->close();
+    this->ray->close();
+    delete [] this->ray;
+    delete [] this->node_test;
+    
     log->info("Device closed.");
 }
 

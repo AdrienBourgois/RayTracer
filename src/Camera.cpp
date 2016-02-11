@@ -31,3 +31,7 @@ auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
     log->info("Camera initilized.");
 }
 
+auto Camera::close() -> void
+{
+    this->render_buffer = nullptr;
+}
