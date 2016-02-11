@@ -39,6 +39,7 @@ public:
 	auto getRectAPoint() -> Vector3D<float>;
 	auto getRectBPoint() -> Vector3D<float>;
 	auto getRectCPoint() -> Vector3D<float>;
+	auto getRectDPoint() -> Vector3D<float>;
 
 private:
 	ModelType type;

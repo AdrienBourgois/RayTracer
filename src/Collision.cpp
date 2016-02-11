@@ -13,26 +13,7 @@ namespace
 		return result;
 	}
 } // namespace end
-/*
-auto Shpere::raySphereIntersection(Ray ray, float &t1, float &t2)
-{
-	Vector3D<float> dist = sphere_center - ray.getStartPosi();
-	float tca = dist.dot(ray.getRayDir());
-	
-	if (tca < 0)
-		return false; // no collision
 
-	float d2 = dist.dot(dist) - tca * tca;
-	if (d2 > radius2) // radius2 = sphere radius^2
-		return false; // no collision
-
-	float thc = sqrt(radius2 - d2); // square root of radius2 - d2
-	t1 = tca - thc; // check if t1 < 0 if t1 = t2
-	t2 = tca + thc;
-
-	return true;
-}
-*/
 auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 {
 	Vector3D<float> ray_dir = ray.getRayDirection();
@@ -80,8 +61,6 @@ auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 	Vector3D<float> b_point = plane.getRectBPoint();
 	Vector3D<float> c_point = plane.getRectCPoint();
 
-	float ray_length = ray.getRayMaxLenght();
-
 //	std::cout << "a : " << a_point << std::endl;
 //	std::cout << "b : " << b_point << std::endl;
 //	std::cout << "c : " << c_point << std::endl;
@@ -93,18 +72,119 @@ auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 //	std::cout << "ac : " << ac << std::endl;
 
 	Vector3D<float> n = ab * ac;
-	float d = -(n.x * a_point.x + n.y * a_point.y + n.z * a_point.z);
+//	std::cout << "n : " << n << std::endl;
+
+	float d = -(DOT(n, plane.getRectAPoint()));
 //	std::cout << "d : " << d << std::endl;
 
-	if (DOT(ray_dir, n) < -001.f && DOT(ray_dir, n) > 0.001f)
+	std::cout << "DOT(ray_dir, n) : " << DOT(ray_dir, n) << std::endl;
+	std::cout << "-DOT(ray_origin, n) : " << -(DOT(ray_origin, n)) << std::endl;
+	if (DOT(ray_dir, n) < -0001.f && DOT(ray_dir, n) > 0.0001f)
 		return false;
-	
-	float t = -(DOT(ray_origin, n) + d) / (DOT(ray_dir, n));
-//	std::cout << "t : " << t << std::endl;
 
-	if ((t > 0.001f) && (t < ray_length))
+	float t = -(DOT(ray_origin, n) + d) / (DOT(ray_dir, n));
+	std::cout << "t : " << t << std::endl;
+	if (t > 0.f)
+		return true;
+	
+
+	return false;
+}
+
+/*
+auto Collision::rayTriangleCollision(Ray ray, SceneNode triangle) -> bool
+{
+	bool ab_check = checkTriangleABSide(ray, triangle);
+	bool ac_check = checkTriangleACSide(ray, triangle);
+
+	if (ab_check == true && ac_check == true)
 		return true;
 
 	return false;
 }
 
+auto Collision::checkTriangleABSide(Ray ray, SceneNode triangle) -> bool
+{
+	std::vector<float> _vertice = triangle.getVertice();
+	Vector3D<float> ray_origin = ray.getRayOrigin();
+	Vector3D<float> ray_dir = ray.getRayDirection() * Vector3D<float>(0.f, 0.f, -ray.getRayMaxLenght());
+
+	Vector3D<float> point_a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle.getPosition();
+	Vector3D<float> point_b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]) + triangle.getPosition();
+
+	Vector3D<float> p = ray_origin * ray_dir;
+
+		Vector3D<float> n = (point_a - p) * (point_b - p);
+	std::cout << "p : " << p << std::endl;
+	std::cout << "(point_a - p) : " << (point_a - p) << std::endl;
+	std::cout << "(point_b - p) : " << (point_b - p) << std::endl;
+	std::cout << "n : " << n << std::endl;
+		Vector3D<float> v = ray_origin - point_a;
+		Vector3D<float> w = ray_origin - point_b;
+
+		Vector3D<float> norm = Vector3D<float>((v.y*w.z)-(v.z*w.y), (v.z*w.x)-(v.x*w.z), (v.x*w.y)-(v.y*w.x));
+		float d = -DOT(ray_origin, norm);
+
+		if((DOT(p, norm) + d) < 0)
+			return false;	
+		return true;
+}
+
+auto Collision::checkTriangleACSide(Ray ray, SceneNode triangle) -> bool
+{
+	std::vector<float> _vertice = triangle.getVertice();
+	Vector3D<float> ray_origin = ray.getRayOrigin();
+	Vector3D<float> ray_dir = ray.getRayDirection() * Vector3D<float>(0.f, 0.f, -ray.getRayMaxLenght());
+
+	Vector3D<float> point_a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle.getPosition();
+	Vector3D<float> point_c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]) + triangle.getPosition();
+
+	Vector3D<float> p = ray_origin * ray_dir;
+
+		Vector3D<float> n = (point_a - p) * (point_c - p);
+
+		Vector3D<float> v = ray_origin - point_a;
+		Vector3D<float> w = ray_origin - point_c;
+
+		Vector3D<float> norm = Vector3D<float>((v.y*w.z)-(v.z*w.y), (v.z*w.x)-(v.x*w.z), (v.x*w.y)-(v.y*w.x));
+		float d = -DOT(ray_origin, norm);
+
+		if((DOT(p, norm) + d) < 0)
+			return false;	
+		return true;
+}*/
+
+auto Collision::rayTriangleCollision(Ray ray, SceneNode triangle) -> bool
+{
+	std::vector<float> _vertice = triangle.getVertice();
+
+	Vector3D<float> ray_origin = ray.getRayOrigin();
+	Vector3D<float> ray_dir = ray_origin + ray.getRayDirection();
+
+	Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle.getPosition();
+	Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]) + triangle.getPosition();
+	Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]) + triangle.getPosition();
+
+	Vector3D<float> ab_edge = b - a;
+	Vector3D<float> ac_edge = c - a;
+
+	Vector3D<float> p = ac_edge * ray_dir;
+	float deter = DOT(ab_edge, p);
+	if (deter == 0)
+		return false;
+
+	Vector3D<float> T = ray_origin - a;
+
+	float u = DOT(T, p) * (1.f/deter);
+	if (u < 0.f || u > 1.f)
+		return false;
+
+	Vector3D<float> q = T * ab_edge;
+	
+	float v = DOT(ray_dir, q) * (1.f/deter);
+
+	if (v < 0.f || (u + v) > 1.f)
+		return false;
+
+	return true;
+}

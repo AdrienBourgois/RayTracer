@@ -24,7 +24,7 @@ DEPENDENCIES = $(OBJ:.o=.d)
 ARBO = $(sort $(dir $(DEPENDENCIES) $(OBJ_DIR)))
 INCLUDES = $(addprefix -I,$(INC_DIR))
 LIBRARIES = $(addprefix -l,$(LIBS))
-CXXFLAGS = -MMD -pthread -W -Wall -Werror -Wredundant-decls -Wundef  -Wconversion -Wshadow -Wdouble-promotion
+CXXFLAGS = -MMD -pthread -W -Wall -Werror -Wredundant-decls -Wundef -Wconversion -Wshadow -Wdouble-promotion
 
 LDFLAGS = -W -Wall -Werror
 CXX = g++ -std=c++14
