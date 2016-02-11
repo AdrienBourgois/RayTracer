@@ -44,7 +44,7 @@ auto Device::init() -> void
     log->info("Device initialized.");
 
 	this->node_test = new SceneNode(ModelType::SPHERE);
-	node_test->setPosition(Vector3D<float>(0.f, 0.f, -5.f)); 
+	node_test->setPosition(Vector3D<float>(1.f, 1.f, -5.f)); 
 
     this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), node_test, this->driver.get());
 }
