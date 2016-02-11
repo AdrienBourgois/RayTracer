@@ -3,7 +3,7 @@
 
 int main()
 {
-    Gui_class gui = new Gui_class();
+    Gui_class* gui = new Gui_class();
     gui.open();
 
     while(gui.updateEvent())
