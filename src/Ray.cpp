@@ -50,11 +50,8 @@ auto Ray::run() -> void
 
 auto Ray::collision() -> bool
 {
-    //Vector3D<float> ray_dir = ray.getRayDirection();
-    //Vector3D<float> ray_origin = ray.getRayOrigin();
     Vector3D<float> circle_posi = scene_node->getPosition();
 
-    //float ray_length = ray.getRayMaxLenght();
     float circle_radius = scene_node->getRadius(); // get rad
 
     float A = this->DOT(this->direction, this->direction);
@@ -82,7 +79,6 @@ auto Ray::collision() -> bool
             return true;
     }
     return false;
-// see how to get model color for the ray
 }
 
 auto Ray::DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float

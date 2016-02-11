@@ -15,8 +15,6 @@ public:
 	~Camera() = default;
 
     auto init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void;
-    auto render() -> void;
-    auto shot() -> void;
 
     auto getPosition() -> Vector3D<float> { return this->position; }
 
@@ -30,7 +28,6 @@ private:
     Vector3D<float> u;
     Vector3D<float> v;
     Vector2D<float> screen_size;
-    //Vector3D<float> coordNDC;
     float FOV;
 };
 

@@ -63,25 +63,16 @@ auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 
 	float ray_length = ray.getRayMaxLenght();
 
-//	std::cout << "a : " << a_point << std::endl;
-//	std::cout << "b : " << b_point << std::endl;
-//	std::cout << "c : " << c_point << std::endl;
-
 	Vector3D<float> ab = b_point - a_point;
 	Vector3D<float> ac = c_point - a_point;
 
-//	std::cout << "ab : " << ab << std::endl;
-//	std::cout << "ac : " << ac << std::endl;
-
 	Vector3D<float> n = ab * ac;
 	float d = -(n.x * a_point.x + n.y * a_point.y + n.z * a_point.z);
-//	std::cout << "d : " << d << std::endl;
 
 	if (DOT(ray_dir, n) < -001.f && DOT(ray_dir, n) > 0.001f)
 		return false;
 	
 	float t = -(DOT(ray_origin, n) + d) / (DOT(ray_dir, n));
-//	std::cout << "t : " << t << std::endl;
 
 	if ((t > 0.001f) && (t < ray_length))
 		return true;
@@ -89,3 +80,37 @@ auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 	return false;
 }
 
+auto Collision::rayTriangleCollision(Ray ray, SceneNode triangle) -> bool
+{
+	std::vector<float> _vertice = triangle.getVertice();
+
+	Vector3D<float> ray_origin = ray.getRayOrigin();
+	Vector3D<float> ray_dir = ray_origin + ray.getRayDirection();
+
+	Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle.getPosition();
+	Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]) + triangle.getPosition();
+	Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]) + triangle.getPosition();
+
+	Vector3D<float> ab_edge = b - a;
+	Vector3D<float> ac_edge = c - a;
+
+	Vector3D<float> p = ac_edge * ray_dir;
+	float deter = DOT(ab_edge, p);
+	if (deter == 0)
+		return false;
+
+	Vector3D<float> T = ray_origin - a;
+
+	float u = DOT(T, p) * (1.f/deter);
+	if (u < 0.f || u > 1.f)
+		return false;
+
+	Vector3D<float> q = T * ab_edge;
+	
+	float v = DOT(ray_dir, q) * (1.f/deter);
+
+	if (v < 0.f || (u + v) > 1.f)
+		return false;
+
+	return true;
+}

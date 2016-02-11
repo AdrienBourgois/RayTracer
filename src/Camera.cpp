@@ -6,13 +6,11 @@ Camera::Camera()
 {
     this->FOV = 0;
     this->lookAt = Vector3D<float> (0.f, 0.f, 0.f);
-    //this->ray = nullptr;
 }
 
 auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
 {
     this->render_buffer = rend_buffer;
-    std::cout<<"LookAt = "<<this->lookAt<<std::endl;
 
 	this->position = Vector3D<float>(0.f, 0.f, 1.0f);
     this->viewDirection = this->lookAt - this->position;
@@ -23,15 +21,3 @@ auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
     this->v = u * viewDirection;
 }
 
-auto Camera::render() -> void
-{
-    /*if (this->ray == nullptr)
-    {
-        this->ray = new Ray(this->position, this->screen_size, 1.f , 1.f , this->render_buffer);
-    }*/
-}
-
-auto Camera::shot() -> void
-{
-
-}

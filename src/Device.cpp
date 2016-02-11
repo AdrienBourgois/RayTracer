@@ -8,7 +8,6 @@
 
 #include "SceneNode.h"
 #include "Ray.h"
-//#include "Collision.h"
 
 Device::Device()
 {
@@ -56,21 +55,7 @@ auto Device::run() -> void
     while(running)
     {
         this->ray->run();
-       //for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
-       //{
-           //for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
-            //{
-                //this->ray->findDestPoint(idx_x, idx_y);
-                //this->collision_result = this->ray->collision();
-                //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
-                //if(this->ray->getCollisionRes() == true)
-                //{
-                    //std::cout<<"collision"<<std::endl;
-                    this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
-                //}
-            //}
-       //}
-
+        this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
         driver->render();
     }
 }
