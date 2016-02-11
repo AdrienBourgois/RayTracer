@@ -4,20 +4,26 @@
 #include "RenderBuffer.h"
 #include "SceneNode.h"
 #include "Driver.h"
+#include "Log.h"
+
 Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv)
 {
+    Log* log = Log::getInstance();
+    log->info("Ray creation...");
+
     this->screen_size = screen_res;
     this->driver = drv;
     this->scene_node = node;
     this->lenght_max = 1000.f;
     this->render_buffer = rend_buff;
     this->start_point = position;
-    this->collision_result = false;   
+    this->collision_result = false;
+
+    log->info("Ray created.");
 }
 
 auto Ray::findDestPoint(float idx_x, float idx_y) -> void
 {
-
     float NDC_x = (idx_x +0.5f) / this->screen_size.x;
     float NDC_y = (idx_y +0.5f) / this->screen_size.y;
 
