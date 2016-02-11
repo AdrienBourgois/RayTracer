@@ -42,44 +42,40 @@ auto Device::init() -> void
     this->camera->init(this->screen_size);
     log->info("Device initialized.");
 
+//------------------- TEST ------------------------------------------------------------//
 	SceneNode node_test = SceneNode(ModelType::SPHERE);
-	node_test.setPosition(Vector3D<float>(-3.f, -5.f, -15.f)); 
+	node_test.setPosition(Vector3D<float>(0.f, 0.f, -15.f)); 
+
+	SceneNode plan_test = SceneNode(ModelType::TRIANGLE);
+	plan_test.setPosition(Vector3D<float>(-2.f, -2.f, -1.f));
 	
-	Ray ray = Ray(Vector3D<float>(0.f, 0.f, 5.f), Vector3D<float>(0.f, 0.f, -1.f));
+	Ray ray = Ray(Vector3D<float>(0.f, 0.f, 10.f), Vector3D<float>(0.f, 0.f, -1.f));
 	Collision collision = Collision();
 
-	SceneNode plan_test = SceneNode(ModelType::PLANE);
-	plan_test.setPosition(Vector3D<float>(0.f, -4.f, -5.f));
-
-
-
-/*	for (float i = 2; i > 0; i -= 1.0f/240.f)
-	{
-		for (float j = 0; j < 2; j += 1.0f/320.f)
-*/
+	Vector2D<unsigned int> resolution = Vector2D<unsigned int>(640, 480);
+//--------------------- AFFICHAGE ------------------------------------------------------//	
 	float rx = -1;
 	float ry = 1;
-	for (unsigned int i = 0; i < 480; ++i)
+	for (unsigned int i = 0; i < resolution.y; ++i)
 	{
-		ry = ry - (1.0f/240.f);
-		for (unsigned int j = 0; j < 640; ++j)
+		ry = ry - (1.0f/((float)resolution.y/2.f));
+		for (unsigned int j = 0; j < resolution.y; ++j)
 		{
-			rx = rx + (1.0f/320.f);
+			rx = rx + (1.0f/((float)resolution.x/2.f));
 
 			ray.setRayDirection(Vector3D<float>(rx, ry, -1.f));
-			bool result = collision.rayCircleCollision(ray, node_test);
-			bool result2 = collision.rayPlaneCollision(ray, plan_test);
-(void)result2;
+//			bool result = collision.rayCircleCollision(ray, node_test);
+			bool result2 =collision.rayTriangleCollision(ray, plan_test);
 
-			if (result)
-				this->driver->changePixelColor(255, 255, 255, j, i);
-//				this->driver->changePixelColor(255, 255, 255, x_count, y_count);
-//			if (result2)
-//				this->driver->changePixelColor(255, 0, 0, x_count, y_count);
-
+//			if (result)
+//				this->driver->changePixelColor(255, 255, 255, j, i);
+			if (result2)
+				this->driver->changePixelColor(250, 250, 255, j, i);
 		}
 		rx = -1;
 	}
+//--------------------- END AFFICHAGE ------------------------------------------------------//	
+//------------------- END TEST ------------------------------------------------------------//
 }
 
 auto Device::run() -> void

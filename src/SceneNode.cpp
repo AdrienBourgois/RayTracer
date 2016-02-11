@@ -14,9 +14,9 @@ auto SceneNode::init(ModelType kind) -> void
 		case ModelType::TRIANGLE:
 		this->type = ModelType::TRIANGLE;
 		this->vertice = {
-		0.f, 0.f, 0.f,
-		0.f, -1.f, 0.f,
+		1.f, 1.f, 0.f,
 		1.f, 0.f, 0.f,
+		0.f, 0.f, 0.f,
 		}; break;
 
 		case ModelType::PLANE:
@@ -34,7 +34,7 @@ auto SceneNode::init(ModelType kind) -> void
 		case ModelType::SPHERE:
 		{
 		this->type = ModelType::SPHERE;
-		this->radius = 2.0f;
+		this->radius = 6.0f;
 		double r = (double)this->radius;
 
 		for (double phi = 0.; phi < 2*M_PI; phi += M_PI/10.) // Azimuth [0, 2PI]
@@ -126,6 +126,22 @@ auto SceneNode::getRectCPoint() -> Vector3D<float>
 	Vector3D<float> plane_posi = position;
 
 	Vector3D<float> a_point = Vector3D<float>(plane_verti[6], plane_verti[7], plane_verti[8]);
+	a_point = plane_posi - a_point;
+	return a_point;
+}
+
+auto SceneNode::getRectDPoint() -> Vector3D<float>
+{
+	if (type != ModelType::PLANE)
+	{
+		std::cerr << "This is not a plane" << std::endl;
+		return Vector3D<float>(0.f, 0.f, 0.f);
+	}
+
+	std::vector<float> plane_verti = vertice;
+	Vector3D<float> plane_posi = position;
+
+	Vector3D<float> a_point = Vector3D<float>(plane_verti[12], plane_verti[13], plane_verti[14]);
 	a_point = plane_posi - a_point;
 	return a_point;
 }

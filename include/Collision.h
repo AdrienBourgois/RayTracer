@@ -14,7 +14,10 @@ public:
 
 	auto rayCircleCollision(Ray ray, SceneNode circle) -> bool;
 	auto rayPlaneCollision(Ray ray, SceneNode plane) -> bool;
+	auto rayTriangleCollision(Ray ray, SceneNode triangle) -> bool;
 private:
+	auto checkTriangleABSide(Ray ray, SceneNode triangle) -> bool;
+	auto checkTriangleACSide(Ray ray, SceneNode triangle) -> bool;
 };
 
 #endif
