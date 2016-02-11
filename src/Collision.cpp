@@ -13,26 +13,7 @@ namespace
 		return result;
 	}
 } // namespace end
-/*
-auto Shpere::raySphereIntersection(Ray ray, float &t1, float &t2)
-{
-	Vector3D<float> dist = sphere_center - ray.getStartPosi();
-	float tca = dist.dot(ray.getRayDir());
-	
-	if (tca < 0)
-		return false; // no collision
 
-	float d2 = dist.dot(dist) - tca * tca;
-	if (d2 > radius2) // radius2 = sphere radius^2
-		return false; // no collision
-
-	float thc = sqrt(radius2 - d2); // square root of radius2 - d2
-	t1 = tca - thc; // check if t1 < 0 if t1 = t2
-	t2 = tca + thc;
-
-	return true;
-}
-*/
 auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 {
 	Vector3D<float> ray_dir = ray.getRayDirection();
