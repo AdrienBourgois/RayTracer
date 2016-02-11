@@ -44,8 +44,6 @@ auto Ray::run() -> void
                 this->render_buffer->setColorList(Vector3D<float>(255.f, 0.f, 0.f));
                 this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
             }
-            //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
-                
         }
     }
 }
