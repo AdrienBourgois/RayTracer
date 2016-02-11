@@ -2,7 +2,17 @@
 
 int main()
 {
-    Device* dev = new Device();
+    Gui_class gui = new Gui_class();
+    gui.open();
+
+    while(gui.updateEvent())
+    {
+        gui.newFrame();
+        gui.configWindow();
+        gui.render();
+    }
+
+    /* Device* dev = new Device();
 
     dev->init();
    
@@ -10,7 +20,7 @@ int main()
     
     dev->close();
     
-    delete dev;
+    delete dev; */
     
     return EXIT_SUCCESS;
 }
