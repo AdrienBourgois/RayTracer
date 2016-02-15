@@ -9,6 +9,7 @@ SRC = 	main.cpp \
 		Camera.cpp \
 		RenderBuffer.cpp \
 		Log.cpp \
+		Event.cpp \
 
 LIBS = SDL2 pthread SDL2_image
 

@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "SceneNode.h"
 #include "Ray.h"
+#include "Event.h"
 
 Device::Device()
 {
@@ -56,6 +57,7 @@ auto Device::run() -> void
         this->ray->run();
         this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
         driver->render();
+	Event::eventListener(this);
     }
 }
 
