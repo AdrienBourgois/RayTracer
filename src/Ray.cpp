@@ -87,6 +87,14 @@ auto Ray::collision() -> bool
     return false;
 }
 
+auto Ray::close() -> void
+{
+    this->render_buffer = nullptr;
+    this->scene_node = nullptr;
+    this->driver = nullptr;
+    this->collision_result = false;
+}
+
 auto Ray::DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float
 {
     float result = vector_1.x * vector_2.x + vector_1.y * vector_2.y + vector_1.z * vector_2.z;

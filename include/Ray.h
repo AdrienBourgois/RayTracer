@@ -19,8 +19,8 @@ public:
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
     auto run() -> void;
-
     auto collision() -> bool;
+    auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
     auto getDirection() -> Vector3D<float>;
