@@ -4,20 +4,26 @@
 #include "RenderBuffer.h"
 #include "SceneNode.h"
 #include "Driver.h"
+#include "Log.h"
+
 Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv)
 {
+    Log* log = Log::getInstance();
+    log->info("Ray creation...");
+
     this->screen_size = screen_res;
     this->driver = drv;
     this->scene_node = node;
     this->lenght_max = 1000.f;
     this->render_buffer = rend_buff;
     this->start_point = position;
-    this->collision_result = false;   
+    this->collision_result = false;
+
+    log->info("Ray created.");
 }
 
 auto Ray::findDestPoint(float idx_x, float idx_y) -> void
 {
-
     float NDC_x = (idx_x +0.5f) / this->screen_size.x;
     float NDC_y = (idx_y +0.5f) / this->screen_size.y;
 
@@ -50,11 +56,8 @@ auto Ray::run() -> void
 
 auto Ray::collision() -> bool
 {
-    //Vector3D<float> ray_dir = ray.getRayDirection();
-    //Vector3D<float> ray_origin = ray.getRayOrigin();
     Vector3D<float> circle_posi = scene_node->getPosition();
 
-    //float ray_length = ray.getRayMaxLenght();
     float circle_radius = scene_node->getRadius(); // get rad
 
     float A = this->DOT(this->direction, this->direction);
@@ -82,7 +85,14 @@ auto Ray::collision() -> bool
             return true;
     }
     return false;
-// see how to get model color for the ray
+}
+
+auto Ray::close() -> void
+{
+    this->render_buffer = nullptr;
+    this->scene_node = nullptr;
+    this->driver = nullptr;
+    this->collision_result = false;
 }
 
 auto Ray::DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float

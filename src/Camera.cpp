@@ -1,37 +1,36 @@
 #include "Camera.h"
 #include "Ray.h"
-#include <iostream>
+#include "Log.h"
 
 Camera::Camera()
 {
+    Log* log = Log::getInstance();
+    log->info("Camera creation...");
+
     this->FOV = 0;
     this->lookAt = Vector3D<float> (0.f, 0.f, 0.f);
-    //this->ray = nullptr;
+    
+    log->info("Camera created.");
 }
 
-auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
+auto Camera::init(Vector2D<float> screen_res, RenderBuffer* rend_buffer) -> void
 {
+    Log* log = Log::getInstance();
+    log->info("Camera initialization...");
+
     this->render_buffer = rend_buffer;
-    std::cout<<"LookAt = "<<this->lookAt<<std::endl;
 
 	this->position = Vector3D<float>(0.f, 0.f, 1.0f);
     this->viewDirection = this->lookAt - this->position;
     this->up = Vector3D<float> (0.f, 1.f, 0.f);
-    this->screen_size.x = float (screen_res.x);
-    this->screen_size.y = float (screen_res.y);
+    this->screen_size = screen_res;
     this->u = viewDirection * up;
     this->v = u * viewDirection;
+
+    log->info("Camera initilized.");
 }
 
-auto Camera::render() -> void
+auto Camera::close() -> void
 {
-    /*if (this->ray == nullptr)
-    {
-        this->ray = new Ray(this->position, this->screen_size, 1.f , 1.f , this->render_buffer);
-    }*/
-}
-
-auto Camera::shot() -> void
-{
-
+    this->render_buffer = nullptr;
 }

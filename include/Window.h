@@ -12,7 +12,7 @@ class Window final
         Window(Window const&) = delete;
         ~Window() = default;
 
-        auto init(const char* title, Vector2D<int> screen_res) -> void;
+        auto init(const char* title, Vector2D<float> screen_res) -> void;
         auto update() -> void;
         auto close() -> void;
 

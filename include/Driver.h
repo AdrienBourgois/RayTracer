@@ -17,7 +17,7 @@ class Driver final
         ~Driver();
 
         auto operator =(Driver const&) -> Driver& = delete;
-        auto init( Vector2D<int> screen_res) -> void;
+        auto init( Vector2D<float> screen_res) -> void;
         auto render() -> void;
         auto close() -> void;
 
