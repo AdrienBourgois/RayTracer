@@ -14,12 +14,13 @@ class Ray
 {
 public:
     
-	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv);
+	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node);
 	~Ray() = default;
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
     auto run() -> void;
-    auto collision() -> bool;
+    auto collision(SceneNode* scene_node) -> bool;
+    auto calculateReflexion() -> void;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
@@ -34,14 +35,15 @@ private:
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
 
-    SceneNode* scene_node;
+    std::vector<SceneNode*> node_list;
+    std::vector<Ray*>       child_list;
 
     Driver* driver;
 
 	float lenght_max;
+    float power;
 
     bool collision_result;
-private:
 
 };
 

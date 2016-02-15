@@ -56,21 +56,25 @@ auto Driver::close() -> void
     log->info("Driver closed.");
 }
 
-auto Driver::changePixelColor(Uint8 r, Uint8 g, Uint8 b, std::vector<Vector2D<float>> screen_coord_list) -> void
+auto Driver::changePixelColor(/*Uint8 r, Uint8 g, Uint8 b,*/ std::vector<Vector3D<Uint8>> color_list, std::vector<Vector2D<float>> screen_coord_list) -> void
 {
-    unsigned int idx = 0;
-    while(idx<screen_coord_list.size())
+    //unsigned int idx = 0;
+    //while(idx<screen_coord_list.size())
+    for(unsigned int idx = 0; idx < screen_coord_list.size(); ++idx)
     {
-        Vector2D<float> actual_screen_coord = screen_coord_list[idx];
+        //for(unsigned int idx2 = 0; idx2 < color_list.size(); ++idx)
+        //{
+            Vector2D<float> actual_screen_coord = screen_coord_list[idx];
+            Vector3D<Uint8> actual_color = color_list[idx];
 
-	    Uint32 *_pixels = (Uint32 *)this->screenSurface->pixels;
+	        Uint32 *_pixels = (Uint32 *)this->screenSurface->pixels;
 	
-	    Uint32 pixel = _pixels[(0 * this->screenSurface->w) + 0];// copy of a screen pixel
-	    pixel = SDL_MapRGB(this->format, r, g, b);// new pixel color : RGB format
+	        Uint32 pixel = _pixels[(0 * this->screenSurface->w) + 0];// copy of a screen pixel
+	        pixel = SDL_MapRGB(this->format, actual_color.x, actual_color.y, actual_color.z);// new pixel color : RGB format
 
-	    _pixels[(int (actual_screen_coord.y) * this->screenSurface->w) + int (actual_screen_coord.x)] = pixel;//x = screen length, y = screen width
-								   
-        ++idx;
+	        _pixels[(int (actual_screen_coord.y) * this->screenSurface->w) + int (actual_screen_coord.x)] = pixel;//x = screen length, y = screen width
+        //}						   
+        //++idx;
     }   
 }
 

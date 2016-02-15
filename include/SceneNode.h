@@ -38,13 +38,17 @@ public:
 	auto getRectBPoint() -> Vector3D<float>;
 	auto getRectCPoint() -> Vector3D<float>;
 
+    auto getReflectionIdx() -> float { return this->reflection_idx; }
+
 private:
 	ModelType type;
 	std::vector<float> vertice;
 	Vector3D<float> position;
 	Vector3D<float> rotation;
 	Vector3D<float> scale;
-	
+
+    float reflection_idx;
+
 	float radius;	
 };
 

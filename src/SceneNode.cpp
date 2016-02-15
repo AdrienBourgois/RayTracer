@@ -13,6 +13,8 @@ auto SceneNode::init(ModelType kind) -> void
 	this->rotation = Vector3D<float>(0.f, 0.f, 0.f);
 	this->scale = Vector3D<float>(1.f, 1.f, 1.f);
 
+    this->reflection_idx = 100.f;
+
 	switch(kind)
 	{
 		case ModelType::TRIANGLE:
