@@ -13,7 +13,7 @@ Camera::Camera()
     log->info("Camera created.");
 }
 
-auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
+auto Camera::init(Vector2D<float> screen_res, RenderBuffer* rend_buffer) -> void
 {
     Log* log = Log::getInstance();
     log->info("Camera initialization...");
@@ -23,8 +23,7 @@ auto Camera::init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void
 	this->position = Vector3D<float>(0.f, 0.f, 1.0f);
     this->viewDirection = this->lookAt - this->position;
     this->up = Vector3D<float> (0.f, 1.f, 0.f);
-    this->screen_size.x = float (screen_res.x);
-    this->screen_size.y = float (screen_res.y);
+    this->screen_size = screen_res;
     this->u = viewDirection * up;
     this->v = u * viewDirection;
 

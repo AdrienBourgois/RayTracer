@@ -26,7 +26,7 @@ Driver::~Driver()
     log->info("Driver destroyed.");
 }
 
-auto Driver::init(Vector2D<int> screen_res) -> void
+auto Driver::init(Vector2D<float> screen_res) -> void
 {
     Log* log = Log::getInstance();
     log->info("Driver initialization...");

@@ -51,7 +51,7 @@ class Vector3D
         Vector3D    operator *(T a);
         bool        operator ==(Vector3D const& a); 
 
-        auto        convert() -> void;
+        auto        convert() -> Vector3D;
     private:
 
 };

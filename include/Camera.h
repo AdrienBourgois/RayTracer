@@ -14,7 +14,7 @@ public:
 	Camera();
 	~Camera() = default;
 
-    auto init(Vector2D<int> screen_res, RenderBuffer* rend_buffer) -> void;
+    auto init(Vector2D<float> screen_res, RenderBuffer* rend_buffer) -> void;
     auto render() -> void;
     auto shot() -> void;
     auto close() -> void;
