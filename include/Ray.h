@@ -19,12 +19,13 @@ public:
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
     auto run() -> void;
-    auto collision() -> bool;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
-    auto getDirection() -> Vector3D<float>;
+    auto getDirection() -> Vector3D<float> {return this->direction;}
     auto getCollisionRes() -> bool { return this->collision_result; }
+    auto getStartPoint() -> Vector3D<float> {return this->start_point;}
+    auto getMaxLenght() -> float {return this->lenght_max;}
 
 private:
     RenderBuffer* render_buffer;

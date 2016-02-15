@@ -12,10 +12,12 @@ public:
 	Collision() = default;
 	~Collision() = default;
 
-	auto rayCircleCollision(Ray ray, SceneNode circle) -> bool;
-	auto rayPlaneCollision(Ray ray, SceneNode plane) -> bool;
-	auto rayTriangleCollision(Ray ray, SceneNode triangle) -> bool;
+	auto detectCollision(Ray* ray, SceneNode* node) -> bool;
+
 private:
+	auto rayCircleCollision(Ray* ray, SceneNode* circle) -> bool;
+	auto rayPlaneCollision(Ray* ray, SceneNode* plane) -> bool;
+	auto rayTriangleCollision(Ray* ray, SceneNode* triangle) -> bool;
 };
 
 #endif

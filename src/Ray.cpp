@@ -5,6 +5,8 @@
 #include "SceneNode.h"
 #include "Driver.h"
 #include "Log.h"
+#include "Collision.h"
+
 
 Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, SceneNode* node, Driver* drv)
 {
@@ -45,46 +47,14 @@ auto Ray::run() -> void
         for (float idx_x = 0.f; idx_x < this->screen_size.x; ++idx_x)
         {
             this->findDestPoint(idx_x, idx_y);
-            if(this->collision())
+            Collision collision = Collision(); 
+           if(collision.detectCollision(this, this->scene_node))
             {
                 this->render_buffer->setColorList(Vector3D<float>(255.f, 0.f, 0.f));
                 this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
             }
         }
     }
-}
-
-auto Ray::collision() -> bool
-{
-    Vector3D<float> circle_posi = scene_node->getPosition();
-
-    float circle_radius = scene_node->getRadius(); // get rad
-
-    float A = this->DOT(this->direction, this->direction);
-    Vector3D<float> dist = this->start_point - circle_posi;
-
-    float B = 2 * DOT(this->direction, dist);
-
-    float C = DOT(dist, dist) - (circle_radius * circle_radius);
-
-    float discri = B * B - 4 * A * C;
-    if (discri < 0)
-        return false; // no colision
-    else
-    {   
-        float sqrt_discri = (float)(sqrt(discri));
-        float t0 = (-B + sqrt_discri)/(2);
-        float t1 = (-B - sqrt_discri)/(2);
-                                                            
-        // We want the closest one 
-        if (t0 > t1) 
-        t0 = t1; 
-
-       // Verify t0 larger than 0 and less than the original t 
-        if ((t0 > 0.001f) && (t0 < this->lenght_max))
-            return true;
-    }
-    return false;
 }
 
 auto Ray::close() -> void
