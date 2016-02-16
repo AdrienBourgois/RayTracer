@@ -39,8 +39,8 @@ auto Ray::findDestPoint(float idx_x, float idx_y) -> void
     float NDC_x = (idx_x + 0.5f) / this->screen_size.x;
     float NDC_y = (idx_y + 0.5f) / this->screen_size.y;
 
-    this->dest_point.x = ((2.f * NDC_x) - 1.f); // (this->screen_size.x / this->screen_size.y);
-    this->dest_point.y = (1.f - (2.f * NDC_y)) * (this->screen_size.y/this->screen_size.x);
+    this->dest_point.x = ((2.f * NDC_x) - 1.f) *  (this->screen_size.x / this->screen_size.y);
+    this->dest_point.y = (1.f - (2.f * NDC_y)); // * (this->screen_size.y/this->screen_size.x);
 
     this->findDirection();
 }
@@ -80,13 +80,16 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
 						
-						this->calculateDiffuseLight(node);
 						if(ray->getCollisionRes())
-							//this->render_buffer->setColorList(Vector3D<Uint8> (255, 0, 0));
+						{	
+							//this->render_buffer->setColorList(node->getColor());
 							this->render_buffer->setColorList(this->calculateDiffuseLight(node));
+						}
 						else
+						{
 							//this->render_buffer->setColorList(this->calculateDiffuseLight(node));
 							this->render_buffer->setColorList(Vector3D<Uint8> (0, 0, 0));
+						}
 
 						ray->close();
 						delete ray;
@@ -206,10 +209,10 @@ auto Ray::calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>
 	node_color.y = float (node->getColor().y);
 	node_color.z = float (node->getColor().z);
 	
-	float shade = -DOT(( this->direction), this->calculateNormal(node));
+	float shade = -DOT( this->direction, this->calculateNormal(node));
 	if (shade < 0)
 		shade = 0;
-	Vector3D<float> color = node_color * (0.20f + 0.80f * shade);
+	Vector3D<float> color = node_color * (0.60f + 0.40f * shade);
 
 	Vector3D<Uint8> color_shade;
 	color_shade.x = Uint8 (color.x);

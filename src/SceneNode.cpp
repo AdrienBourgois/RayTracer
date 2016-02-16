@@ -134,3 +134,10 @@ auto SceneNode::getRectCPoint() -> Vector3D<float>
 	a_point = plane_posi - a_point;
 	return a_point;
 }
+
+auto SceneNode::setPosition(float x, float y, float z) -> void
+{
+	this->position.x = x;
+	this->position.y = y;
+	this->position.z = z;
+}

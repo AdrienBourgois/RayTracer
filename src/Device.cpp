@@ -20,7 +20,7 @@ Device::Device()
     this->driver.reset(new Driver);
     this->render_buffer.reset(new RenderBuffer);
     this->camera.reset(new Camera);
-    this->screen_size = Vector2D<float>(640.f, 480.f);
+    this->screen_size = Vector2D<float>(900.f, 900.f);
     this->running = true;
     this->ray = nullptr;
     log->info("Device created.");
@@ -49,13 +49,18 @@ auto Device::init() -> void
     log->info("Device initialized.");
 
 	this->node_test = new SceneNode(ModelType::SPHERE, false);
-	node_test->setPosition(Vector3D<float>(0.f, 0.f, -7.f));
+	node_test->setPosition(Vector3D<float>(0.f, 0.f, -6.f));
 
     this->node_test2 = new SceneNode(ModelType::SPHERE, true);
-    node_test2->setPosition(Vector3D<float>(4.f, 0.f, -5.f));
+    node_test2->setPosition(Vector3D<float>(0.f, 5.f, -6.f));
+	
+	//this->node_test3 = new SceneNode(ModelType::SPHERE, true);
+	//node_test3->setPosition(Vector3D<float>(0.f, 5.f, -5.f));
+
 
     this->node_list.push_back(node_test);
     this->node_list.push_back(node_test2);
+	//this->node_list.push_back(node_test3);
 
     this->ray = new Ray(this->camera->getPosition(), this->screen_size,  this->render_buffer.get(), this->node_list, false);
 }

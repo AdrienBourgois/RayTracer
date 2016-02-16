@@ -22,6 +22,7 @@ public:
 	auto init(ModelType kind, bool light) -> void;
 
 	auto setPosition(const Vector3D<float> value) -> void {this->position += value;}
+	auto setPosition(float x, float y, float z) -> void;
 	auto setRotation(const Vector3D<float> value) -> void {this->rotation += value;}
 	auto setScale(const Vector3D<float> value) -> void {this->scale += value;}
 
