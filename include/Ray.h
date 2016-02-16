@@ -8,24 +8,28 @@
 
 class RenderBuffer;
 class SceneNode;
-class Driver;
 
 class Ray
 {
 public:
     
-	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node);
+	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child);
 	~Ray() = default;
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
     auto run() -> void;
+    auto runChild() -> void;
     auto collision(SceneNode* scene_node) -> bool;
-    auto calculateReflexion() -> void;
+    auto calculateReflexion(SceneNode* node) -> Vector3D<float>;
+    auto calculateNormal(SceneNode* node) -> Vector3D<float>;
+    auto calculateCollisionPoint(float distance) -> void;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
     auto getDirection() -> Vector3D<float>;
     auto getCollisionRes() -> bool { return this->collision_result; }
+
+    auto setDirection(Vector3D<float> new_direction) -> void { this->direction = new_direction; }
 
 private:
     RenderBuffer* render_buffer;
@@ -34,16 +38,16 @@ private:
 	Vector3D<float> start_point;
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
+    Vector3D<float> collision_point;
 
     std::vector<SceneNode*> node_list;
     std::vector<Ray*>       child_list;
-
-    Driver* driver;
 
 	float lenght_max;
     float power;
 
     bool collision_result;
+    bool is_child;
 
 };
 

@@ -57,7 +57,7 @@ auto Device::init() -> void
     this->node_list.push_back(node_test);
     this->node_list.push_back(node_test2);
 
-    this->ray = new Ray(this->camera->getPosition(), this->screen_size,  this->render_buffer.get(), this->node_list);
+    this->ray = new Ray(this->camera->getPosition(), this->screen_size,  this->render_buffer.get(), this->node_list, false);
 }
 
 auto Device::run() -> void
