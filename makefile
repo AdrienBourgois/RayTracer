@@ -11,6 +11,9 @@ SRC = 	main.cpp \
 		RenderBuffer.cpp \
 		Log.cpp \
 		gui.cpp \
+		ImGui/imgui.cpp \
+		ImGui/imgui_impl.cpp \
+		ImGui/imgui_draw.cpp \
 
 LIBS = SDL2 SDL2_image GL GLEW
 
