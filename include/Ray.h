@@ -25,6 +25,7 @@ public:
     auto calculateReflexion(SceneNode* node) -> Vector3D<float>;
     auto calculateNormal(SceneNode* node) -> Vector3D<float>;
     auto calculateCollisionPoint(float distance) -> void;
+	auto calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
 
