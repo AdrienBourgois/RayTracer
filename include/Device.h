@@ -2,6 +2,8 @@
 #define __DEVICE_DECLARATION__
 
 #include <memory>
+#include <vector>
+
 #include "Vector.h"
 
 class Driver;
@@ -32,11 +34,12 @@ class Device final
         std::unique_ptr<RenderBuffer> render_buffer;
         std::unique_ptr<Camera>     camera;
 
-        Vector2D<float>               screen_size;
-        //Vector2D<float>             f_screen_size;
+        Vector2D<float>             screen_size;
         Ray*                        ray;
 
         SceneNode*                  node_test;
+        SceneNode*                  node_test2;
+        std::vector<SceneNode*>     node_list;
         
         bool                        running;
         bool                        collision_result;

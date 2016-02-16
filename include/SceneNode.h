@@ -2,6 +2,7 @@
 #define __SCENENODE_DECLARATION__
 
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "Vector.h"
 
@@ -15,10 +16,10 @@ enum class ModelType
 class SceneNode
 {
 public:
-	SceneNode(ModelType kind) {this->init(kind);}
+	SceneNode(ModelType kind, bool light) {this->init(kind, light);}
 	~SceneNode() = default;
 	
-	auto init(ModelType kind) -> void;
+	auto init(ModelType kind, bool light) -> void;
 
 	auto setPosition(const Vector3D<float> value) -> void {this->position += value;}
 	auto setRotation(const Vector3D<float> value) -> void {this->rotation += value;}
@@ -38,14 +39,22 @@ public:
 	auto getRectBPoint() -> Vector3D<float>;
 	auto getRectCPoint() -> Vector3D<float>;
 
+    auto getReflectionIdx() -> float { return this->reflection_idx; }
+	auto getIsLight() -> bool { return this->is_light; }
+	auto getColor() -> Vector3D<Uint8> { return this->color; }
+
 private:
 	ModelType type;
 	std::vector<float> vertice;
 	Vector3D<float> position;
 	Vector3D<float> rotation;
 	Vector3D<float> scale;
-	
+	Vector3D<Uint8> color;
+
+    	float reflection_idx;
+
 	float radius;	
+	bool  is_light;
 };
 
 #endif

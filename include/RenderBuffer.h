@@ -1,8 +1,10 @@
 #ifndef __RENDERBUFFER_DECLARATION__
 #define __RENDERBUFFER_DECLARATION__
 
-#include "Vector.h"
 #include <vector>
+#include <SDL2/SDL.h>
+
+#include "Vector.h"
 
 class RenderBuffer
 {
@@ -11,15 +13,18 @@ class RenderBuffer
         RenderBuffer(RenderBuffer const&) = delete;
         ~RenderBuffer() = default;
 
-        auto setColorList(Vector3D<float> col) -> void; 
+        auto setColorList(Vector3D<Uint8> col) -> void; 
+		auto setColorAtIndex(Vector3D<Uint8> col, long unsigned int idx) -> void;
         auto setScreenCoordList(Vector2D<float> screen_coord) -> void; 
 
-        auto getColorList() -> std::vector<Vector3D<float>>; 
-        auto getScreenCoordList() -> std::vector<Vector2D<float>>; 
+        auto getColorList() -> std::vector<Vector3D<Uint8>>*; 
+        auto getScreenCoordList() -> std::vector<Vector2D<float>>*; 
+		auto getLastColorElementIndex() -> long unsigned int;
 
+        auto clearBuffer() -> void;
     private:
 
-        std::vector<Vector3D<float>> color_list;
+        std::vector<Vector3D<Uint8>> color_list;
         std::vector<Vector2D<float>> screen_coord_list;
 };
 
