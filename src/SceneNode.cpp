@@ -4,7 +4,7 @@
 #include "SceneNode.h"
 #include "Log.h"
 
-auto SceneNode::init(ModelType kind) -> void
+auto SceneNode::init(ModelType kind, bool light) -> void
 {
     Log* log = Log::getInstance();
     log->info("SceneNode creation and initialization");
@@ -40,6 +40,11 @@ auto SceneNode::init(ModelType kind) -> void
 		case ModelType::SPHERE:
 		{
 		this->type = ModelType::SPHERE;
+		this->is_light = light;
+		if(this->is_light)
+			this->color = Vector3D<Uint8> (255.f, 255.f, 255.f);
+		else
+			this->color = Vector3D<Uint8> (255.f, 0.f, 0.f);
 		this->radius = 2.0f;
 		double r = (double)this->radius;
 

@@ -8,8 +8,8 @@
 
 Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child)
 {
-    Log* log = Log::getInstance();
-    log->info("Ray creation...");
+ //   Log* log = Log::getInstance();
+   // log->info("Ray creation...");
 
     this->screen_size = screen_res;
     this->node_list = node;
@@ -20,7 +20,16 @@ Ray::Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* ren
     this->power = 100.f;
     this->is_child = child;
 
-    log->info("Ray created.");
+    //log->info("Ray created.");
+}
+
+Ray::Ray(Vector3D<float> position, /*Vector2D<float> screen_res, RenderBuffer* rend_buff,*/ std::vector<SceneNode*> node, bool child)
+{
+	this->node_list = node;
+	this->lenght_max = 1000.f;
+	this->start_point = position;
+	this->is_child = child;
+	
 }
 
 auto Ray::findDestPoint(float idx_x, float idx_y) -> void
@@ -59,17 +68,22 @@ auto Ray::run() -> void
 
                 if(this->collision(node))
                 {
+                    //this->render_buffer->setColorList(node->getColor());
+                    this->render_buffer->setColorList(Vector3D<Uint8> (0.f, 0.f, 0.f));
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
                     if(node->getReflectionIdx() > 0)
                     {
                         Ray* ray = new Ray(this->collision_point, this->screen_size, this->render_buffer, this->node_list, true);
                         ray->setDirection(this->calculateReflexion(node));
                         this->child_list.push_back(ray);
                         ray->run();
+						ray->close();
+						delete ray;
+						ray = nullptr;
+						this->child_list.clear();
 
                     }
 
-                    this->render_buffer->setColorList(Vector3D<Uint8>(250.f, 0.f, 0.f));
-                    this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
                 }
             }
         }
@@ -86,16 +100,29 @@ auto Ray::runChild() -> void
         
         if(this->collision(node))
         {
-            if(node->getReflectionIdx() > 0)
-            {
-                Ray* ray = new Ray(this->collision_point, this->screen_size, this->render_buffer, this->node_list, true);
-                ray->setDirection(this->calculateReflexion(node));
-                this->child_list.push_back(ray);
-                //ray->run();
-            }
+
+			if(node->getIsLight())
+			{
+				//std::cout<<"collision with light"<<std::endl;
+				this->render_buffer->setColorList(Vector3D<Uint8>(250.f, 0.f, 0.f));				
+			}
+			else
+			{	
+            	if(node->getReflectionIdx() > 0)
+            	{
+                	//Ray* ray = new Ray(this->collision_point, this->screen_size, this->render_buffer, this->node_list, true);
+                	//ray->setDirection(this->calculateReflexion(node));
+                	//this->child_list.push_back(ray);
+                	//ray->run();
+            	}
+			}
             /*this->render_buffer->setColorList(Vector3D<Uint8>(250.f, 0.f, 0.f));
             this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));*/
         }
+		else
+		{
+			//this->render_buffer->setColorAtIndex(Vector3D<Uint8> (0.f, 0.f, 0.f) ,this->render_buffer->getLastColorElementIndex());
+		}
 
     }
 }
@@ -145,11 +172,11 @@ auto Ray::calculateReflexion(SceneNode* node) -> Vector3D<float>
 
     float reflexionCalc = -DOT(normal, this->direction);
         
-    std::cout << "ReflexionCalc = " << reflexionCalc << std::endl;
+    //std::cout << "ReflexionCalc = " << reflexionCalc << std::endl;
 
     Vector3D<float> reflexionRay = this->direction + (normal * reflexionCalc * 2.f);
  
-    std::cout << "ReflexionRay = " << reflexionRay << std::endl;
+    //std::cout << "ReflexionRay = " << reflexionRay << std::endl;
 
     return reflexionRay;
 }

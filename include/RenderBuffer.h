@@ -14,11 +14,14 @@ class RenderBuffer
         ~RenderBuffer() = default;
 
         auto setColorList(Vector3D<Uint8> col) -> void; 
+		auto setColorAtIndex(Vector3D<Uint8> col, long unsigned int idx) -> void;
         auto setScreenCoordList(Vector2D<float> screen_coord) -> void; 
 
-        auto getColorList() -> std::vector<Vector3D<Uint8>>; 
-        auto getScreenCoordList() -> std::vector<Vector2D<float>>; 
+        auto getColorList() -> std::vector<Vector3D<Uint8>>*; 
+        auto getScreenCoordList() -> std::vector<Vector2D<float>>*; 
+		auto getLastColorElementIndex() -> long unsigned int;
 
+        auto clearBuffer() -> void;
     private:
 
         std::vector<Vector3D<Uint8>> color_list;

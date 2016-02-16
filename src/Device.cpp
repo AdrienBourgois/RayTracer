@@ -48,11 +48,11 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
-	this->node_test = new SceneNode(ModelType::SPHERE);
-	node_test->setPosition(Vector3D<float>(0.f, -2.f, -5.f));
+	this->node_test = new SceneNode(ModelType::SPHERE, false);
+	node_test->setPosition(Vector3D<float>(0.f, 0.f, -7.f));
 
-    this->node_test2 = new SceneNode(ModelType::SPHERE);
-    node_test2->setPosition(Vector3D<float>(0.f, 3.f, -5.f));
+    this->node_test2 = new SceneNode(ModelType::SPHERE, true);
+    node_test2->setPosition(Vector3D<float>(4.f, 0.f, -2.f));
 
     this->node_list.push_back(node_test);
     this->node_list.push_back(node_test2);
@@ -68,6 +68,7 @@ auto Device::run() -> void
     {
         this->ray->run();
         this->driver->changePixelColor(this->render_buffer->getColorList(), this->render_buffer->getScreenCoordList());
+        this->render_buffer->clearBuffer();
 
         driver->render();
 	Event::eventListener(this);
