@@ -41,6 +41,16 @@ auto Event::eventListener(Device* device) -> void
                     node->setPosition(node->getPosition().x, --move, node    ->getPosition().z);
                     break;
 					
+				case SDL_SCANCODE_Q:
+                     move = node->getPosition().z;
+                     node->setPosition(node->getPosition().x, node->getPosition().y, --move);
+                     break;
+
+				case SDL_SCANCODE_E:
+                     move = node->getPosition().z;
+                     node->setPosition(node->getPosition().x, node->getPosition().y, ++move);
+                     break;
+					
 
 				default:
 					 break;
