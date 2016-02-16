@@ -14,6 +14,9 @@ auto Event::eventListener(Device* device) -> void
 				case SDL_SCANCODE_ESCAPE:
 					device->quit();
 					break;
+				//case SDL_SCANCODE_RIGHT:
+					//device->getNodeTest2();
+					
 
 				default : break;
 			}

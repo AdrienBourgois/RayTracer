@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "Vector.h"
 
@@ -14,7 +15,7 @@ class Ray
 public:
     
 	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child);
-	Ray(Vector3D<float> position, /*Vector2D<float> screen_res, RenderBuffer* rend_buff,*/ std::vector<SceneNode*> node, bool child);
+	Ray(Vector3D<float> position, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child, Vector3D<Uint8> color_val);
 	~Ray() = default;
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
@@ -40,7 +41,7 @@ private:
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
     Vector3D<float> collision_point;
-	Vector3D<float> color_value;
+	Vector3D<Uint8> color_value;
 
     std::vector<SceneNode*> node_list;
     std::vector<Ray*>       child_list;
