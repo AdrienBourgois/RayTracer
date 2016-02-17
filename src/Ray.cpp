@@ -115,10 +115,10 @@ auto Ray::run() -> void
 						this->calculateDiffuseLight(node);
 //						if(ray->getCollisionRes())
 //							this->render_buffer->setColorList(Vector3D<Uint8> (255, 0, 0));
-							ray->render_buffer->setColorList(this->calculateDiffuseLight(node));
+							this->render_buffer->setColorList(this->calculateDiffuseLight(node));
 //						else
-//							ray->render_buffer->setColorList(this->calculateDiffuseLight(node));
-							//this->render_buffer->setColorList(Vector3D<Uint8> (50, 0, 0));
+//							this->render_buffer->setColorList(ray->calculateDiffuseLight(node));
+//							this->render_buffer->setColorList(Vector3D<Uint8> (50, 0, 0));
 
 						ray->close();
 						delete ray;
@@ -233,10 +233,12 @@ auto Ray::calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>
 	node_color.y = float (node->getColor().y);
 	node_color.z = float (node->getColor().z);
 	
-	float shade = DOT((this->direction * -1), this->calculateNormal(node));
+	float shade = -DOT(this->direction.normalize(), this->calculateNormal(node).normalize());
 	if (shade < 0)
 		shade = 0;
-	Vector3D<float> color = node_color * (/*0.20f +*/ 0.3f * shade);
+
+	Vector3D<float> color; 
+	color.x = node_color.x * (shade);
 
 	Vector3D<Uint8> color_shade;
 	color_shade.x = Uint8 (color.x);

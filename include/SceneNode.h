@@ -16,10 +16,11 @@ enum class ModelType
 class SceneNode
 {
 public:
-	SceneNode(ModelType kind, bool light) {this->init(kind, light);}
+	SceneNode(ModelType kind, bool light) {this->init(kind, light, 3.f);}
+	SceneNode(ModelType kind, bool light, float rad) {this->init(kind, light, rad);}
 	~SceneNode() = default;
 	
-	auto init(ModelType kind, bool light) -> void;
+	auto init(ModelType kind, bool light, float rad) -> void;
 
 	auto setPosition(const Vector3D<float> value) -> void {this->position += value;}
 	auto setRotation(const Vector3D<float> value) -> void {this->rotation += value;}

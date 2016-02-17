@@ -194,7 +194,7 @@ std::ostream& operator <<(std::ostream& os, Vector3D<T> const& a)
 template <typename T>
 auto Vector3D<T>::normalize() -> Vector3D<T>
 {
-	float length = sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
+	float length = (float)sqrt(this->x * this->x + this->y * this->y + this->z * this->z);
 	Vector3D<T> vector;
 	vector.x = this->x / length;
 	vector.y = this->y / length;
