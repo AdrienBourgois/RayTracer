@@ -30,7 +30,6 @@ class Driver final
 	auto getPixelColor(int pos_x, int pos_y, Uint8* r, Uint8* g, Uint8* b) -> void;
  
     private:
-        std::unique_ptr<Window>     window;
         SDL_Surface* screenSurface;
         SDL_PixelFormat* format;
         Uint32 mapRGB;
