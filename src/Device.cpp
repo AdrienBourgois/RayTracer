@@ -49,7 +49,7 @@ auto Device::init() -> void
     log->info("Device initialized.");
 
 	this->node_test = new SceneNode(ModelType::SPHERE, false);
-	node_test->setPosition(Vector3D<float>(0.f, 0.f, -6.f));
+	node_test->setPosition(Vector3D<float>(0.f, 0.f, -3.f));
 
     this->node_test2 = new SceneNode(ModelType::SPHERE, true);
     node_test2->setPosition(Vector3D<float>(0.f, 5.f, -6.f));

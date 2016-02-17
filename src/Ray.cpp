@@ -83,11 +83,11 @@ auto Ray::run() -> void
 						if(ray->getCollisionRes())
 						{	
 							//this->render_buffer->setColorList(node->getColor());
-							this->render_buffer->setColorList(this->calculateDiffuseLight(node));
+							this->render_buffer->setColorList(ray->calculateDiffuseLight(node));
 						}
 						else
 						{
-							//this->render_buffer->setColorList(this->calculateDiffuseLight(node));
+							//this->render_buffer->setColorList(ray->calculateDiffuseLight(node));
 							this->render_buffer->setColorList(Vector3D<Uint8> (0, 0, 0));
 						}
 
@@ -180,7 +180,7 @@ auto Ray::calculateReflexion(SceneNode* node) -> Vector3D<float>
 {
     Vector3D<float> normal = this->calculateNormal(node);
 
-    float reflexionCalc = -DOT(normal, this->direction);
+    float reflexionCalc = DOT(normal, this->direction);
         
     //std::cout << "ReflexionCalc = " << reflexionCalc << std::endl;
 
@@ -209,10 +209,10 @@ auto Ray::calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>
 	node_color.y = float (node->getColor().y);
 	node_color.z = float (node->getColor().z);
 	
-	float shade = -DOT( this->direction, this->calculateNormal(node));
+	float shade = DOT( this->direction, this->calculateNormal(node));
 	if (shade < 0)
 		shade = 0;
-	Vector3D<float> color = node_color * (0.60f + 0.40f * shade);
+	Vector3D<float> color = node_color * (0.60f + 0.30f * shade);
 
 	Vector3D<Uint8> color_shade;
 	color_shade.x = Uint8 (color.x);

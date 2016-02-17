@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <iostream>
 
 #include "Event.h"
 #include "SceneNode.h"
@@ -24,31 +25,37 @@ auto Event::eventListener(Device* device) -> void
 				case SDL_SCANCODE_RIGHT:
 					move = node->getPosition().x;
 					node->setPosition(++move, node->getPosition().y, node->getPosition().z); 
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
 					break;
 
 				case SDL_SCANCODE_LEFT:
                     move = node->getPosition().x;
-                    node->setPosition(--move, node->getPosition().y, node    ->getPosition().z);
+                    node->setPosition(--move, node->getPosition().y, node->getPosition().z);
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 
 				case SDL_SCANCODE_UP:
                     move = node->getPosition().y;
-                    node->setPosition(node->getPosition().x, ++move, node    ->getPosition().z);
+                    node->setPosition(node->getPosition().x, ++move, node->getPosition().z);
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 
 				case SDL_SCANCODE_DOWN:
                     move = node->getPosition().y;
-                    node->setPosition(node->getPosition().x, --move, node    ->getPosition().z);
+                    node->setPosition(node->getPosition().x, --move, node->getPosition().z);
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 					
 				case SDL_SCANCODE_Q:
                      move = node->getPosition().z;
                      node->setPosition(node->getPosition().x, node->getPosition().y, --move);
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
 
 				case SDL_SCANCODE_E:
                      move = node->getPosition().z;
                      node->setPosition(node->getPosition().x, node->getPosition().y, ++move);
+					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
 					
 
