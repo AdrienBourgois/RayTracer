@@ -10,6 +10,10 @@
 #include <ImGui/imgui.h>
 #include "ImGui/imgui_impl.h"
 
+#pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wdouble-promotion"
+#pragma GCC diagnostic ignored "-Wshadow"
+
 // Data
 static double       g_Time = 0.0f;
 static bool         g_MousePressed[3] = { false, false, false };
