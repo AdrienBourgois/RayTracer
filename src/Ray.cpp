@@ -84,14 +84,13 @@ auto Ray::run() -> void
                         ray->setDirection(this->calculateReflexion(node));
                         this->child_list.push_back(ray);
                         ray->run();
-						
-//			if(ray->getCollisionRes())
-//				this->render_buffer->setColorList(Vector3D<Uint8> (255, 0, 0));
-				this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
-//			else
-//				this->render_buffer->setColorList(ray->calculateDiffuseLight(node));
-//				this->render_buffer->setColorList(Vector3D<Uint8> (50, 0, 0));
 
+						if (ray->getCollisionRes())
+						{
+							this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
+						}
+						else
+							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
 
 						ray->close();
 						delete ray;
@@ -224,7 +223,7 @@ auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<U
 	node_color.z = float (node->getColor().z);
 
 	Vector3D<float> l =  (this->collision_point - light->getPosition()).normalize();
-	float shade = DOT(this->calculateNormal(light), l.normalize()) * 0.3f;
+	float shade = DOT(this->calculateNormal(light), l.normalize()) * 0.2f;
 
 	if (shade < 0.f)
                 shade = 0.f;
@@ -242,6 +241,35 @@ auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<U
 	color_shade.z = Uint8 (color.z);
 	
 	return color_shade;
+}
+
+auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<Uint8>
+{
+	Vector3D<float> n = (this->calculateNormal(node)).normalize();
+	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
+	Vector3D<float> v = this->direction.normalize();
+
+	Vector3D<float> r = (n - l) * (2 * DOT(n, l));
+	r = r.normalize();
+ 
+	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(pow(DOT(r, v), 2.f));
+	
+	Vector3D<Uint8> specular_color;
+	specular_color.x = Uint8 (specular_light.x);
+	specular_color.y = Uint8 (specular_light.y);
+	specular_color.z = Uint8 (specular_light.z);
+
+	return specular_color;
+
+	//float cos_alpha = DOT(this->direction, r);
+
+	/*Vector3D<float> l =  (this->collision_point - light->getPosition()).n    ormalize();
+
+	Vector3D<float> v = this->direction.normalize();
+
+	Vector3D<float> n = (this->calculateNormal(node)).normalize;
+
+	Vector3D<float> r =(2.f * DOT(*/
 }
 
 auto Ray::close() -> void
