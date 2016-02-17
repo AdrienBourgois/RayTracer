@@ -1,12 +1,7 @@
-# Compilation files
 *.o
 *.d
-
-# Editor files
 *~
 *.swp
-
-# Folders
 bin/
 obj/
 assets/

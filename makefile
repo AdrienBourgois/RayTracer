@@ -10,6 +10,7 @@ SRC = 	main.cpp \
 		RenderBuffer.cpp \
 		Log.cpp \
 		Event.cpp \
+		Collision.cpp \
 
 LIBS = SDL2 pthread SDL2_image
 

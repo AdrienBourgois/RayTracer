@@ -4,7 +4,7 @@
 #include "SceneNode.h"
 #include "Log.h"
 
-auto SceneNode::init(ModelType kind, bool light) -> void
+auto SceneNode::init(ModelType kind, bool light, float rad) -> void
 {
     Log* log = Log::getInstance();
     log->info("SceneNode creation and initialization");
@@ -49,7 +49,7 @@ auto SceneNode::init(ModelType kind, bool light) -> void
 			this->color = Vector3D<Uint8> (255, 0, 0);
 			this->reflection_idx = 100.f;
 		}
-		this->radius = 2.0f;
+		this->radius = rad;
 		double r = (double)this->radius;
 
 		for (double phi = 0.; phi < 2*M_PI; phi += M_PI/10.) // Azimuth [0, 2PI]

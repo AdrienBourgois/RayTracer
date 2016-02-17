@@ -14,13 +14,25 @@ namespace
 	}
 } // namespace end
 
-auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
+auto Collision::detectCollision(Ray* ray, SceneNode* node) -> bool
 {
-	Vector3D<float> ray_dir = ray.getRayDirection();
-	Vector3D<float> ray_origin = ray.getRayOrigin();
-	Vector3D<float> circle_posi = circle.getPosition();
-	float ray_length = ray.getRayMaxLenght();
-	float circle_radius = circle.getRadius(); // get rad
+	switch(node->getNodeType())
+	{
+		case ModelType::PLANE : return(rayPlaneCollision(ray, node));
+	
+		case ModelType::SPHERE : return(rayCircleCollision(ray, node));
+
+		default : return(rayTriangleCollision(ray, node));
+	}
+}
+
+auto Collision::rayCircleCollision(Ray* ray, SceneNode* circle) -> bool
+{
+	Vector3D<float> ray_dir = ray->getDirection();
+	Vector3D<float> ray_origin = ray->getStartPoint();
+	Vector3D<float> circle_posi = circle->getPosition();
+	float ray_length = ray->getMaxLenght();
+	float circle_radius = circle->getRadius(); // get rad
 
 	float A = DOT(ray_dir, ray_dir);
 
@@ -52,16 +64,16 @@ auto Collision::rayCircleCollision(Ray ray, SceneNode circle) -> bool
 	return false;
 }
 
-auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
+auto Collision::rayPlaneCollision(Ray* ray, SceneNode* plane) -> bool
 {
-	Vector3D<float> ray_dir = ray.getRayDirection();
-	Vector3D<float> ray_origin = ray.getRayOrigin();
+	Vector3D<float> ray_dir = ray->getDirection();
+	Vector3D<float> ray_origin = ray->getStartPoint();
 
-	Vector3D<float> a_point = plane.getRectAPoint();
-	Vector3D<float> b_point = plane.getRectBPoint();
-	Vector3D<float> c_point = plane.getRectCPoint();
+	Vector3D<float> a_point = plane->getRectAPoint();
+	Vector3D<float> b_point = plane->getRectBPoint();
+	Vector3D<float> c_point = plane->getRectCPoint();
 
-	float ray_length = ray.getRayMaxLenght();
+	float ray_length = ray->getMaxLenght();
 
 	Vector3D<float> ab = b_point - a_point;
 	Vector3D<float> ac = c_point - a_point;
@@ -80,16 +92,16 @@ auto Collision::rayPlaneCollision(Ray ray, SceneNode plane) -> bool
 	return false;
 }
 
-auto Collision::rayTriangleCollision(Ray ray, SceneNode triangle) -> bool
+auto Collision::rayTriangleCollision(Ray* ray, SceneNode* triangle) -> bool
 {
-	std::vector<float> _vertice = triangle.getVertice();
+	std::vector<float> _vertice = triangle->getVertice();
 
-	Vector3D<float> ray_origin = ray.getRayOrigin();
-	Vector3D<float> ray_dir = ray_origin + ray.getRayDirection();
+	Vector3D<float> ray_origin = ray->getStartPoint();
+	Vector3D<float> ray_dir = ray_origin + ray->getDirection();
 
-	Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle.getPosition();
-	Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]) + triangle.getPosition();
-	Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]) + triangle.getPosition();
+	Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]) + triangle->getPosition();
+	Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]) + triangle->getPosition();
+	Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]) + triangle->getPosition();
 
 	Vector3D<float> ab_edge = b - a;
 	Vector3D<float> ac_edge = c - a;

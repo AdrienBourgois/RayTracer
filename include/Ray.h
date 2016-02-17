@@ -20,17 +20,23 @@ public:
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
     auto run() -> void;
+
     auto runChild() -> void;
     auto collision(SceneNode* scene_node) -> bool;
     auto calculateReflexion(SceneNode* node) -> Vector3D<float>;
     auto calculateNormal(SceneNode* node) -> Vector3D<float>;
     auto calculateCollisionPoint(float distance) -> void;
-	auto calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>;
+    auto calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<Uint8>;
+	auto calculateAmbiantLight(SceneNode* node) -> Vector3D<Uint8>;
+	auto calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<Uint8>;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
+    auto clamp(float value, float min_value, float max_value) -> float;
 
-    auto getDirection() -> Vector3D<float>;
+    auto getDirection() -> Vector3D<float> {return this->direction;}
     auto getCollisionRes() -> bool { return this->collision_result; }
+    auto getStartPoint() -> Vector3D<float> {return this->start_point;}
+    auto getMaxLenght() -> float {return this->lenght_max;}
 
     auto setDirection(Vector3D<float> new_direction) -> void { this->direction = new_direction; }
 
