@@ -13,8 +13,6 @@ auto SceneNode::init(ModelType kind, bool light) -> void
 	this->rotation = Vector3D<float>(0.f, 0.f, 0.f);
 	this->scale = Vector3D<float>(1.f, 1.f, 1.f);
 
-    this->reflection_idx = 100.f;
-
 	switch(kind)
 	{
 		case ModelType::TRIANGLE:
@@ -42,9 +40,15 @@ auto SceneNode::init(ModelType kind, bool light) -> void
 		this->type = ModelType::SPHERE;
 		this->is_light = light;
 		if(this->is_light)
-			this->color = Vector3D<Uint8> (255.f, 255.f, 255.f);
+		{
+			this->color = Vector3D<Uint8> (255, 255, 255);
+			this->reflection_idx = 0.f;
+		}
 		else
-			this->color = Vector3D<Uint8> (255.f, 0.f, 0.f);
+		{
+			this->color = Vector3D<Uint8> (255, 0, 0);
+			this->reflection_idx = 100.f;
+		}
 		this->radius = 2.0f;
 		double r = (double)this->radius;
 

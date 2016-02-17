@@ -3,6 +3,7 @@
 
 
 #include <vector>
+#include <SDL2/SDL.h>
 
 #include "Vector.h"
 
@@ -14,7 +15,7 @@ class Ray
 public:
     
 	Ray(Vector3D<float> position, Vector2D<float> screen_res, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child);
-	Ray(Vector3D<float> position, /*Vector2D<float> screen_res, RenderBuffer* rend_buff,*/ std::vector<SceneNode*> node, bool child);
+	Ray(Vector3D<float> position, RenderBuffer* rend_buff, std::vector<SceneNode*> node, bool child, Vector3D<Uint8> color_val);
 	~Ray() = default;
     auto findDestPoint(float idx_x, float idx_y) -> void;
     auto findDirection() -> void;
@@ -25,9 +26,10 @@ public:
     auto calculateReflexion(SceneNode* node) -> Vector3D<float>;
     auto calculateNormal(SceneNode* node) -> Vector3D<float>;
     auto calculateCollisionPoint(float distance) -> void;
-
+    auto calculateDiffuseLight(SceneNode* node) -> Vector3D<Uint8>;
     auto close() -> void;
     auto DOT(Vector3D<float> vector_1, Vector3D<float> vector_2) -> float;
+    auto clamp(float value, float min_value, float max_value) -> float;
 
     auto getDirection() -> Vector3D<float> {return this->direction;}
     auto getCollisionRes() -> bool { return this->collision_result; }
@@ -44,7 +46,7 @@ private:
     Vector3D<float> dest_point;
 	Vector3D<float> direction;
     Vector3D<float> collision_point;
-	Vector3D<float> color_value;
+	Vector3D<Uint8> color_value;
 
     std::vector<SceneNode*> node_list;
     std::vector<Ray*>       child_list;

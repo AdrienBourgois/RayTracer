@@ -52,6 +52,7 @@ class Vector3D
         bool        operator ==(Vector3D const& a); 
 
         auto        convert() -> Vector3D;
+	auto normalize() -> Vector3D;
     private:
 
 };
