@@ -2,6 +2,7 @@
 #define __VECTOR_DECLARATION__
 
 #include <iostream>
+#include <cmath>
 
 template <typename T>
 class Vector2D
@@ -52,7 +53,8 @@ class Vector3D
         bool        operator ==(Vector3D const& a); 
 
         auto        convert() -> Vector3D;
-	auto normalize() -> Vector3D;
+		auto normalize() -> Vector3D;
+		auto pow(T exp) -> Vector3D;
     private:
 
 };

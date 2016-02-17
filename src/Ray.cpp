@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include <SDL2/SDL.h>
 
 #include "Ray.h"
@@ -85,12 +85,12 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
 
-						if (ray->getCollisionRes())
-						{
+//						if (ray->getCollisionRes())
+//						{
 							this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
-						}
-						else
-							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
+//						}
+//						else
+//							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
 
 						ray->close();
 						delete ray;
@@ -249,10 +249,22 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
 	Vector3D<float> v = this->direction.normalize();
 
-	Vector3D<float> r = (n - l) * (2 * DOT(n, l));
+	Vector3D<float> r = (n - l);// * (2 * DOT(n, l));
+
+	//r = r * (2 * DOT(n, l));
+	r = r * (2 * 
 	r = r.normalize();
  
-	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(pow(DOT(r, v), 2.f));
+	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(2.f)));
+	
+	//std::cout<<"specular_light = "<<specular_light<<std::endl;	
+
+	if(specular_light.x < 0.f)
+		specular_light.x = std::fabs(specular_light.x);
+	if(specular_light.y < 0.f)
+		specular_light.y = std::fabs(specular_light.y);
+	if(specular_light.z < 0.f)
+		specular_light.z = std::fabs(specular_light.z);
 	
 	Vector3D<Uint8> specular_color;
 	specular_color.x = Uint8 (specular_light.x);

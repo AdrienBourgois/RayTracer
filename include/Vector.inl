@@ -203,6 +203,18 @@ auto Vector3D<T>::normalize() -> Vector3D<T>
 	return vector;
 }
 
+template <typename T>
+auto Vector3D<T>::pow(T exp) -> Vector3D<T>
+{
+	Vector3D<T> vector;
+
+	vector.x = std::pow(this->x, exp);
+	vector.y = std::pow(this->y, exp);
+	vector.z = std::pow(this->z, exp);
+
+	return vector;	
+}
+
 
 template <typename T>
 Vector4D<T>::Vector4D()
