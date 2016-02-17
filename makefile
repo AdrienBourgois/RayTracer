@@ -1,9 +1,7 @@
 TARGET = RayTracing
 
 SRC = 	main.cpp \
-		Device.cpp \
 		Driver.cpp \
-		Window.cpp \
 		Matrix.cpp \
 		SceneNode.cpp \
 		Ray.cpp \

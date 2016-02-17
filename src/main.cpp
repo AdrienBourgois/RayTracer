@@ -1,4 +1,4 @@
-#include "Device.h"
+#include "Driver.h"
 #include "gui.h"
 
 int main()
