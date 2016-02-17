@@ -7,7 +7,10 @@
 
 #include "Vector.h"
 
-class Window;
+class RenderBuffer;
+class Camera;
+class Ray;
+class SceneNode;
 
 class Driver final
 {
@@ -21,6 +24,8 @@ class Driver final
         auto render() -> void;
         auto close() -> void;
 
+        auto convert(Vector2D<int> vec) -> Vector2D<float>;
+
 	auto changePixelColor(Uint8 r, Uint8 g, Uint8 b, std::vector<Vector2D<float>>) -> void;
 	auto getPixelColor(int pos_x, int pos_y, Uint8* r, Uint8* g, Uint8* b) -> void;
  
@@ -29,6 +34,14 @@ class Driver final
         SDL_Surface* screenSurface;
         SDL_PixelFormat* format;
         Uint32 mapRGB;
+        
+        std::unique_ptr<RenderBuffer> render_buffer;
+        std::unique_ptr<Camera>     camera;
+        Vector2D<int>               screen_size;
+        Vector2D<float>             f_screen_size;
+        Ray*                        ray;
+        SceneNode*                  node_test;        
+        bool                        collision_result;
 };
 
 #endif
