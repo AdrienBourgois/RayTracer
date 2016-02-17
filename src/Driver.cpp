@@ -4,14 +4,25 @@
 #include "Window.h"
 #include "Log.h"
 #include "RenderBuffer.h"
+#include "Camera.h"
+
+#include "SceneNode.h"
+#include "Ray.h"
 
 Driver::Driver()
 {
     Log* log = Log::getInstance();
     log->info("Driver creation...");
-    this->window.reset(new Window);
     this->screenSurface = nullptr;
     this->format = nullptr;
+
+    this->collision_result = false;
+    this->render_buffer.reset(new RenderBuffer);
+    this->camera.reset(new Camera);
+    this->screen_size = Vector2D<int>(640.f, 480.f);
+    this->f_screen_size = this->convert(this->screen_size);
+    this->ray = nullptr;
+
     log->info("Driver created.");
 }
 
@@ -19,7 +30,6 @@ Driver::~Driver()
 {
     Log* log = Log::getInstance();
     log->info("Driver destroying...");
-    this->window = nullptr;
     this->screenSurface = nullptr;
     this->format = nullptr;
     SDL_Quit();
@@ -30,22 +40,37 @@ auto Driver::init(Vector2D<int> screen_res) -> void
 {
     Log* log = Log::getInstance();
     log->info("Driver initialization...");
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-        log->error("Error: in method Driver::init() SDL initialization failed.");
-    else
-        this->window->init("RayTracing", screen_res);
 
     this->screenSurface = SDL_GetWindowSurface(this->window->getWindow());
     this->format = this->screenSurface->format;
     this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 255, 255);
-    SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 
+    this->camera->init(this->screen_size, this->render_buffer.get());
+
+    this->node_test = new SceneNode(ModelType::SPHERE);
+    node_test->setPosition(Vector3D<float>(1.f, 1.f, -5.f)); 
+
+    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), node_test, this->driver.get());
     log->info("Driver initialized.");
 }
 
 auto Driver::render() -> void
 {
-    this->window->update();
+    this->ray->run();
+   //for (float idx_y = 0.f; idx_y < this->f_screen_size.y; ++idx_y)
+   //{
+       //for (float idx_x = 0.f; idx_x < this->f_screen_size.x; ++idx_x)
+        //{
+            //this->ray->findDestPoint(idx_x, idx_y);
+            //this->collision_result = this->ray->collision();
+            //std::cout<<"idx_x = "<<idx_x<<"   "<<" idx_y = "<<idx_y<<std::endl;
+            //if(this->ray->getCollisionRes() == true)
+            //{
+                //std::cout<<"collision"<<std::endl;
+                this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
+            //}
+        //}
+   //}
 }
 
 auto Driver::close() -> void
@@ -82,3 +107,12 @@ auto Driver::getPixelColor(int pos_x, int pos_y, Uint8* r, Uint8* g, Uint8* b) -
 	SDL_GetRGB(pixel, this->format, r, g, b);
 }
 
+auto Driver::convert(Vector2D<int> vec) -> Vector2D<float>
+{
+    Vector2D<float> res;
+
+    res.x = float(vec.x);
+    res.y = float(vec.y);
+
+    return res;
+}
