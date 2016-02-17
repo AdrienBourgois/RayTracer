@@ -36,12 +36,12 @@ Driver::~Driver()
     log->info("Driver destroyed.");
 }
 
-auto Driver::init(Vector2D<int> screen_res) -> void
+auto Driver::init(/* Vector2D<int> screen_res */) -> void
 {
     Log* log = Log::getInstance();
     log->info("Driver initialization...");
 
-    this->screenSurface = SDL_GetWindowSurface(this->window->getWindow());
+    this->screenSurface = new(SDL_Surface);
     this->format = this->screenSurface->format;
     this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 255, 255);
 
@@ -50,7 +50,7 @@ auto Driver::init(Vector2D<int> screen_res) -> void
     this->node_test = new SceneNode(ModelType::SPHERE);
     node_test->setPosition(Vector3D<float>(1.f, 1.f, -5.f)); 
 
-    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), node_test, this->driver.get());
+    this->ray = new Ray(this->camera->getPosition(), this->convert(this->screen_size), this->render_buffer.get(), node_test, this);
     log->info("Driver initialized.");
 }
 
@@ -67,7 +67,7 @@ auto Driver::render() -> void
             //if(this->ray->getCollisionRes() == true)
             //{
                 //std::cout<<"collision"<<std::endl;
-                this->driver->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
+                this->changePixelColor(255, 0, 0, (this->render_buffer->getScreenCoordList()));
             //}
         //}
    //}
@@ -75,10 +75,6 @@ auto Driver::render() -> void
 
 auto Driver::close() -> void
 {
-    Log* log = Log::getInstance();
-    log->info("Driver closing...");
-    this->window->close();
-    log->info("Driver closed.");
 }
 
 auto Driver::changePixelColor(Uint8 r, Uint8 g, Uint8 b, std::vector<Vector2D<float>> screen_coord_list) -> void
