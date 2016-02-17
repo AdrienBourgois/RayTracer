@@ -3,25 +3,17 @@
 
 int main()
 {
-    Gui_class* gui = new Gui_class();
-    gui->open();
+    Gui_class* interface = new Gui_class();
+    interface->open();
 
-    while(gui->updateEvent())
+    while(interface->updateEvent())
     {
-        gui->newFrame();
-        gui->configWindow();
-        gui->render();
+        interface->newFrame();
+        interface->configWindow();
+        interface->render();
     }
 
-    /* Device* dev = new Device();
+    delete interface;
 
-    dev->init();
-   
-    dev->run();
-    
-    dev->close();
-    
-    delete dev; */
-    
     return EXIT_SUCCESS;
 }
