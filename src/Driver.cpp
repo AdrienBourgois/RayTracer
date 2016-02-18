@@ -46,7 +46,7 @@ auto Driver::init(Vector2D<float> screen_res) -> void
 auto Driver::render() -> void
 {
     this->window->update();
-	this->mapRGB = SDL_MapRGB(this->screenSurface->format, 145, 114, 114);
+	this->mapRGB = SDL_MapRGB(this->screenSurface->format, 0, 0, 0);
 	SDL_FillRect(this->screenSurface, nullptr, this->mapRGB);
 }
 
