@@ -85,6 +85,7 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
 
+			
 			this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
 
 						ray->close();
@@ -241,33 +242,15 @@ auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<U
 auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<Uint8>
 {
 	Vector3D<float> n = this->calculateNormal(node).normalize();
-	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
-	Vector3D<float> v = this->direction *-1.f;
+	Vector3D<float> l = (light->getPosition() - this->collision_point).normalize();
+	Vector3D<float> v = this->direction.normalize();
 
-	if (l < 0.f)
-		l = 0.f;
+	float nl = DOT(n, l);
+	Vector3D<float> r = n * nl * 2.f - l;
+	r = r.normalize();
 
-	float nl = ;
+	Vector3D<float> specular_light =  (Vector3D<float> (255.f, 255.f, 255.f) * 0.3f) * float(std::pow(DOT(r, v), 2.f));
 
-	Vector3D<float> r = (2.f * nl * n) - l;
-//	r = r.normalize();
-
-//	std::cout << "r : " << r << std::endl;
-
-
-
-	Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * (DOT(r, v));
-//	std::cout << "specular_light: " << specular_light << std::endl;
-
-	if (specular_light.x < 0.f)
-		specular_light.x = 0.f ;
-
-	if (specular_light.y < 0.f)
-		specular_light.y = 0.f ;
-
-	if (specular_light.z < 0.f)
-		specular_light.z = 0.f ;
-	
 	Vector3D<Uint8> specular_color;
 	specular_color.x = Uint8 (specular_light.x);
 	specular_color.y = Uint8 (specular_light.y);
