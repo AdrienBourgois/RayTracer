@@ -27,6 +27,7 @@ public:
     auto calculateNormal(SceneNode* node) -> Vector3D<float>;
     auto calculateCollisionPoint(float distance) -> void;
 
+    auto getLightList() -> std::vector<SceneNode*>;
     auto calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<float>;
     auto calculateAmbiantLight(SceneNode* node) -> Vector3D<float>;
     auto calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<float>;

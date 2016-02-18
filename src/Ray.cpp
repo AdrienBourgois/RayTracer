@@ -71,7 +71,7 @@ auto Ray::run() -> void
 		    for(unsigned int idx = 0; idx < this->node_list.size(); ++idx)
 		    {
 			node = this->node_list[idx];
-			SceneNode* light = this->node_list[1];
+			std::vector<SceneNode*> light_list = this->getLightList();
 
               if(this->collision(node)/* && !node->getIsLight()*/)
                 {
@@ -80,6 +80,8 @@ auto Ray::run() -> void
 					//this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
                     if(!node->getIsLight())
                     {
+			for (unsigned int i = 0; i < light_list.size(); ++i)
+			{
                         Ray* ray = new Ray(this->collision_point, this->render_buffer, this->node_list, true, this->color_value);
                         ray->setDirection(this->calculateReflexion(node));
                         this->child_list.push_back(ray);
@@ -87,10 +89,10 @@ auto Ray::run() -> void
  Vector3D<float> _light_ ;
 
 			if (ray->getCollisionRes())
-			_light_ = this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light);
+			_light_ = this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light_list[i]);
 
 			else
-			_light_ = this->calculateDiffuseLight(node, light) + this->calculateAmbiantLight(node);
+			_light_ = this->calculateDiffuseLight(node, light_list[i]) + this->calculateAmbiantLight(node);
 
 			Vector3D<Uint8> _light;
 			_light.x = Uint8(_light_.x);
@@ -105,6 +107,7 @@ auto Ray::run() -> void
 						this->child_list.clear();
 				
 						this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+			}
                     }
 					else
 					{
@@ -204,6 +207,18 @@ auto Ray::calculateCollisionPoint(float distance) -> void
     this->collision_point = (this->direction * distance) + this->start_point;
 }
 
+auto Ray::getLightList() -> std::vector<SceneNode*>
+{
+	std::vector<SceneNode*> light_list;
+	for (unsigned int i = 0; i < this->node_list.size(); ++i)
+	{
+		if (this->node_list[i]->getIsLight())
+			light_list.push_back(this->node_list[i]);
+	}
+
+	return light_list;
+}
+
 auto Ray::calculateAmbiantLight(SceneNode* node) -> Vector3D<float>
 {
 	Vector3D<float> node_color;
@@ -219,49 +234,59 @@ auto Ray::calculateAmbiantLight(SceneNode* node) -> Vector3D<float>
 
 auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<float>
 {
-	Vector3D<float> node_color;
-	node_color.x = float (node->getColor().x);
-	node_color.y = float (node->getColor().y);
-	node_color.z = float (node->getColor().z);
+	if (light)
+	{
+		Vector3D<float> node_color;
+		node_color.x = float (node->getColor().x);
+		node_color.y = float (node->getColor().y);
+		node_color.z = float (node->getColor().z);
 
-	Vector3D<float> l =  (this->collision_point - light->getPosition()).normalize();
-	float shade = DOT(this->calculateNormal(light), l.normalize()) * 0.2f;
+		Vector3D<float> l =  (this->collision_point - light->getPosition()).normalize();
+		float shade = DOT(this->calculateNormal(light), l.normalize()) * 0.2f;
 
-	if (shade < 0.f)
-                shade = 0.f;
+		if (shade < 0.f)
+			shade = 0.f;
 
-	Vector3D<float> color;
-	if ((node_color.x - node_color.x * shade) < 0.f)
-		color.x = 0.f;
+		Vector3D<float> color;
+		if ((node_color.x - node_color.x * shade) < 0.f)
+			color.x = 0.f;
+		else
+			color.x = node_color.x - node_color.x * shade;
+
+		
+		return color;
+	}
 	else
-		color.x = node_color.x - node_color.x * shade;
-
-	
-	return color;
+		return Vector3D<float> {0.f, 0.f, 0.f};
 }
 
 auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<float>
 {
-	Vector3D<float> n = (this->calculateNormal(node)).normalize();
-	Vector3D<float> l = (light->getPosition() - this->collision_point).normalize();
-	Vector3D<float> v = this->start_point - this->collision_point;
-	v = v.normalize();
+	if (light)
+	{
+		Vector3D<float> n = (this->calculateNormal(node)).normalize();
+		Vector3D<float> l = (light->getPosition() - this->collision_point).normalize();
+		Vector3D<float> v = this->start_point - this->collision_point;
+		v = v.normalize();
 
-	float nl = DOT(n, l);
-	Vector3D<float> r = (n * (nl * 2.f)) - l;
-	r = r.normalize();
- 
-	Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
-	
-	if(specular_light.x < 0.f)
-		specular_light.x = std::fabs(specular_light.x);
-	if(specular_light.y < 0.f)
-		specular_light.y = std::fabs(specular_light.y);
-	if(specular_light.z < 0.f)
-		specular_light.z = std::fabs(specular_light.z);
-	
+		float nl = DOT(n, l);
+		Vector3D<float> r = (n * (nl * 2.f)) - l;
+		r = r.normalize();
+	 
+		Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
+		
+		if(specular_light.x < 0.f)
+			specular_light.x = std::fabs(specular_light.x);
+		if(specular_light.y < 0.f)
+			specular_light.y = std::fabs(specular_light.y);
+		if(specular_light.z < 0.f)
+			specular_light.z = std::fabs(specular_light.z);
+		
 
-	return specular_light;
+		return specular_light;
+	}
+	else
+		return Vector3D<float> {0.f, 0.f, 0.f};
 }
 
 auto Ray::close() -> void
