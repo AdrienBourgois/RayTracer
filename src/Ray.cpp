@@ -181,11 +181,11 @@ auto Ray::calculateReflexion(SceneNode* node) -> Vector3D<float>
 {
     Vector3D<float> normal = this->calculateNormal(node);
 
-    float reflexionCalc = DOT(normal, this->direction);
+    float reflexionCalc = -DOT(normal, this->direction);
         
     //std::cout << "ReflexionCalc = " << reflexionCalc << std::endl;
 
-      Vector3D<float> reflexionRay = (normal * reflexionCalc * 2.f) - direction;
+      Vector3D<float> reflexionRay = (normal * reflexionCalc * 2.f) + direction;
  
     //std::cout << "ReflexionRay = " << reflexionRay << std::endl;
 
@@ -240,15 +240,24 @@ auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<f
 
 auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<float>
 {
-	Vector3D<float> n = this->calculateNormal(node);
+	Vector3D<float> n = (this->calculateNormal(node)).normalize();
 	Vector3D<float> l = (light->getPosition() - this->collision_point).normalize();
-	Vector3D<float> v = this->direction.normalize();
+	Vector3D<float> v = this->start_point - this->collision_point;
+	v = v.normalize();
 
 	float nl = DOT(n, l);
-	Vector3D<float> r = n * nl * 2.f - l;
+	Vector3D<float> r = (n * (nl * 2.f)) - l;
 	r = r.normalize();
-
-	Vector3D<float> specular_light =  (Vector3D<float> (255.f, 255.f, 255.f) * 0.3f) * float(std::pow(DOT(r, v), 2.f));
+ 
+	Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
+	
+	if(specular_light.x < 0.f)
+		specular_light.x = std::fabs(specular_light.x);
+	if(specular_light.y < 0.f)
+		specular_light.y = std::fabs(specular_light.y);
+	if(specular_light.z < 0.f)
+		specular_light.z = std::fabs(specular_light.z);
+	
 
 	return specular_light;
 }
@@ -256,7 +265,6 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 auto Ray::close() -> void
 {
     this->render_buffer = nullptr;
-    //this->scene_node = nullptr;
     this->collision_result = false;
 }
 
