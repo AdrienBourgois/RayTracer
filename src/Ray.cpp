@@ -85,12 +85,7 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
 
-						if (ray->getCollisionRes())
-						{
-							this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
-						}
-						else
-							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
+			this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
 
 						ray->close();
 						delete ray;
@@ -247,12 +242,25 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 {
 	Vector3D<float> n = (this->calculateNormal(node)).normalize();
 	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
-	Vector3D<float> v = this->direction.normalize();
+	Vector3D<float> v = this->direction;
 
-	Vector3D<float> r = (n - l) * (2 * DOT(n, l));
-	r = r.normalize();
+	Vector3D<float> r = (l - n);
+	r = r * (2 * DOT(n, l.normalize()));
+//	r = r.normalize();
+
+//	std::cout << "r : " << r << std::endl;
  
-	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(pow(DOT(r, v), 2.f));
+	Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * (DOT(r, v));
+//	std::cout << "specular_light: " << specular_light << std::endl;
+
+	if (specular_light.x < 0.f)
+		specular_light.x = 0.f ;
+
+	if (specular_light.y < 0.f)
+		specular_light.y = 0.f ;
+
+	if (specular_light.z < 0.f)
+		specular_light.z = 0.f ;
 	
 	Vector3D<Uint8> specular_color;
 	specular_color.x = Uint8 (specular_light.x);
@@ -260,16 +268,6 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	specular_color.z = Uint8 (specular_light.z);
 
 	return specular_color;
-
-	//float cos_alpha = DOT(this->direction, r);
-
-	/*Vector3D<float> l =  (this->collision_point - light->getPosition()).n    ormalize();
-
-	Vector3D<float> v = this->direction.normalize();
-
-	Vector3D<float> n = (this->calculateNormal(node)).normalize;
-
-	Vector3D<float> r =(2.f * DOT(*/
 }
 
 auto Ray::close() -> void
