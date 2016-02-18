@@ -249,13 +249,14 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
 	Vector3D<float> v = this->direction.normalize();
 
-	Vector3D<float> r = (n - l);// * (2 * DOT(n, l));
+	//Vector3D<float> r = (n - l);// * (2 * DOT(n, l));
 
 	//r = r * (2 * DOT(n, l));
-	r = r * (2 * 
+	float nl = DOT(n, l);
+	Vector3D<float> r = (n * nl * n) - l;
 	r = r.normalize();
  
-	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(2.f)));
+	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float(DOT(r, v.pow(2.f)));
 	
 	//std::cout<<"specular_light = "<<specular_light<<std::endl;	
 
