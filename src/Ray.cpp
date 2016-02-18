@@ -85,12 +85,12 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
 
-//						if (ray->getCollisionRes())
-//						{
+						if (ray->getCollisionRes())
+						{
 							this->render_buffer->setColorList(this->calculateSpecularLight(node, light));
-//						}
-//						else
-//							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
+						}
+						else
+							this->render_buffer->setColorList(this->calculateDiffuseLight(node, light));
 
 						ray->close();
 						delete ray;
@@ -176,11 +176,11 @@ auto Ray::calculateReflexion(SceneNode* node) -> Vector3D<float>
 {
     Vector3D<float> normal = this->calculateNormal(node);
 
-    float reflexionCalc = DOT(normal, this->direction);
+    float reflexionCalc = -DOT(normal, this->direction);
         
     //std::cout << "ReflexionCalc = " << reflexionCalc << std::endl;
 
-      Vector3D<float> reflexionRay = (normal * reflexionCalc * 2.f) - direction;
+      Vector3D<float> reflexionRay = (normal * reflexionCalc * 2.f) + direction;
  
     //std::cout << "ReflexionRay = " << reflexionRay << std::endl;
 
@@ -204,7 +204,7 @@ auto Ray::calculateAmbiantLight(SceneNode* node) -> Vector3D<Uint8>
 	node_color.y = float (node->getColor().y);
 	node_color.z = float (node->getColor().z);
 
-	float coef = 0.9f; // a remplacer [ar la valeur de la node
+	float coef = 0.1f; // a remplacer [ar la valeur de la node
 	Vector3D<float> color = node_color * coef;
 
 	Vector3D<Uint8> color_shade;
@@ -248,17 +248,18 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	Vector3D<float> n = (this->calculateNormal(node)).normalize();
 	//Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
 	Vector3D<float> l = (light->getPosition() - this->collision_point).normalize();
-	Vector3D<float> v = this->direction.normalize();
+	Vector3D<float> v = this->start_point - this->collision_point;
+	v = v.normalize();
 
 	//Vector3D<float> r = (n - l);// * (2 * DOT(n, l));
 
 	//r = r * (2 * DOT(n, l));
 	float nl = DOT(n, l);
-	Vector3D<float> r = (n * nl * 2.f) - l;
+	Vector3D<float> r = (n * (nl * 2.f)) - l;
 	r = r.normalize();
  
 	//Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(2.f)));
-	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float (pow(DOT(r, v) ,2.f));
+	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
 	
 	//std::cout<<"specular_light = "<<specular_light<<std::endl;	
 
