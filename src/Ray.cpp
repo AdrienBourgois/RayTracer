@@ -85,8 +85,10 @@ auto Ray::run() -> void
                         this->child_list.push_back(ray);
                         ray->run();
  Vector3D<float> _light_ ;
+
 			if (ray->getCollisionRes())
-			_light_ = this->calculateDiffuseLight(node, light) + this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light);
+			_light_ = this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light);
+
 			else
 			_light_ = this->calculateDiffuseLight(node, light) + this->calculateAmbiantLight(node);
 
