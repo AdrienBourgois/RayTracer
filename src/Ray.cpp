@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include <SDL2/SDL.h>
 
 #include "Ray.h"
@@ -240,16 +240,22 @@ auto Ray::calculateDiffuseLight(SceneNode* node, SceneNode* light) -> Vector3D<U
 
 auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<Uint8>
 {
-	Vector3D<float> n = (this->calculateNormal(node)).normalize();
+	Vector3D<float> n = this->calculateNormal(node).normalize();
 	Vector3D<float> l = (this->collision_point - light->getPosition()).normalize();
-	Vector3D<float> v = this->direction;
+	Vector3D<float> v = this->direction *-1.f;
 
-	Vector3D<float> r = (l - n);
-	r = r * (2 * DOT(n, l.normalize()));
+	if (l < 0.f)
+		l = 0.f;
+
+	float nl = ;
+
+	Vector3D<float> r = (2.f * nl * n) - l;
 //	r = r.normalize();
 
 //	std::cout << "r : " << r << std::endl;
- 
+
+
+
 	Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * (DOT(r, v));
 //	std::cout << "specular_light: " << specular_light << std::endl;
 
