@@ -65,9 +65,7 @@ auto Ray::run() -> void
 		for (float idx_x = 0.f; idx_x < this->screen_size.x; ++idx_x)
 		{
 		    this->findDestPoint(idx_x, idx_y);
-	/*            Collision collision = Collision(); 
-		   if(collision.detectCollision(this, this->scene_node))
-	*/
+
 		    for(unsigned int idx = 0; idx < this->node_list.size(); ++idx)
 		    {
 			node = this->node_list[idx];
@@ -214,7 +212,7 @@ auto Ray::calculateAmbiantLight(SceneNode* node) -> Vector3D<float>
 	node_color.y = float (node->getColor().y);
 	node_color.z = float (node->getColor().z);
 
-	float coef = 0.1f; // a remplacer [ar la valeur de la node
+	float coef = 0.15f; // a remplacer [ar la valeur de la node
 	Vector3D<float> color = node_color * coef;
 
 	Vector3D<Uint8> color_shade;
@@ -268,7 +266,7 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	Vector3D<float> r = (n * (nl * 2.f)) - l;
 	r = r.normalize();
  
-	//Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(2.f)));
+	//Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(0.1f)));
 	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
 	
 	//std::cout<<"specular_light = "<<specular_light<<std::endl;	

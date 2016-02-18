@@ -8,6 +8,7 @@ auto Event::eventListener(Device* device) -> void
 {
 	SceneNode* node;
 	node = device->getNodeTest2();
+	
 	float move = 0;
 	
 	
@@ -57,7 +58,20 @@ auto Event::eventListener(Device* device) -> void
                      node->setPosition(node->getPosition().x, node->getPosition().y, ++move);
 					std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
-					
+				
+				case SDL_SCANCODE_L:
+
+					if (node == device->getNodeTest2())
+					{
+						std::cout<<"SCANCODE L"<<std::endl;
+						node = device->getNodeTest3();
+					}
+
+					else
+					{
+						node = device->getNodeTest2();
+					}
+					break;
 
 				default:
 					 break;

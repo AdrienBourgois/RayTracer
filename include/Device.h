@@ -29,6 +29,7 @@ class Device final
 
         auto getDriver() const -> Driver const*     {return driver.get(); }
 		auto getNodeTest2() -> SceneNode* { return this->node_test2; }
+		auto getNodeTest3() -> SceneNode* { return this->node_test3; }
 
     private:
         std::unique_ptr<Driver>     driver;
@@ -40,7 +41,7 @@ class Device final
 
         SceneNode*                  node_test;
         SceneNode*                  node_test2;
-		//SceneNode* 					node_test3;
+		SceneNode* 					node_test3;
         std::vector<SceneNode*>     node_list;
         
         bool                        running;
