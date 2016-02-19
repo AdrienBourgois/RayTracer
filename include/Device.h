@@ -5,11 +5,11 @@
 #include <vector>
 
 #include "Vector.h"
+#include "Ray.h"
 
 class Driver;
 class RenderBuffer;
 class Camera;
-class Ray;
 class SceneNode;
 
 class Device final
@@ -28,8 +28,7 @@ class Device final
         auto convert(Vector2D<int> vec) -> Vector2D<float>;
 
         auto getDriver() const -> Driver const*     {return driver.get(); }
-		auto getNodeTest2() -> SceneNode* { return this->node_test2; }
-		auto getNodeTest3() -> SceneNode* { return this->node_test3; }
+		auto getLight() -> std::vector<SceneNode*> {return this->ray->getLightList();}
 
     private:
         std::unique_ptr<Driver>     driver;
@@ -39,11 +38,7 @@ class Device final
         Vector2D<float>             screen_size;
         Ray*                        ray;
 
-        SceneNode*                  node_test;
-        SceneNode*                  node_test2;
-		SceneNode* 					node_test3;
         std::vector<SceneNode*>     node_list;
-        
         bool                        running;
         bool                        collision_result;
 };

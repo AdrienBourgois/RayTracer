@@ -7,7 +7,6 @@
 #include "Log.h"
 
 #include "SceneNode.h"
-#include "Ray.h"
 #include "Event.h"
 //#include "Collision.h"
 
@@ -35,7 +34,6 @@ Device::~Device()
     this->camera = nullptr;
     this->render_buffer = nullptr;
     this->ray = nullptr;
-    this->node_test = nullptr;
 
     log->info("Device destructed.");
 }
@@ -48,18 +46,18 @@ auto Device::init() -> void
     this->camera->init(this->screen_size, this->render_buffer.get());
     log->info("Device initialized.");
 
-	this->node_test = new SceneNode(ModelType::SPHERE, false, 2.f);
+	SceneNode* node_test = new SceneNode(ModelType::SPHERE, false, 2.f);
 	node_test->setPosition(Vector3D<float>(0.f, 0.f, -5.f));
 
-    this->node_test2 = new SceneNode(ModelType::SPHERE, true, 1.f);
+    SceneNode* node_test2 = new SceneNode(ModelType::SPHERE, true, 1.f);
     node_test2->setPosition(Vector3D<float>(4.f, 3.f, -5.f));
 
-	this->node_test3 = new SceneNode(ModelType::SPHERE, true, 1.f);
-	this->node_test3->setPosition(Vector3D<float>(4.f, -3.f, -5.f));
+	//SceneNode* node_test3 = new SceneNode(ModelType::SPHERE, true, 1.f);
+	//node_test3->setPosition(Vector3D<float>(4.f, -3.f, -5.f));
 	
     this->node_list.push_back(node_test);
     this->node_list.push_back(node_test2);
-	this->node_list.push_back(node_test3);
+	//this->node_list.push_back(node_test3);
 
     this->ray = new Ray(this->camera->getPosition(), this->screen_size,  this->render_buffer.get(), this->node_list, false);
 }
@@ -93,7 +91,6 @@ auto Device::close() -> void
     this->camera->close();
     this->ray->close();
     delete this->ray;
-    delete this->node_test;
     
     log->info("Device closed.");
 }
