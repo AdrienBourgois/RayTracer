@@ -7,13 +7,13 @@ int main()
     interface->open();
 
     Driver* driver = new Driver();
-    driver->init(1200, 800);
+    driver->init(640, 480);
 
     while(interface->updateEvent())
     {
         driver->render();
         interface->newFrame();
-        interface->configWindow();
+        interface->configWindow(driver);
         interface->render();
     }
 

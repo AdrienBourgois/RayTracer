@@ -25,6 +25,7 @@ class Driver final
         auto close() -> void;
 
         auto convert(Vector2D<int> vec) -> Vector2D<float>;
+        auto getSurface() -> SDL_Surface* {return screenSurface;}
 
 	auto changePixelColor(Uint8 r, Uint8 g, Uint8 b, std::vector<Vector2D<float>>) -> void;
 	auto getPixelColor(int pos_x, int pos_y, Uint8* r, Uint8* g, Uint8* b) -> void;

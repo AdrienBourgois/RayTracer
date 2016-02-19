@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <Driver.h>
 
 #include <GL/glew.h>
 #include <SDL2/SDL.h>
@@ -23,7 +24,7 @@ class Gui_class
         auto updateEvent() -> bool;
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
-        auto configWindow() -> void;
+        auto configWindow(Driver* driver) -> void;
 
     private:
         SDL_Window* window;

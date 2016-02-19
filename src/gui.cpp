@@ -45,11 +45,19 @@ auto Gui_class::render() -> void
     SDL_GL_SwapWindow(window);
 }
 
-auto Gui_class::configWindow() -> void
+auto Gui_class::configWindow(Driver* driver) -> void
 {
     if(show_test_window)
     {
         ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
         ImGui::ShowTestWindow(&show_test_window);
     }
+    {
+        ImGui::SetNextWindowSize(ImVec2(700,500), ImGuiSetCond_FirstUseEver);
+        ImGui::Begin("Image", &show_another_window);
+        ImGui::Image(driver->getSurface()->pixels, ImVec2(640, 480), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+        ImGui::Text("Hello");
+        ImGui::End();
+    }
+    (void)driver;
 }
