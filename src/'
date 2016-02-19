@@ -85,8 +85,7 @@ auto Ray::run() -> void
 
 //						if (ray->getCollisionRes())
 //						{
-							this->final_color = this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light);
-							//this->final_color = this->calculateAmbiantLight(node) + this->calculateSpecularLight(node, light) + this->calculateDiffuseLight(node, light);
+							this->final_color = /*this->calculateAmbiantLight(node) + */this->calculateSpecularLight(node, light);
 							this->color_value.x = Uint8 (this->final_color.x);
 							this->color_value.y = Uint8 (this->final_color.y);
 							this->color_value.z = Uint8 (this->final_color.z);
@@ -268,7 +267,7 @@ auto Ray::calculateSpecularLight(SceneNode* node, SceneNode* light) -> Vector3D<
 	r = r.normalize();
  
 	//Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.30f) * float(DOT(r, v.pow(0.1f)));
-	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,16.f));
+	Vector3D<float> specular_light = /*konstant_light(from 0 to 1)*/ (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f) * float (pow(DOT(r, v) ,0.01f));
 	
 	//std::cout<<"specular_light = "<<specular_light<<std::endl;	
 
