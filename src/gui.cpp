@@ -55,7 +55,9 @@ auto Gui_class::configWindow(Driver* driver) -> void
     {
         ImGui::SetNextWindowSize(ImVec2(700,500), ImGuiSetCond_FirstUseEver);
         ImGui::Begin("Image", &show_another_window);
-        ImGui::Image(driver->getSurface()->pixels, ImVec2(640, 480), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
+        //SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(driver->getSurface());
+        //SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, driver->getSurface());
+        ImGui::Image(driver->getSurface()->userdata, ImVec2(640, 480), ImVec2(0,0), ImVec2(1,1), ImColor(255,255,255,255), ImColor(255,255,255,128));
         ImGui::Text("Hello");
         ImGui::End();
     }
