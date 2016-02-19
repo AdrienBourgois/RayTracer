@@ -35,12 +35,12 @@ Driver::~Driver()
     log->info("Driver destroyed.");
 }
 
-auto Driver::init(/* Vector2D<int> screen_res */) -> void
+auto Driver::init(int width, int height) -> void
 {
     Log* log = Log::getInstance();
     log->info("Driver initialization...");
 
-    this->screenSurface = new(SDL_Surface);
+    this->screenSurface = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
     this->format = this->screenSurface->format;
     this->mapRGB = SDL_MapRGB(this->screenSurface->format, 255, 255, 255);
 
