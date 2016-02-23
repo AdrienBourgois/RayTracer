@@ -17,10 +17,10 @@ class Raytracer final
 		Raytracer(Raytracer const&) = delete;
 		~Raytracer();
 
-	//	auto operator=(Raytracer const&) -> Raytracer = delete;
-		
 		auto init(Vector2D<float> screen_res) -> void;
 		auto render() -> void;
+		auto genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, bool light) -> void;
+		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx) -> void;
 		auto close() -> void;
 
 	private:

@@ -5,7 +5,7 @@
 
 struct MaterialBuffer
 {
-	MaterialBuffer() = default;
+	MaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx);
 	~MaterialBuffer() = default;
 
 	Vector3D<float> color;

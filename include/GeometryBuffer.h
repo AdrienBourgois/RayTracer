@@ -10,21 +10,26 @@ struct GeometryBuffer
 	GeometryBuffer() = default;
 	~GeometryBuffer() = default;
 
-	Vector3D<float> position;
+	auto createMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx) -> void;
 
-	std::vector<float> vertice_list;
+	Vector3D<float> 		position;
 
-	bool is_light;
+	std::vector<float> 		vertice_list;
 
-	MaterialBuffer* material_buffer;
+	bool 					is_light;
+
+	MaterialBuffer* 		material_buffer;
 };
+
+
+
 
 struct SphereGeometryBuffer() : public GeometryBuffer
 {
-	SphereGeometryBuffer() = default;
+	SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, bool light);
 	~SphereGeometryBuffer() = default;
 
-	float radius;
+	float 					radius;
 };
 
 #endif
