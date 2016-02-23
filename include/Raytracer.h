@@ -22,10 +22,13 @@ class Raytracer final
 		auto init(Vector2D<float> screen_res) -> void;
 		auto render() -> void;
 		auto close() -> void;
+
 	private:
 	
 		std::unique_ptr<RenderBuffer> render_buffer;
 		std::unique_ptr<Camera> camera;
+
+		std::vector<GeometryBuffer*> geometry_list;
 
 		Vector2D<float> render_size;
 };

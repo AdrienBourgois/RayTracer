@@ -6,6 +6,7 @@
 struct Camera
 {
 	Camera() = default;
+	Camera(Camera const&) = delete;
 	~Camera() = default;
 	
 	auto init() -> void;
