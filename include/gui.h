@@ -33,6 +33,7 @@ class Gui_class
         SDL_GLContext context;
         SDL_Event event;
         SDL_Surface* surface;
+        SDL_Renderer* renderer;
 
         bool run = true;
         bool show_test_window = true;
