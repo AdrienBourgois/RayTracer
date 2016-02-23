@@ -32,6 +32,7 @@ class Gui_class
         SDL_Window* window;
         SDL_GLContext context;
         SDL_Event event;
+        GLuint texture;
 
         bool run = true;
         bool show_test_window = true;
