@@ -8,7 +8,7 @@ auto Gui_class::open() -> void
     this->context = SDL_GL_CreateContext(window);
     SDL_assert(context);
 
-    this renderer = SDL_CreateSoftwareRenderer(this->surface);
+    this->renderer = SDL_CreateSoftwareRenderer(this->imageSurface);
 
     glewExperimental = GL_TRUE;
     auto status = glewInit();
@@ -61,13 +61,13 @@ auto Gui_class::configWindow() -> void
 
 auto Gui_class::displayImage() -> void
 {
-    SDL_Texture* SDLtexture = SDL_CreateTextureFromSurface(this->renderer, this->surface);
+    SDL_Texture* SDLtexture = SDL_CreateTextureFromSurface(this->renderer, this->imageSurface);
     (void)SDLtexture;
     GLuint texture = 0;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, gui.getSurface()->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, this->imageSurface->pixels);
     ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(30, 30));
 }
