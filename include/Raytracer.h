@@ -27,7 +27,7 @@ class Raytracer final
 		std::unique_ptr<RenderBuffer> render_buffer;
 		std::unique_ptr<Camera> camera;
 
-		Vector2D<float> screen_size;
+		Vector2D<float> render_size;
 };
 
 #endif

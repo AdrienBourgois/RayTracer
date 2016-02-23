@@ -20,12 +20,14 @@ Raytracer::~Raytracer()
 	this->render_buffer = nullptr;
 }
 
-auto Raytracer::init(Vector2D<float> screen_res) -> void
+auto Raytracer::init(Vector2D<float> rend_size) -> void
 {
 	Log* log = Log::getInstance();
 	log->info("Raytracer initialization...");
 
-	this->screen_size = screen_res;
+	this->render_size = rend_size;
+
+	this->camera->init();
 
 	log->info("Raytracer initialized.");
 }
