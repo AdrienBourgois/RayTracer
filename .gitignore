@@ -1,0 +1,14 @@
+# Compilation files
+*.o
+*.d
+
+# Editor files
+*~
+*.swp
+*.ini
+
+# Folders
+bin/
+obj/
+assets/
+logs/
