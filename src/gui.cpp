@@ -9,8 +9,6 @@ auto Gui_class::open() -> void
     SDL_assert(context);
 
     this->imageSurface = IMG_Load("assets/rin.png");
-    if(IMG_GetError())
-        std::cout << "Error :" << IMG_GetError() << std::endl;
 
     this->renderer = SDL_CreateSoftwareRenderer(this->imageSurface);
 
