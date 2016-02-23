@@ -20,8 +20,8 @@ auto main() -> int
     {
         gui.newFrame();
         {
-            ImGui::SetNextWindowPos(ImVec2(650, 500), ImGuiSetCond_FirstUseEver);
-            ImGui::Begin("Image", &show_another_window);
+            ImGui::SetNextWindowPos(ImVec2(image->w, image->h), ImGuiSetCond_FirstUseEver);
+            ImGui::Begin("Image", &show_another_window, ImGuiWindowFlags_NoSavedSettings);
             ImGui::Text("Test");
             gui.displayImage(image);
             ImGui::End();
