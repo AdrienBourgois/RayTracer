@@ -22,6 +22,7 @@ auto main() -> int
             ImGui::SetNextWindowPos(ImVec2(650, 500), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Image", &show_another_window);
             ImGui::Text("Test");
+            gui.displayImage();
             ImGui::End();
         }
         gui.render();
