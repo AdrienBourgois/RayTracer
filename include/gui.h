@@ -25,8 +25,8 @@ class Gui_class
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
         auto configWindow() -> void;
-        auto getSurface() {return this->surface;}
-        auto getWindow() {return this->window;}
+        auto getSurface() -> SDL_Surface* {return this->surface;}
+        auto getWindow() -> SDL_Window* {return this->window;}
 
     private:
         SDL_Window* window;
