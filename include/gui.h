@@ -26,13 +26,12 @@ class Gui_class
         auto render() -> void;
         auto configWindow() -> void;
         auto getWindow() -> SDL_Window* {return this->window;}
-        auto displayImage() -> void;
+        auto displayImage(SDL_Surface*) -> void;
 
     private:
         SDL_Window* window;
         SDL_GLContext context;
         SDL_Event event;
-        SDL_Surface* imageSurface;
 
         bool run = true;
         bool show_test_window = true;

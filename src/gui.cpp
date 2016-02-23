@@ -8,8 +8,6 @@ auto Gui_class::open() -> void
     this->context = SDL_GL_CreateContext(window);
     SDL_assert(context);
 
-    this->imageSurface = IMG_Load("assets/rin.png");
-
     glewExperimental = GL_TRUE;
     auto status = glewInit();
     SDL_assert(status == GLEW_OK);
@@ -55,13 +53,13 @@ auto Gui_class::configWindow() -> void
     }
 }
 
-auto Gui_class::displayImage() -> void
+auto Gui_class::displayImage(SDL_Surface* image) -> void
 {
     GLuint texture = 0;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, this->imageSurface->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
     ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(30, 30));
 }
