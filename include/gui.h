@@ -26,6 +26,7 @@ class Gui_class
         auto render() -> void;
         auto configWindow() -> void;
         auto getWindow() -> SDL_Window* {return this->window;}
+        auto displayImage() -> void;
 
     private:
         SDL_Window* window;
