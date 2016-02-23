@@ -25,14 +25,13 @@ class Gui_class
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
         auto configWindow() -> void;
-        auto getSurface() -> SDL_Surface* {return this->surface;}
         auto getWindow() -> SDL_Window* {return this->window;}
 
     private:
         SDL_Window* window;
         SDL_GLContext context;
         SDL_Event event;
-        SDL_Surface* surface;
+        SDL_Surface* imageSurface;
         SDL_Renderer* renderer;
 
         bool run = true;
