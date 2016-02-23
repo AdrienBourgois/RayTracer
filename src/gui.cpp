@@ -10,8 +10,6 @@ auto Gui_class::open() -> void
 
     this->imageSurface = IMG_Load("assets/rin.png");
 
-    this->renderer = SDL_CreateSoftwareRenderer(this->imageSurface);
-
     glewExperimental = GL_TRUE;
     auto status = glewInit();
     SDL_assert(status == GLEW_OK);
@@ -59,8 +57,6 @@ auto Gui_class::configWindow() -> void
 
 auto Gui_class::displayImage() -> void
 {
-    SDL_Texture* SDLtexture = SDL_CreateTextureFromSurface(this->renderer, this->imageSurface);
-    (void)SDLtexture;
     GLuint texture = 0;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
