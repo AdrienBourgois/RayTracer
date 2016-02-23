@@ -8,6 +8,10 @@ auto Gui_class::open() -> void
     this->context = SDL_GL_CreateContext(window);
     SDL_assert(context);
 
+    this->imageSurface = IMG_Load("assets/rin.png");
+    if(IMG_GetError())
+        std::cout << "Error :" << IMG_GetError() << std::endl;
+
     this->renderer = SDL_CreateSoftwareRenderer(this->imageSurface);
 
     glewExperimental = GL_TRUE;
@@ -15,10 +19,6 @@ auto Gui_class::open() -> void
     SDL_assert(status == GLEW_OK);
 
     Gui::Init(window);
-
-    this->imageSurface = IMG_Load("assets/rin.png");
-    if(IMG_GetError())
-        std::cout << "Error :" << IMG_GetError() << std::endl;
 }
 
 auto Gui_class::close() -> void
