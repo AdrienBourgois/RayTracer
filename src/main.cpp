@@ -12,7 +12,7 @@ auto main() -> int
     Gui_class gui;
     gui.open();
 
-    SDL_Surface* image = IMG_Load("assets/rin.png");
+    SDL_Surface* image = IMG_Load("assets/RinL.jpg");
 
     bool show_another_window = true;
 
@@ -20,7 +20,7 @@ auto main() -> int
     {
         gui.newFrame();
         {
-            ImGui::SetNextWindowPos(ImVec2(image->w, image->h), ImGuiSetCond_FirstUseEver);
+            ImGui::SetNextWindowPos(ImVec2(30, 30), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Image", &show_another_window, ImGuiWindowFlags_NoSavedSettings);
             ImGui::Text("Test");
             gui.displayImage(image);
