@@ -60,6 +60,6 @@ auto Gui_class::displayImage(SDL_Surface* image) -> void
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
-    ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(30, 30));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+    ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(image->w, image->h));
 }
