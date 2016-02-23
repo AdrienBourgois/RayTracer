@@ -13,6 +13,9 @@ auto Gui_class::open() -> void
     SDL_assert(status == GLEW_OK);
 
     Gui::Init(window);
+
+    this->texture = 0;
+    glGenTextures(1, &this->texture);
 }
 
 auto Gui_class::close() -> void
@@ -55,11 +58,9 @@ auto Gui_class::configWindow() -> void
 
 auto Gui_class::displayImage(SDL_Surface* image) -> void
 {
-    GLuint texture = 0;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindTexture(GL_TEXTURE_2D, this->texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
-    ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(image->w, image->h));
+    ImGui::Image(reinterpret_cast<void*>(this->texture), ImVec2(image->w, image->h));
 }
