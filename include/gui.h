@@ -24,7 +24,6 @@ class Gui_class
         auto updateEvent() -> bool;
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
-        auto configWindow() -> void;
         auto getWindow() -> SDL_Window* {return this->window;}
         auto displayImage(SDL_Surface*) -> void;
 

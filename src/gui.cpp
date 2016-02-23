@@ -47,15 +47,6 @@ auto Gui_class::render() -> void
     SDL_GL_SwapWindow(window);
 }
 
-auto Gui_class::configWindow() -> void
-{
-    if(show_test_window)
-    {
-        ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-        ImGui::ShowTestWindow(&show_test_window);
-    }
-}
-
 auto Gui_class::displayImage(SDL_Surface* image) -> void
 {
     glBindTexture(GL_TEXTURE_2D, this->texture);

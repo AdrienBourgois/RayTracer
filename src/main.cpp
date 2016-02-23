@@ -19,7 +19,6 @@ auto main() -> int
     while(gui.updateEvent())
     {
         gui.newFrame();
-        gui.configWindow();
         {
             ImGui::SetNextWindowPos(ImVec2(650, 500), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Image", &show_another_window);
