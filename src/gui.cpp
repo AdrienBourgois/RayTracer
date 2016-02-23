@@ -8,6 +8,8 @@ auto Gui_class::open() -> void
     this->context = SDL_GL_CreateContext(window);
     SDL_assert(context);
 
+    this renderer = SDL_CreateSoftwareRenderer(this->surface);
+
     glewExperimental = GL_TRUE;
     auto status = glewInit();
     SDL_assert(status == GLEW_OK);
