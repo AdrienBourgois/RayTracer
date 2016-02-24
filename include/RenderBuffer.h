@@ -22,6 +22,10 @@ class RenderBuffer
 		auto getLastColorElementIndex() -> long unsigned int;
 
         auto clearBuffer() -> void;
+
+        template<typename T>
+        auto getFormattedData(bool alpha);
+
     private:
 
         std::vector<Vector3D<Uint8>> color_list;
