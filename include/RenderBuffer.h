@@ -24,7 +24,7 @@ class RenderBuffer
         auto clearBuffer() -> void;
 
         template<typename T>
-        auto getFormattedData(bool alpha);
+        auto getFormattedData(bool alpha) -> void;
 
     private:
 
