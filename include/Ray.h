@@ -1,27 +1,27 @@
 #ifndef __RAY_DECLARATION__
 #define __RAY_DECLARATION__
 
-#include <memory>
+#include <vector>
 
 #include "Vector.h"
 
-enum class ray_type
+enum class Eray_type
 {
 	CAMERA_RAY,
 	REFLECTION_RAY,
 	REFRACTION_RAY
-} 
+}; 
 
 struct Ray
 {
 	public:
 	
-		Ray() = default;
+		Ray();
 		~Ray() = default;
 
-	private:
+		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void;
+		auto close() -> void;
 
-		ray_type type;
 
 		Vector3D<float> origin;
 		Vector3D<float> direction;
@@ -29,7 +29,9 @@ struct Ray
 		float power;
 		float lenght;
 		
+	private:
+		Eray_type type;
 		std::vector<Ray*> child_list;
-}
+};
 
 #endif
