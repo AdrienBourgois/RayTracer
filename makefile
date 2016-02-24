@@ -6,6 +6,8 @@ SRC = ImGui/imgui.cpp \
 	  ImGui/imgui_impl.cpp \
 	  main.cpp \
 	  gui.cpp \
+	  RenderBuffer.cpp \
+	  Log.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 
