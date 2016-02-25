@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL2/SDL.h>
+//#include <SDL2/SDL.h>
 
 #include "Raytracer.h"
 #include "GeometryBuffer.h"
@@ -8,6 +8,8 @@
 #include "Log.h"
 #include "MathCalc.h"
 #include "CollisionCalc.h"
+
+typedef unsigned char uint8;
 
 Raytracer::Raytracer()
 {
@@ -56,30 +58,27 @@ auto Raytracer::render() -> void
 	{
 		for(float idx_x = 0.f; idx_x < this->render_size.x; ++idx_x)
 		{
-			//std::cout<<"Idx_x = "<<idx_x;
-			//std::cout<<"  Idx_y = "<<idx_y<<std::endl;
 			Vector3D<float> ray_dest_point = FindCameraRayDestinationPoint(this->render_size, idx_x, idx_y);
 
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 		
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
-				//std::cout<<"Geometry_list size = "<<geometry_list.size()<<std::endl;
 				current_geometry = this->geometry_list[idx];
-				//current_geometry = this->getGeometryPointer(current_geometry);
 				SphereGeometryBuffer* derived = dynamic_cast<SphereGeometryBuffer*> (current_geometry); 
-				//current_geometry = dynamic_cast<GeometryBuffer*> (derived);
-				//current_geometry = this->geometry_list[idx];
 				if(calculateCollision(derived, camera_ray))
 				{
-					Vector3D<Uint8> color_value;
-					color_value.x = Uint8 (current_geometry->material_buffer->color.x);
-					color_value.y = Uint8 (current_geometry->material_buffer->color.y);
-					color_value.z = Uint8 (current_geometry->material_buffer->color.z);
+					Vector3D<uint8> color_value;
+					color_value.x = uint8 (current_geometry->material_buffer->color.x);
+					color_value.y = uint8 (current_geometry->material_buffer->color.y);
+					color_value.z = uint8 (current_geometry->material_buffer->color.z);
 
 					this->render_buffer->setColorList(color_value);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
+				else
+					this->render_buffer->setColorList(Vector3D<uint8>(0.f, 0.f, 0.f));
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 			}	
 		}
 	}

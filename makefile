@@ -6,6 +6,14 @@ SRC = ImGui/imgui.cpp \
 	  ImGui/imgui_impl.cpp \
 	  main.cpp \
 	  gui.cpp \
+		Raytracer.cpp \
+		Ray.cpp \
+		GeometryBuffer.cpp \
+		MaterialBuffer.cpp \
+		Camera.cpp \
+		MathCalc.cpp \
+		CollisionCalc.cpp \
+		SceneNode.cpp \
 	  RenderBuffer.cpp \
 	  Log.cpp \
 
