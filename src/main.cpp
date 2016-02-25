@@ -13,27 +13,19 @@ auto main() -> int
     Gui_class gui;
     gui.open();
 
-    SDL_Renderer* renderer = SDL_CreateSoftwareRenderer(gui.getSurface());
-    SDL_Texture* SDLtexture = SDL_CreateTextureFromSurface(renderer, gui.getSurface());
-    (void)SDLtexture;
-    GLuint texture = 0;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 30, 30, 0, GL_RGB, GL_UNSIGNED_BYTE, gui.getSurface()->pixels);
+    SDL_Surface* image = IMG_Load("assets/RinL.jpg");
+    //unsigned char pixels[] = {255, 255, 255, 255, 0, 0};
 
     bool show_another_window = true;
 
     while(gui.updateEvent())
     {
         gui.newFrame();
-        gui.configWindow();
         {
-            ImGui::SetNextWindowPos(ImVec2(650, 500), ImGuiSetCond_FirstUseEver);
-            ImGui::Begin("Image", &show_another_window);
+            ImGui::SetNextWindowPos(ImVec2(30, 30), ImGuiSetCond_FirstUseEver);
+            ImGui::Begin("Image", &show_another_window, ImGuiWindowFlags_NoSavedSettings);
             ImGui::Text("Test");
-            ImGui::Image(reinterpret_cast<void*>(texture), ImVec2(30, 30));
+            gui.displayImage(image->pixels, image->w, image->h);
             ImGui::End();
         }
         gui.render();

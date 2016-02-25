@@ -14,8 +14,8 @@ auto Gui_class::open() -> void
 
     Gui::Init(window);
 
-    this->surface = IMG_Load("assets/rin.png");
-    std::cout << "Error :" << IMG_GetError() << std::endl;
+    this->texture = 0;
+    glGenTextures(1, &this->texture);
 }
 
 auto Gui_class::close() -> void
@@ -47,11 +47,11 @@ auto Gui_class::render() -> void
     SDL_GL_SwapWindow(window);
 }
 
-auto Gui_class::configWindow() -> void
+auto Gui_class::displayImage(void* image, int w, int h) -> void
 {
-    if(show_test_window)
-    {
-        ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-        ImGui::ShowTestWindow(&show_test_window);
-    }
+    glBindTexture(GL_TEXTURE_2D, this->texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    ImGui::Image(reinterpret_cast<void*>(this->texture), ImVec2(w, h));
 }
