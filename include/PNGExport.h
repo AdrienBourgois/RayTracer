@@ -27,4 +27,12 @@ struct PNGSignature
     BIT8 Signature[8];
 };
 
+struct PNGChunck
+{
+    BIT32 length;
+    BIT32 type;
+    BIT32 crc;
+    BIT8 data[];
+};
+
 #endif //__PNGEXPORT_DECLARATION__
