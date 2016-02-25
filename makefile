@@ -8,6 +8,7 @@ SRC = ImGui/imgui.cpp \
 	  gui.cpp \
 	  RenderBuffer.cpp \
 	  Log.cpp \
+	  PNGExport.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 
