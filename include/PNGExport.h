@@ -45,7 +45,7 @@ struct PNGDataChunk
 
 enum EchunkType : int
 {
-    HeaderChunk,
+    HeaderChunk = 1,
     PaletteChunk,
     DataChunk,
     TrailerChunk
@@ -64,6 +64,7 @@ class PNGExport
 
         auto prepareChunk(int type, BIT8* data) -> PNGChunk;
         auto writeChunk(PNGChunk chunk) -> void;
+        auto makeBIT32(int, int, int, int) -> BIT32;
 
     private:
         void* inData;
