@@ -43,7 +43,7 @@ struct PNGDataChunk
     BIT8 colorData;
 };
 
-enum EchunkType
+enum EchunkType : int
 {
     HeaderChunk,
     PaletteChunk,
@@ -62,7 +62,7 @@ class PNGExport
         auto operator=(PNGExport const&) -> PNGExport = delete;
         auto operator=(PNGExport &&) -> PNGExport = delete;
 
-        auto prepareChunk(BIT32 type, BIT8* data) -> PNGChunk;
+        auto prepareChunk(int type, BIT8* data) -> PNGChunk;
         auto writeChunk(PNGChunk chunk) -> void;
 
     private:
