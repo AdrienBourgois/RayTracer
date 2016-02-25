@@ -27,7 +27,7 @@ struct PNGSignature
     BIT8 Signature[8];
 };
 
-struct PNGChunck
+struct PNGChunk
 {
     BIT32 length;
     BIT32 type;
@@ -35,7 +35,7 @@ struct PNGChunck
     BIT8  data[];
 };
 
-struct PNGHeaderChunck
+struct PNGHeaderChunk
 {
     BIT32 width;
     BIT32 height;
@@ -44,6 +44,13 @@ struct PNGHeaderChunck
     BIT8  compression;
     BIT8  filter;
     BIT8  interlace;
+};
+
+struct PNGPaletteChunk
+{
+    BIT8 red;
+    BIT8 green;
+    BIT8 blue;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
