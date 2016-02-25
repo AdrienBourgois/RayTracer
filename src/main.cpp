@@ -13,6 +13,7 @@ auto main() -> int
     gui.open();
 
     SDL_Surface* image = IMG_Load("assets/RinL.jpg");
+    //unsigned char pixels[] = {255, 255, 255, 255, 0, 0};
 
     bool show_another_window = true;
 
@@ -23,7 +24,7 @@ auto main() -> int
             ImGui::SetNextWindowPos(ImVec2(30, 30), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Image", &show_another_window, ImGuiWindowFlags_NoSavedSettings);
             ImGui::Text("Test");
-            gui.displayImage(image);
+            gui.displayImage(image->pixels, image->w, image->h);
             ImGui::End();
         }
         gui.render();
