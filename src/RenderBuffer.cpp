@@ -46,7 +46,7 @@ auto RenderBuffer::clearBuffer() -> void
 template <typename T>
 auto RenderBuffer::getFormattedData(bool alpha) -> T*
 {
-    int pixelSize = this->screen_coord_list.size;
+    int pixelSize = this->screen_coord_list.size();
     T formattedData[pixelSize * (3 + alpha)];
 
     for (int i = 0; i < pixelSize; ++i)
