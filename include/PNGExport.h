@@ -19,4 +19,12 @@ class PNGExport
         std::string pathFile;
 };
 
+typedef unsigned char BIT8;
+typedef unsigned long BIT32;
+
+struct PNGSignature
+{
+    BIT8 Signature[8];
+};
+
 #endif //__PNGEXPORT_DECLARATION__
