@@ -6,12 +6,12 @@ PNGExport::PNGExport(void* _data, int _sizePerData, int _width, int _height, std
     this->file.open(this->pathFile);
 }
 
-PNGExport::prepareChunk(BIT32 type, BIT8* data) -> void
+auto PNGExport::prepareChunk(int type, BIT8* data) -> PNGChunk
 {
-
+    
 }
 
-PNGExport::writeChunk(PNGChunk chunk) -> void
+auto PNGExport::writeChunk(PNGChunk chunk) -> void
 {
 
 }
