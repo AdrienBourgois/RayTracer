@@ -42,21 +42,3 @@ auto RenderBuffer::clearBuffer() -> void
     this->color_list.clear();
     this->screen_coord_list.clear();
 }
-
-template <typename T>
-auto RenderBuffer::getFormattedData(bool alpha) -> T*
-{
-    int pixelSize = this->screen_coord_list.size();
-    T formattedData[pixelSize * (3 + alpha)];
-
-    for (int i = 0; i < pixelSize; ++i)
-    {
-        formattedData[i] = this->color_list[i].x;
-        formattedData[i+1] = this->color_list[i].y;
-        formattedData[i+2] = this->color_list[i].z;
-        //if(alpha)
-        //    formattedData[i+3] = this->color_list[i].alpha;
-    }
-
-    return formattedData;
-}
