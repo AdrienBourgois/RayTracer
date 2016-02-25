@@ -47,11 +47,11 @@ auto Gui_class::render() -> void
     SDL_GL_SwapWindow(window);
 }
 
-auto Gui_class::displayImage(SDL_Surface* image) -> void
+auto Gui_class::displayImage(void* image, int w, int h) -> void
 {
     glBindTexture(GL_TEXTURE_2D, this->texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->w, image->h, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
-    ImGui::Image(reinterpret_cast<void*>(this->texture), ImVec2(image->w, image->h));
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+    ImGui::Image(reinterpret_cast<void*>(this->texture), ImVec2(w, h));
 }
