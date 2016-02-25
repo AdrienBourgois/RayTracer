@@ -4,13 +4,7 @@
 #include <vector>
 
 #include "Vector.h"
-
-enum class Eray_type
-{
-	CAMERA_RAY,
-	REFLECTION_RAY,
-	REFRACTION_RAY
-}; 
+#include "Enum.h"
 
 struct Ray
 {

@@ -1,4 +1,6 @@
 #include "GeometryBuffer.h"
 #include "Ray.h"
 
-auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> bool;
+auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> bool;
+
+auto calculateCollisionPoint(float distance, Ray* ray) -> void;

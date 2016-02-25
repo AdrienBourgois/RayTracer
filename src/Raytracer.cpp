@@ -56,15 +56,21 @@ auto Raytracer::render() -> void
 	{
 		for(float idx_x = 0.f; idx_x < this->render_size.x; ++idx_x)
 		{
+			//std::cout<<"Idx_x = "<<idx_x;
+			//std::cout<<"  Idx_y = "<<idx_y<<std::endl;
 			Vector3D<float> ray_dest_point = FindCameraRayDestinationPoint(this->render_size, idx_x, idx_y);
 
-			this->camera_ray->direction = ray_dest_point - this->camera_ray->origin;
+			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 		
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
+				//std::cout<<"Geometry_list size = "<<geometry_list.size()<<std::endl;
 				current_geometry = this->geometry_list[idx];
-
-				if(calculateCollision(current_geometry, camera_ray))
+				//current_geometry = this->getGeometryPointer(current_geometry);
+				SphereGeometryBuffer* derived = dynamic_cast<SphereGeometryBuffer*> (current_geometry); 
+				//current_geometry = dynamic_cast<GeometryBuffer*> (derived);
+				//current_geometry = this->geometry_list[idx];
+				if(calculateCollision(derived, camera_ray))
 				{
 					Vector3D<Uint8> color_value;
 					color_value.x = Uint8 (current_geometry->material_buffer->color.x);
@@ -79,14 +85,14 @@ auto Raytracer::render() -> void
 	}
 }
 
-auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list) -> void
+auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry) -> void
 {
 	Log* log = Log::getInstance();
 	log->info("Geometry buffer creation...");
 
 	if (rad != 0.f)
 	{
-		SphereGeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list);
+		/*SphereGeometryBuffer**/ GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 
@@ -103,6 +109,17 @@ auto Raytracer::genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, 
 	long unsigned int last_element = this->geometry_list.size() - 1u;
 	this->geometry_list.at(last_element)->createMaterialBuffer(color_node, reflct_idx, refrct_idx, light);
 }
+/*
+template <typename T>
+auto Raytracer::getGeometryPointer(T* geometry_pointer) -> T*
+{
+	if (geometry_pointer->type == EGeometry_type::SPHERE)
+	{
+		SphereGeometryBuffer* derived_class = nullptr;
+		 geometry_pointer = static_cast<SphereGeometryBuffer*> (derived_class);
+	}
+	return geometry_pointer;
+}*/
 
 auto Raytracer::close() -> void
 {
