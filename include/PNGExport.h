@@ -38,6 +38,11 @@ struct PNGPaletteChunk
     BIT8 blue;
 };
 
+struct PNGDataChunk
+{
+    BIT8 colorData;
+};
+
 enum EchunkType
 {
     HeaderChunk,
