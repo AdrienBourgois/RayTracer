@@ -25,7 +25,7 @@ class Gui_class
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
         auto getWindow() -> SDL_Window* {return this->window;}
-        auto displayImage(SDL_Surface*) -> void;
+        auto displayImage(void*, int, int) -> void;
 
     private:
         SDL_Window* window;
