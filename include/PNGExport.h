@@ -2,22 +2,25 @@
 #define __PNGEXPORT_DECLARATION__
 
 #include <iostream>
+#include <fstream>
 
 class PNGExport
 {
     public:
         PNGExport(void*, int, std::string);
-        ~PNGExport() = default;
+        ~PNGExport();
 
         PNGExport(PNGExport const&) = delete;
         PNGExport(PNGExport &&) = delete;
         auto operator=(PNGExport const&) -> PNGExport = delete;
         auto operator=(PNGExport &&) -> PNGExport = delete;
 
+
     private:
         void* inData;
         std::string pathFile;
         int sizePerData;
+        std::ofstream file;
 };
 
 typedef unsigned char BIT8;
