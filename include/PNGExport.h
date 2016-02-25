@@ -24,7 +24,7 @@ typedef unsigned long BIT32;
 
 struct PNGSignature
 {
-    BIT8 Signature[8];
+    BIT8 Signature[8] = {137, 80, 78, 71, 13, 10, 26, 10};
 };
 
 struct PNGChunk
@@ -39,11 +39,11 @@ struct PNGHeaderChunk
 {
     BIT32 width;
     BIT32 height;
-    BIT8  depth;
-    BIT8  colorType;
-    BIT8  compression;
-    BIT8  filter;
-    BIT8  interlace;
+    BIT8  depth = 8;
+    BIT8  colorType = 2;
+    BIT8  compression = 0;
+    BIT8  filter = 0;
+    BIT8  interlace = 0;
 };
 
 struct PNGPaletteChunk
