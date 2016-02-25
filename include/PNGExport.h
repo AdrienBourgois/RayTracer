@@ -38,6 +38,14 @@ struct PNGPaletteChunk
     BIT8 blue;
 };
 
+enum EchunkType
+{
+    HeaderChunk,
+    PaletteChunk,
+    DataChunk,
+    TrailerChunk
+};
+
 class PNGExport
 {
     public:
@@ -55,10 +63,11 @@ class PNGExport
     private:
         void* inData;
         std::string pathFile;
-        int sizePerData;
-        std::ofstream file;
         int width;
         int height;
+        int sizePerData;
+
+        std::ofstream file;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
