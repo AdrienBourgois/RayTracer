@@ -7,7 +7,7 @@
 class PNGExport
 {
     public:
-        PNGExport(void*, int, std::string);
+        PNGExport(void*, int, int, int, std::string);
         ~PNGExport();
 
         PNGExport(PNGExport const&) = delete;
@@ -21,6 +21,8 @@ class PNGExport
         std::string pathFile;
         int sizePerData;
         std::ofstream file;
+        int width;
+        int height;
 };
 
 typedef unsigned char BIT8;
@@ -35,8 +37,8 @@ struct PNGChunk
 {
     BIT32 length;
     BIT32 type;
-    BIT8  data[];
     BIT32 crc;
+    BIT8  data[];
 };
 
 struct PNGHeaderChunk
