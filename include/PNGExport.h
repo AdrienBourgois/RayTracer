@@ -32,7 +32,18 @@ struct PNGChunck
     BIT32 length;
     BIT32 type;
     BIT32 crc;
-    BIT8 data[];
+    BIT8  data[];
+};
+
+struct PNGHeaderChunck
+{
+    BIT32 width;
+    BIT32 height;
+    BIT8  depth;
+    BIT8  colorType;
+    BIT8  compression;
+    BIT8  filter;
+    BIT8  interlace;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
