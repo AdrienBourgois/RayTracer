@@ -4,27 +4,6 @@
 #include <iostream>
 #include <fstream>
 
-class PNGExport
-{
-    public:
-        PNGExport(void*, int, int, int, std::string);
-        ~PNGExport();
-
-        PNGExport(PNGExport const&) = delete;
-        PNGExport(PNGExport &&) = delete;
-        auto operator=(PNGExport const&) -> PNGExport = delete;
-        auto operator=(PNGExport &&) -> PNGExport = delete;
-
-
-    private:
-        void* inData;
-        std::string pathFile;
-        int sizePerData;
-        std::ofstream file;
-        int width;
-        int height;
-};
-
 typedef unsigned char BIT8;
 typedef unsigned long BIT32;
 
@@ -38,7 +17,7 @@ struct PNGChunk
     BIT32 length;
     BIT32 type;
     BIT32 crc;
-    BIT8  data[];
+    BIT8* data;
 };
 
 struct PNGHeaderChunk
@@ -57,6 +36,29 @@ struct PNGPaletteChunk
     BIT8 red;
     BIT8 green;
     BIT8 blue;
+};
+
+class PNGExport
+{
+    public:
+        PNGExport(void*, int, int, int, std::string);
+        ~PNGExport();
+
+        PNGExport(PNGExport const&) = delete;
+        PNGExport(PNGExport &&) = delete;
+        auto operator=(PNGExport const&) -> PNGExport = delete;
+        auto operator=(PNGExport &&) -> PNGExport = delete;
+
+        auto prepareChunk(BIT32 type, BIT8* data) -> PNGChunk;
+        auto writeChunk(PNGChunk chunk) -> void;
+
+    private:
+        void* inData;
+        std::string pathFile;
+        int sizePerData;
+        std::ofstream file;
+        int width;
+        int height;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
