@@ -20,12 +20,18 @@ auto PNGExport::prepareChunk(int type, BIT8* data) -> PNGChunk
 
     if (type == EchunkType::DataChunk)
     {
-
+        chunk.length = 3;
+        chunk.type = makeBIT32('I', 'D', 'A', 'T');
+        //chunk.data = BIT8[];
+        //chunk.crc = calcCRC();
     }
 
     if (type == EchunkType::TrailerChunk)
     {
-
+        chunk.length = 0;
+        chunk.type = makeBIT32('I', 'E', 'N', 'D');
+        chunk.data = 0;
+        //chunk.crc = calcCRC();
     }
 
     return chunk;
