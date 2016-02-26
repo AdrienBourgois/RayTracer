@@ -24,15 +24,14 @@ class Gui_class
         auto updateEvent() -> bool;
         auto newFrame() -> void { Gui::NewFrame(window); }
         auto render() -> void;
-        auto configWindow() -> void;
-        auto getSurface() {return this->surface;}
-        auto getWindow() {return this->window;}
+        auto getWindow() -> SDL_Window* {return this->window;}
+        auto displayImage(void*, int, int) -> void;
 
     private:
         SDL_Window* window;
         SDL_GLContext context;
         SDL_Event event;
-        SDL_Surface* surface;
+        GLuint texture;
 
         bool run = true;
         bool show_test_window = true;
