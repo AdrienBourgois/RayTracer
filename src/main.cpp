@@ -2,15 +2,12 @@
 #include <string>
 
 #include <GL/glew.h>
-//#include <SDL2/SDL.h>
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl.h>
 #include "gui.h"
 #include "Raytracer.h"
 #include "SceneNode.h"
 #include "Enum.h"
-
-//#include "Raytracer.h"
 
 auto main() -> int
 {
@@ -33,11 +30,6 @@ auto main() -> int
 
 	raytracer->genGeometryBuffer(sun_node->getPosition(), sun_node->getRadius(), sun_node->getVerticeList(), EGeometry_type::SPHERE);
 	raytracer->genMaterialBuffer(sun_node->getColor(), 100.f, 0.f, true);
-
-    //SDL_Surface* image = IMG_Load("assets/RinL.jpg");
-    //unsigned char pixels[] = {255, 255, 255, 255, 0, 0};
-
-	
 
     bool show_another_window = true;
 
