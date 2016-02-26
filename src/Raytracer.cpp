@@ -65,25 +65,13 @@ auto Raytracer::render() -> void
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
 				current_geometry = this->geometry_list[idx];
-				//SphereGeometryBuffer* derived = dynamic_cast<SphereGeometryBuffer*> (current_geometry); 
 				if(calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray))
 				{
-					Vector3D<uint8> color_value;
-//					color_value.x = uint8 (current_geometry->material_buffer->color.x);
-//					color_value.y = uint8 (current_geometry->material_buffer->color.y);
-//					color_value.z = uint8 (current_geometry->material_buffer->color.z);
-
-//					color_value.x =  static_cast<uint8> (current_geometry->material_buffer->color.x);
-//					color_value.y =  static_cast<uint8> (current_geometry->material_buffer->color.y);
-//					color_value.z =  static_cast<uint8> (current_geometry->material_buffer->color.z);
-
-					color_value = color_value.cast(current_geometry->material_buffer->color);
-
-					this->render_buffer->setColorList(color_value);
+					this->render_buffer->setColorList(current_geometry->material_buffer->color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 				else
-					this->render_buffer->setColorList(Vector3D<uint8>(0.f, 0.f, 0.f));
+					this->render_buffer->setColorList(Vector3D<float>(0.f, 0.f, 0.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 			}	
 		}
