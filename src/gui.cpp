@@ -49,6 +49,9 @@ auto Gui_class::render() -> void
 
 auto Gui_class::displayImage(void* image, int w, int h) -> void
 {
+    (void)image;
+    (void)w;
+    (void)h;
     glBindTexture(GL_TEXTURE_2D, this->texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

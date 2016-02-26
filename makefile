@@ -1,13 +1,22 @@
 TARGET = RayTracer
 
-SRC = ImGui/imgui.cpp \
-	  ImGui/imgui_draw.cpp \
-	  ImGui/imgui_demo.cpp \
-	  ImGui/imgui_impl.cpp \
-	  main.cpp \
-	  gui.cpp \
-	  RenderBuffer.cpp \
-	  Log.cpp \
+SRC =  main.cpp\
+		Window.cpp \
+		Raytracer.cpp \
+		Ray.cpp \
+		GeometryBuffer.cpp \
+		MaterialBuffer.cpp \
+		Camera.cpp \
+		MathCalc.cpp \
+		CollisionCalc.cpp \
+		SceneNode.cpp \
+		RenderBuffer.cpp \
+		Log.cpp \
+		gui.cpp \
+		ImGui/imgui.cpp \
+		ImGui/imgui_draw.cpp \
+		ImGui/imgui_demo.cpp \
+		ImGui/imgui_impl.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 

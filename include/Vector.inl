@@ -239,6 +239,18 @@ auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> V
 	return vector = (intersect_point - origin);
 }
 
+template <typename T> template <typename U>
+auto Vector3D<T>::cast(Vector3D<U> vec) -> Vector3D<T>
+{
+	Vector3D<T> vector;
+	
+	vector.x = static_cast<T> (vec.x);
+	vector.y = static_cast<T> (vec.y);
+	vector.z = static_cast<T> (vec.z);
+	
+	return vector;
+}
+
 template <typename T>
 Vector4D<T>::Vector4D()
 {
