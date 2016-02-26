@@ -41,7 +41,6 @@ auto main() -> int
         {
             ImGui::SetNextWindowPos(ImVec2(30, 30), ImGuiSetCond_FirstUseEver);
             ImGui::Begin("Image", &show_another_window, ImGuiWindowFlags_NoSavedSettings);
-            ImGui::Text("Test");
             Uint8* image = raytracer->getRenderBuffer()->getFormattedData<Uint8>(false);
             gui.displayImage(image, screen_res.x, screen_res.y);
             ImGui::End();
