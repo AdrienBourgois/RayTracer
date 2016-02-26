@@ -42,6 +42,19 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 		-1.f, -1.f, 0.f
 		};
 	}break;
+	
+	default : 
+	{
+		vertice = {
+                1.f, 1.f, 0.f,
+                -1.f, 1.f, 0.f,
+                -1.f, -1.f, 0.f,
+
+		1.f, 1.f, 0.f,
+		1.f, -1.f, 0.f,
+		-1.f, -1.f, 0.f
+                };
+	}break;
 
 	}
 }
