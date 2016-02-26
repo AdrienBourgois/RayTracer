@@ -61,6 +61,7 @@ class Vector3D
 		auto 		normalize() -> Vector3D;
 		auto		dot(Vector3D const& b) -> T;
 		auto		normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
+		auto		calculateAngle(Vector3D vec1, Vector3D vec2) -> T;
 
     private:
 

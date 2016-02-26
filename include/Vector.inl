@@ -267,6 +267,22 @@ auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> V
 }
 
 template <typename T>
+auto Vector3D<T>::calculateAngle(Vector3D vec1, Vector3D vec2) -> T
+{
+	float norm1 = std::sqrt(std::pow(vec1.x, 2.f) + std::pow(vec1.y, 2.f) + std::pow(vec1.z, 2.f));
+	
+	float norm2 = std::sqrt(std::pow(vec2.x, 2.f) + std::pow(vec2.y, 2.f) + std::pow(vec2.z, 2.f));
+	
+	float dot_product = vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
+
+	float radian = (dot_product) / (norm1 * norm2);
+
+	float teta	 = std::acos(radian);
+
+	return teta;
+}
+
+template <typename T>
 Vector4D<T>::Vector4D()
 {
     this->x = this->y = this->z = this->w = 0;
