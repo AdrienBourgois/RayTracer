@@ -37,13 +37,13 @@ auto Device::init() -> void
     this->driver->init(this->screen_size, this->raytracer.get());
 	this->raytracer->init(this->screen_size);
 
-	this->createSceneNode(Vector3D<float> (1.f, 0.f, -1.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (1.f, 0.f, -1.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (0.f, 1.f, -1.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (0.f, 1.f, -1.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (-1.f, 0.f, -1.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (-1.f, 0.f, -1.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (0.f, -1.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (0.f, -1.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), false, 1.f, EGeometry_type::TRIANGLE);
 
    // this->driver->changePixelColor(255, 255, 255, 120, 0);
 }
@@ -60,14 +60,14 @@ auto Device::run() -> void
     }
 }
 
-auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad) -> void
+auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void
 {
 	SceneNode* scene_node = new SceneNode();
-	scene_node->init(pos, col, light, rad);
+	scene_node->init(pos, col, light, rad, type);
 
 	this->node_list.push_back(scene_node);
 
-	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), EGeometry_type::SPHERE);
+	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), type);
 	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, false);
 }
 

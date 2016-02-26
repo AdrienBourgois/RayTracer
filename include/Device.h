@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "Vector.h"
+#include "Enum.h"
 
 class Driver;
 class Raytracer;
@@ -20,7 +21,7 @@ class Device final
     
         auto init() -> void;
         auto run() -> void;
-		auto createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad) -> void;
+		auto createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void;
         auto quit() -> void;
         auto close() -> void;
 
