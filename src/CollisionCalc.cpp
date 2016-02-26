@@ -5,16 +5,6 @@
 #include "Vector.h"
 #include "Log.h"
 
-auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> bool
-{
-        Log* log = Log::getInstance();
-
-        if(current_geometry == nullptr)
-                log->error("Can't calculate collision. Reason: current_geometry is null.");
-
-	
-}
-
 auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> bool
 {
 	Log* log = Log::getInstance();
