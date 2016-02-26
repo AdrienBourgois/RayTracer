@@ -41,7 +41,6 @@ template <typename T>
 auto RenderBuffer::getFormattedData(bool alpha) -> T*
 {
     int pixelSize = this->screen_coord_list.size();
-    std::cout << "pixelSize : " << pixelSize << std::endl;
     T* formattedData = new T[pixelSize * (3 + alpha)];
 
     for (int i = 0; i < pixelSize; ++i)
