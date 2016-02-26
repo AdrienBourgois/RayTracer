@@ -50,8 +50,11 @@ class Vector3D
         Vector3D&   operator -=(Vector3D const& a);
         Vector3D    operator *(Vector3D const& a);
         Vector3D    operator *(T a);
-
-        bool        operator ==(Vector3D const& a); 
+		Vector3D	operator /(T a);
+		bool		operator >(Vector3D const& a);
+		bool		operator <(Vector3D const& a);
+		bool		operator ==(Vector3D const& a);
+		bool		operator !=(Vector3D const& a);
 
         auto        convert() -> Vector3D;
 		auto		direction(Vector3D origin, Vector3D destination) -> Vector3D;

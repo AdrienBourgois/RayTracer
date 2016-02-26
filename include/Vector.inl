@@ -176,12 +176,51 @@ Vector3D<T> Vector3D<T>::operator *(T a)
 }    
 
 template <typename T>
+Vector3D<T> Vector3D<T>::operator /(T a)
+{
+	Vector3D<T> res;
+
+	res.x = this->x / a;
+	res.y = this->y / a;
+	res.z = this->z / a;
+
+	return res;
+}
+
+template <typename T>
+bool Vector3D<T>::operator >(Vector3D const& a)
+{
+	if (this->x > a.x && this->y > a.y && this->z > a.z)
+		return true;
+	else
+		return false;
+}
+
+template <typename T>
+bool Vector3D<T>::operator <(Vector3D const& a)                               
+{
+	if (this->x < a.x && this->y < a.y && this->z < a.z)
+		return true;
+	else
+		return false;
+}
+
+template <typename T>
 bool Vector3D<T>::operator ==(Vector3D const& a)
 {
     if(this->x == a.x && this->y == a.y && this->z == a.z)
         return true;
     else
         return false;
+}
+
+template <typename T>
+bool Vector3D<T>::operator !=(Vector3D const& a)
+{
+	if (this->x != a.x && this->y != a.y && this->z != a.z)
+		return true;
+	else
+		return false;
 }
 
 template <typename T>
