@@ -26,7 +26,7 @@ class Raytracer final
 		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
 
 		template <typename T>
-		auto getGeometryPointer(T* geometry_pointer) -> T*;
+		auto getGeometryPointer(GeometryBuffer* geometry_pointer) -> T*;
 		auto getRenderBuffer() -> RenderBuffer* { return this->render_buffer.get(); }
 
 		auto close() -> void;
