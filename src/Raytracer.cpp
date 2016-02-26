@@ -64,18 +64,22 @@ auto Raytracer::render() -> void
 					
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
+				//std::cout<<"list_size = "<<geometry_list.size()<<std::endl;
 				current_geometry = this->geometry_list[idx];
+				
+				//std::cout<<"node->color = "<<current_geometry->material_buffer->color<<std::endl;
 				if(calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray))
 				{
-//					std::cout<<"Collision"<<std::endl;
+					std::cout<<"Collision with node->color = "<<current_geometry->material_buffer->color<<std::endl;
+					
 					this->render_buffer->setColorList(current_geometry->material_buffer->color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
-				else
+/*				else
 				{
 					this->render_buffer->setColorList(Vector3D<float>(0.f, 0.f, 0.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-				}
+				}*/
 			}	
 		}
 	}
