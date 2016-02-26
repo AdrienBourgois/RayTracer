@@ -8,6 +8,7 @@
 #include "gui.h"
 #include "Raytracer.h"
 #include "SceneNode.h"
+#include "Enum.h"
 
 //#include "Raytracer.h"
 
@@ -22,10 +23,10 @@ auto main() -> int
 	raytracer->init(screen_res);
 
 	SceneNode* scene_node = new SceneNode();
-	scene_node->init(Vector3D<float> (0.f, 0.f, -2.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f);
+	scene_node->init(Vector3D<float> (0.f, 0.f, -2.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
 	SceneNode* sun_node = new SceneNode();
-	sun_node->init(Vector3D<float> (0.f, 2.f, -2.f), Vector3D<float> (255.f, 255.f, 255.f), true, 1.f);
+	sun_node->init(Vector3D<float> (0.f, 2.f, -2.f), Vector3D<float> (255.f, 255.f, 255.f), true, 1.f, EGeometry_type::SPHERE);
 
 	raytracer->genGeometryBuffer(scene_node->getPosition(), scene_node->getRadius(), scene_node->getVerticeList(), EGeometry_type::SPHERE);
 	raytracer->genMaterialBuffer(scene_node->getColor(), 100.f, 0.f, false);

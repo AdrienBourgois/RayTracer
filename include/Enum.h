@@ -3,6 +3,7 @@
 enum class EGeometry_type
 {
 	SPHERE,
+	MODEL,
 	TRIANGLE
 };
 

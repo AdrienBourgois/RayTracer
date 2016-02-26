@@ -46,3 +46,12 @@ SphereGeometryBuffer::SphereGeometryBuffer(Vector3D<float> pos, float rad, std::
 	this->material_buffer = nullptr;
 	this->type = type_geometry;
 }
+
+TriangleGeometryBuffer::TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry)
+{
+	this->position = pos;
+	this->vertice_list = vert_list;
+	
+	this->material_buffer = nullptr;
+	this->type = type_geometry;
+}

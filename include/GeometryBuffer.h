@@ -38,4 +38,10 @@ struct SphereGeometryBuffer : public GeometryBuffer
 	float 					radius;
 };
 
+struct TriangleGeometryBuffer : public GeometryBuffer
+{
+	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry);
+	~TriangleGeometryBuffer() = default;
+};
+
 #endif

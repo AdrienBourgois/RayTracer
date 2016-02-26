@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Vector.h"
+#include "Enum.h"
 
 class SceneNode
 {
@@ -12,7 +13,7 @@ class SceneNode
 		SceneNode();
 		~SceneNode() = default;
 
-		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad) -> void;
+		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
 		
 		auto setPosition(Vector3D<float> pos) -> void { this->position = pos; }
 		auto setColor(Vector3D<float> col) -> void { this->color = col; }

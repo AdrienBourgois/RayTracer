@@ -63,16 +63,16 @@ auto Raytracer::render() -> void
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 					
 				float dist_min = 100.f;
-				SphereGeometryBuffer* coll_geo = nullptr;
-			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx) 
+				GeometryBuffer* coll_geo = nullptr;
+			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
 				current_geometry = this->geometry_list[idx];
 
-				float res = calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray);
+				float res = calculateCollision(current_geometry, camera_ray);
 				if(res < dist_min && res > -1.f)
 				{
 					dist_min = res;
-					coll_geo = this->getGeometryPointer<SphereGeometryBuffer>(current_geometry);
+					coll_geo = current_geometry;
 					
 				}
 			}	
@@ -103,7 +103,8 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 
 	else
 	{
-
+		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry);
+		this->geometry_list.push_back(triangle_buffer);
 	}
 
 	log->info("Geometry buffer created.");
