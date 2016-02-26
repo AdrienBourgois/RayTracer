@@ -62,25 +62,25 @@ auto Raytracer::render() -> void
 
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 					
+				float dist_min = 100.f;
+				SphereGeometryBuffer* coll_geo = nullptr;
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
-				//std::cout<<"list_size = "<<geometry_list.size()<<std::endl;
 				current_geometry = this->geometry_list[idx];
-				
-				//std::cout<<"node->color = "<<current_geometry->material_buffer->color<<std::endl;
-				if(calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray))
+
+				float res = calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray);
+				if(res < dist_min && res > -1.f)
 				{
-					std::cout<<"Collision with node->color = "<<current_geometry->material_buffer->color<<std::endl;
+					dist_min = res;
+					coll_geo = this->getGeometryPointer<SphereGeometryBuffer>(current_geometry);
 					
-					this->render_buffer->setColorList(current_geometry->material_buffer->color);
+				}
+			}	
+				if (coll_geo != nullptr)
+				{
+					this->render_buffer->setColorList(coll_geo->material_buffer->color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
-/*				else
-				{
-					this->render_buffer->setColorList(Vector3D<float>(0.f, 0.f, 0.f));
-					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-				}*/
-			}	
 		}
 	}
 }

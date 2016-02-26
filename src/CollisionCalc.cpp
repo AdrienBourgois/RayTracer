@@ -5,7 +5,7 @@
 #include "Vector.h"
 #include "Log.h"
 
-auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> bool
+auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> float
 {
 	Log* log = Log::getInstance();
 	
@@ -26,7 +26,7 @@ auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> boo
 
 	if (discri < 0)
 	{
-		return false; // no colision
+		return -1.f; // no colision
 	}
 	else
 	{
@@ -45,11 +45,10 @@ auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> boo
        // Verify t0 larger than 0 and less than the original t 
         if ((t0 > 0.001f) && (t0 < ray->lenght))
         {
-            calculateCollisionPoint(t0, ray);
-            return true;
+            return t0;
         }
     }
-    return false;	
+    return -1.f;	
 }
 
 auto calculateCollisionPoint(float distance, Ray* ray) -> void
