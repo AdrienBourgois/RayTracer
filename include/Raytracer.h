@@ -27,6 +27,7 @@ class Raytracer final
 
 		template <typename T>
 		auto getGeometryPointer(GeometryBuffer* geometry_pointer) -> T*;
+
 		auto getRenderBuffer() -> RenderBuffer* { return this->render_buffer.get(); }
 
 		auto close() -> void;

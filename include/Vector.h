@@ -4,6 +4,8 @@
 #include <iostream>
 #include <cmath>
 
+typedef unsigned char uint8;
+
 template <typename T>
 class Vector2D
 {
@@ -40,7 +42,7 @@ class Vector3D
         Vector3D();
         Vector3D(T a[3]);
         Vector3D(T a, T b, T c); 
-        Vector3D(Vector3D const&) = default;
+//        Vector3D(Vector3D const&) = default;
         ~Vector3D() = default;
 
         Vector3D&   operator =(Vector3D const& a);
@@ -59,6 +61,7 @@ class Vector3D
 		auto 		pow(T exp) -> Vector3D;
 		auto		dot(Vector3D const& b) -> T;
 		auto		normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
+		auto		cast(Vector3D<float> vec) -> Vector3D;
 
     private:
 
