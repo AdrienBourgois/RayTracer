@@ -1,7 +1,7 @@
 #include "PNGExport.h"
 
-PNGExport::PNGExport(void* _data, int _sizePerData, int _width, int _height, std::string _pathFile)
-: inData(_data), pathFile(_pathFile), width(_width), height(_height), sizePerData(_sizePerData)
+PNGExport::PNGExport(void* _dataPointer, int _pixelsNumber, std::string _pathFile)
+: dataPointer(_dataPointer), pathFile(_pathFile), pixelsNumber(_pixelsNumber)
 {
     this->file.open(this->pathFile, std::ofstream::binary | std::ofstream::trunc);
 }
@@ -11,35 +11,31 @@ PNGExport::~PNGExport()
     this->file.close();
 }
 
-auto PNGExport::prepareChunk(int _type, BIT8* _data) -> PNGChunk
+auto PNGExport::prepareChunk(int _type, BIT8* _data) -> void
 {
-    PNGChunk chunk;
-
     if (_type == EchunkType::HeaderChunk)
     {
-        chunk.length = 13;
-        chunk.type = makeBIT32('I', 'H', 'D', 'R');
-        chunk.data = _data;
-        chunk.calcCRC();
+        this->header.length = 13;
+        this->header.type = makeBIT32('I', 'H', 'D', 'R');
+        this->header.data = _data;
+        this->header.calcCRC();
     }
 
     if (_type == EchunkType::DataChunk)
     {
-        chunk.length = 3;
-        chunk.type = makeBIT32('I', 'D', 'A', 'T');
-        chunk.data = _data;
-        chunk.calcCRC();
+        this->data.length = 3;
+        this->data.type = makeBIT32('I', 'D', 'A', 'T');
+        this->data.data = _data;
+        this->data.calcCRC();
     }
 
     if (_type == EchunkType::TrailerChunk)
     {
-        chunk.length = 0;
-        chunk.type = makeBIT32('I', 'E', 'N', 'D');
-        chunk.data = 0;
-        chunk.calcCRC();
+        this->trailer.length = 0;
+        this->trailer.type = makeBIT32('I', 'E', 'N', 'D');
+        this->trailer.data = 0;
+        this->trailer.calcCRC();
     }
-
-    return chunk;
 }
 
 auto PNGExport::writeChunk(PNGChunk chunk) -> void
@@ -61,6 +57,11 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
     *(bytePointer + 3) = _4;
 
     return bytes;
+}
+
+auto PNGExport::write() -> void
+{
+
 }
 
 auto PNGChunk::calcCRC() -> void
