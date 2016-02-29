@@ -55,7 +55,7 @@ class PNGExport
 {
     public:
         PNGExport(void*, int, int, int, std::string);
-        ~PNGExport();
+        ~PNGExport() = default;
 
         PNGExport(PNGExport const&) = delete;
         PNGExport(PNGExport &&) = delete;
