@@ -17,11 +17,10 @@ struct PNGChunk
     BIT32 length;
     BIT32 type;
     BIT32 crc;
-    BIT8* data;
-    auto calcCRC() -> void;
 };
 
 struct PNGHeaderChunk
+:public PNGChunk
 {
     BIT32 width;
     BIT32 height;
@@ -30,11 +29,24 @@ struct PNGHeaderChunk
     BIT8  compression = 0;
     BIT8  filter = 0;
     BIT8  interlace = 0;
+
+    BIT8 size;
+    auto getDataForCRC() -> BIT8*;
 };
 
 struct PNGDataChunk
+:public PNGChunk
 {
-    BIT8 colorData;
+    BIT8* colorData;
+
+    BIT8 size;
+    auto getDataForCRC() -> BIT8*;
+};
+
+struct PNGTrailerChunk
+:public PNGChunk
+{
+
 };
 
 enum EchunkType : int
@@ -47,7 +59,7 @@ enum EchunkType : int
 class PNGExport
 {
     public:
-        PNGExport(BIT8*, int, std::string);
+        PNGExport(BIT8*, int, int, std::string);
         ~PNGExport();
 
         PNGExport(PNGExport const&) = delete;
@@ -56,8 +68,9 @@ class PNGExport
         auto operator=(PNGExport &&) -> PNGExport = delete;
 
         auto prepareChunk(int type) -> void;
-        auto writeChunk(PNGChunk chunk) -> void;
+        auto writeChunk(int type) -> void;
         auto makeBIT32(int, int, int, int) -> BIT32;
+        auto calcCRC(BIT8* data, BIT32 length) -> BIT32;
 
         auto write() -> void;
 
@@ -66,9 +79,9 @@ class PNGExport
         std::string pathFile;
         BIT8* pixelsNumber;
 
-        PNGChunk header;
-        PNGChunk data;
-        PNGChunk trailer;
+        PNGHeaderChunk header;
+        PNGDataChunk data;
+        PNGTrailerChunk trailer;
 
         std::ofstream file;
 };
