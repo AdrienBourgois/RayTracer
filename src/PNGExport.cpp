@@ -1,8 +1,16 @@
 #include "PNGExport.h"
 
-PNGExport::PNGExport(void* _dataPointer, int _pixelsNumber, std::string _pathFile)
-: dataPointer(_dataPointer), pathFile(_pathFile), pixelsNumber(_pixelsNumber)
+PNGExport::PNGExport(BIT8* _dataPointer, int _pixelsNumber, std::string _pathFile)
+: dataPointer(_dataPointer), pathFile(_pathFile)
 {
+    unsigned char a[4];
+    a[0] = _pixelsNumber & 0xff;
+    a[1] = (_pixelsNumber>>8)  & 0xff;
+    a[2] = (_pixelsNumber>>16) & 0xff;
+    a[3] = (_pixelsNumber>>24) & 0xff;
+
+    this->pixelsNumber = a;
+
     this->file.open(this->pathFile, std::ofstream::binary | std::ofstream::trunc);
 }
 
@@ -11,13 +19,13 @@ PNGExport::~PNGExport()
     this->file.close();
 }
 
-auto PNGExport::prepareChunk(int _type, BIT8* _data) -> void
+auto PNGExport::prepareChunk(int _type) -> void
 {
     if (_type == EchunkType::HeaderChunk)
     {
         this->header.length = 13;
         this->header.type = makeBIT32('I', 'H', 'D', 'R');
-        this->header.data = _data;
+        this->header.data = this->pixelsNumber;
         this->header.calcCRC();
     }
 
@@ -25,7 +33,7 @@ auto PNGExport::prepareChunk(int _type, BIT8* _data) -> void
     {
         this->data.length = 3;
         this->data.type = makeBIT32('I', 'D', 'A', 'T');
-        this->data.data = _data;
+        this->data.data = this->dataPointer;
         this->data.calcCRC();
     }
 
@@ -61,7 +69,9 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
 
 auto PNGExport::write() -> void
 {
-
+    prepareChunk(EchunkType::HeaderChunk); writeChunk(this->header);
+    prepareChunk(EchunkType::DataChunk); writeChunk(this->data);
+    prepareChunk(EchunkType::TrailerChunk); writeChunk(this->trailer);
 }
 
 auto PNGChunk::calcCRC() -> void
