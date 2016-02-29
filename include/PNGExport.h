@@ -18,7 +18,7 @@ struct PNGChunk
     BIT32 type;
     BIT32 crc;
     BIT8* data;
-    auto calcCRC() -> BIT32;
+    auto calcCRC() -> void;
 };
 
 struct PNGHeaderChunk
