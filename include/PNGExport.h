@@ -77,7 +77,6 @@ class PNGExport
     private:
         BIT8* dataPointer;
         std::string pathFile;
-        BIT8* pixelsNumber;
 
         PNGHeaderChunk header;
         PNGDataChunk data;
