@@ -55,7 +55,7 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
     return bytes;
 }
 
-auto calcCRC(BIT8* data, unsigned int length) -> BIT32
+auto PNGExport::calcCRC(BIT8* data, unsigned int length) -> BIT32
 {
     BIT32 table[256];
 
