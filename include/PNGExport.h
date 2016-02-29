@@ -18,6 +18,7 @@ struct PNGChunk
     BIT32 type;
     BIT32 crc;
     BIT8* data;
+    auto calcCRC() -> BIT32;
 };
 
 struct PNGHeaderChunk
@@ -65,7 +66,6 @@ class PNGExport
         auto prepareChunk(int type, BIT8* data) -> PNGChunk;
         auto writeChunk(PNGChunk chunk) -> void;
         auto makeBIT32(int, int, int, int) -> BIT32;
-        auto calcCRC(BIT8* data, unsigned int length) -> BIT32;
 
     private:
         void* inData;
