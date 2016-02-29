@@ -32,13 +32,6 @@ struct PNGHeaderChunk
     BIT8  interlace = 0;
 };
 
-struct PNGPaletteChunk
-{
-    BIT8 red;
-    BIT8 green;
-    BIT8 blue;
-};
-
 struct PNGDataChunk
 {
     BIT8 colorData;
@@ -47,7 +40,6 @@ struct PNGDataChunk
 enum EchunkType : int
 {
     HeaderChunk = 1,
-    PaletteChunk,
     DataChunk,
     TrailerChunk
 };
@@ -56,7 +48,7 @@ class PNGExport
 {
     public:
         PNGExport(void*, int, int, int, std::string);
-        ~PNGExport() = default;
+        ~PNGExport();
 
         PNGExport(PNGExport const&) = delete;
         PNGExport(PNGExport &&) = delete;
