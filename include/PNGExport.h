@@ -65,6 +65,7 @@ class PNGExport
         auto prepareChunk(int type, BIT8* data) -> PNGChunk;
         auto writeChunk(PNGChunk chunk) -> void;
         auto makeBIT32(int, int, int, int) -> BIT32;
+        auto calcCRC(BIT8* data, int len) -> BIT32;
 
     private:
         void* inData;
