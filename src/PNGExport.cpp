@@ -37,10 +37,10 @@ auto PNGExport::prepareChunk(int type, BIT8* data) -> PNGChunk
     return chunk;
 }
 
-auto PNGExport::writeChunk(PNGChunk chunk) -> void
+/* auto PNGExport::writeChunk(PNGChunk chunk) -> void
 {
 
-}
+} */
 
 auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
 {
@@ -53,4 +53,34 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
     *(bytePointer + 3) = _4;
 
     return bytes;
+}
+
+auto calcCRC(BIT8* data, unsigned int length) -> BIT32
+{
+    BIT32 table[256];
+
+    /* -----Make table----- */
+
+    BIT32 c, n, k;
+
+    for (n = 0; n < 256; ++n)
+    {
+        c = n;
+        for (k = 0; k < 8; k++)
+        {
+            if (c & 1)
+                c = 0xedb88320L ^ (c >> 1);
+            else c = c >> 1;
+        }
+        table[n] = c;
+    }
+
+    /* ----Calc----- */
+
+    c = 0xffffffffL;
+
+    for (n = 0; n < length; n++)
+        c = table[(c ^ data[n]) & 0xff] ^ (c >> 8);
+
+    return c ^ 0xffffffffL;
 }
