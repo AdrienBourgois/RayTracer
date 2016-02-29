@@ -55,8 +55,14 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
     return bytes;
 }
 
-auto PNGExport::calcCRC(BIT8* data, unsigned int length) -> BIT32
+auto PNGChunk::calcCRC() -> BIT32
 {
+    BIT8 data_whit_name_field[this->length + 4]; // Add 4 bytes for name field
+
+    data_whit_name_field[0] = this->type;
+    for (BIT32 i = 0; i < this->length; ++i)
+        data_whit_name_field[i + 4] = this->data[i];
+
     BIT32 table[256];
 
     /* -----Make table----- */
@@ -79,8 +85,8 @@ auto PNGExport::calcCRC(BIT8* data, unsigned int length) -> BIT32
 
     c = 0xffffffffL;
 
-    for (n = 0; n < length; n++)
-        c = table[(c ^ data[n]) & 0xff] ^ (c >> 8);
+    for (n = 0; n < (this->length + 4); n++)
+        c = table[(c ^ data_whit_name_field[n]) & 0xff] ^ (c >> 8);
 
     return c ^ 0xffffffffL;
 }
