@@ -6,32 +6,32 @@ PNGExport::PNGExport(void* _data, int _sizePerData, int _width, int _height, std
     this->file.open(this->pathFile);
 }
 
-auto PNGExport::prepareChunk(int type, BIT8* data) -> PNGChunk
+auto PNGExport::prepareChunk(int _type, BIT8* _data) -> PNGChunk
 {
     PNGChunk chunk;
 
-    if (type == EchunkType::HeaderChunk)
+    if (_type == EchunkType::HeaderChunk)
     {
         chunk.length = 13;
         chunk.type = makeBIT32('I', 'H', 'D', 'R');
-        chunk.data = data;
-        //chunk.crc = calcCRC();
+        chunk.data = _data;
+        chunk.calcCRC();
     }
 
-    if (type == EchunkType::DataChunk)
+    if (_type == EchunkType::DataChunk)
     {
         chunk.length = 3;
         chunk.type = makeBIT32('I', 'D', 'A', 'T');
-        //chunk.data = BIT8[];
-        //chunk.crc = calcCRC();
+        chunk.data = _data;
+        chunk.calcCRC();
     }
 
-    if (type == EchunkType::TrailerChunk)
+    if (_type == EchunkType::TrailerChunk)
     {
         chunk.length = 0;
         chunk.type = makeBIT32('I', 'E', 'N', 'D');
         chunk.data = 0;
-        //chunk.crc = calcCRC();
+        chunk.calcCRC();
     }
 
     return chunk;
