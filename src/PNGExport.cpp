@@ -3,7 +3,12 @@
 PNGExport::PNGExport(void* _data, int _sizePerData, int _width, int _height, std::string _pathFile)
 : inData(_data), pathFile(_pathFile), width(_width), height(_height), sizePerData(_sizePerData)
 {
-    this->file.open(this->pathFile);
+    this->file.open(this->pathFile, std::ofstream::binary | std::ofstream::trunc);
+}
+
+PNGExport::~PNGExport()
+{
+    this->file.close();
 }
 
 auto PNGExport::prepareChunk(int _type, BIT8* _data) -> PNGChunk
@@ -37,10 +42,13 @@ auto PNGExport::prepareChunk(int _type, BIT8* _data) -> PNGChunk
     return chunk;
 }
 
-/* auto PNGExport::writeChunk(PNGChunk chunk) -> void
+auto PNGExport::writeChunk(PNGChunk chunk) -> void
 {
-
-} */
+    this->file << chunk.length;
+    this->file << chunk.type;
+    this->file << chunk.data;
+    this->file << chunk.crc;
+}
 
 auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
 {
