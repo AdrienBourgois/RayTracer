@@ -63,6 +63,9 @@ auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
 
 auto PNGExport::write() -> void
 {
+    PNGSignature signature;
+    for (int i = 0; i < 8; ++i)
+        this->file << signature.Signature[i];
     prepareChunk(EchunkType::HeaderChunk); writeChunk(EchunkType::HeaderChunk);
     prepareChunk(EchunkType::DataChunk); writeChunk(EchunkType::DataChunk);
     prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
