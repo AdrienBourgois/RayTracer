@@ -55,16 +55,20 @@ class PNGExport
         auto operator=(PNGExport const&) -> PNGExport = delete;
         auto operator=(PNGExport &&) -> PNGExport = delete;
 
-        auto prepareChunk(int type, BIT8* data = nullptr) -> PNGChunk;
+        auto prepareChunk(int type, BIT8* data = nullptr) -> void;
         auto writeChunk(PNGChunk chunk) -> void;
         auto makeBIT32(int, int, int, int) -> BIT32;
 
         auto write() -> void;
 
     private:
-        void* data;
+        void* dataPointer;
         std::string pathFile;
         int pixelsNumber;
+
+        PNGChunk header;
+        PNGChunk data;
+        PNGChunk trailer;
 
         std::ofstream file;
 };
