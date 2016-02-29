@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "MathCalc.h"
 #include "CollisionCalc.h"
+#include "LightCalc.h"
 
 typedef unsigned char uint8;
 
@@ -53,6 +54,13 @@ auto Raytracer::render() -> void
 {
 	GeometryBuffer* current_geometry = nullptr;
 	(void) current_geometry;
+	
+	std::vector<GeometryBuffer*> light_list;
+	for (unsigned int i = 0; i < this->geometry_list.size(); ++i)
+	{
+		if (this->geometry_list[i]->material_buffer->is_light)
+			light_list.push_back(this->geometry_list[i]);
+	}
 
 	for (float idx_y = 0.f; idx_y < this->render_size.y; ++idx_y)
 	{
@@ -76,9 +84,23 @@ auto Raytracer::render() -> void
 					
 				}
 			}	
-				if (coll_geo != nullptr)
+				if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
 				{
-					this->render_buffer->setColorList(coll_geo->material_buffer->color);
+					calculateCollisionPoint(dist_min, camera_ray);
+					Vector3D<float> final_color;
+					final_color += calculateAmbiantLight(current_geometry);
+					final_color += calculateDiffuseLight(current_geometry, light_list, camera_ray->collision_point);
+					final_color += calculateSpecularLight(current_geometry, light_list, camera_ray);
+					
+					this->render_buffer->setColorList(final_color);
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+
+					//this->render_buffer->setColorList(coll_geo->material_buffer->color);
+					//this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+				}
+				else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
+				{
+					this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 		}
