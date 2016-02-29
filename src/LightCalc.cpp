@@ -4,7 +4,7 @@ auto calculateAmbiantLight(GeometryBuffer* node) -> Vector3D<float>
 {
 	Vector3D<float> node_color = node->material_buffer->color;
 
-	float coef = 0.15f;
+	float coef = 0.1f;
 	Vector3D<float> color = node_color * coef;
 
 	return color;
@@ -23,7 +23,7 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> li
 		Vector3D<float> l =  (coll_point - light[i]->position).normalize();
 		Vector3D<float> normal;
 		normal = normal.normalOnSphere(coll_point, light[i]->position);
-		float shade = normal.dot(l.normalize()) * 0.3f;
+		float shade = normal.dot(l.normalize()) * 0.4444f;
 
 		if (shade < 0.f)
 			shade = 0.f;
