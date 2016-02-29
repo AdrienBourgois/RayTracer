@@ -47,7 +47,7 @@ enum EchunkType : int
 class PNGExport
 {
     public:
-        PNGExport(void*, int, std::string);
+        PNGExport(BIT8*, int, std::string);
         ~PNGExport();
 
         PNGExport(PNGExport const&) = delete;
@@ -55,16 +55,16 @@ class PNGExport
         auto operator=(PNGExport const&) -> PNGExport = delete;
         auto operator=(PNGExport &&) -> PNGExport = delete;
 
-        auto prepareChunk(int type, BIT8* data = nullptr) -> void;
+        auto prepareChunk(int type) -> void;
         auto writeChunk(PNGChunk chunk) -> void;
         auto makeBIT32(int, int, int, int) -> BIT32;
 
         auto write() -> void;
 
     private:
-        void* dataPointer;
+        BIT8* dataPointer;
         std::string pathFile;
-        int pixelsNumber;
+        BIT8* pixelsNumber;
 
         PNGChunk header;
         PNGChunk data;
