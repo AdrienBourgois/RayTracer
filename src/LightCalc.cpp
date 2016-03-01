@@ -23,7 +23,7 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> li
 		Vector3D<float> l =  (coll_point - light[i]->position).normalize();
 		Vector3D<float> normal;
 		normal = normal.normalOnSphere(coll_point, light[i]->position);
-		float shade = normal.dot(l.normalize()) * 0.4444f;
+		float shade = normal.dot(l.normalize()) * 0.35f;
 
 		if (shade < 0.f)
 			shade = 0.f;
@@ -47,7 +47,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> l
 	for (unsigned int i = 0; i < light.size(); ++i)
 	{
 		Vector3D<float> n;
-		n = n.normalOnSphere(node->position, ray->collision_point).normalize();
+		n = n.normalOnSphere(ray->collision_point, node->position).normalize();
 		Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 		Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
 
@@ -55,7 +55,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> l
 		Vector3D<float> r = (n * nl * 2.f) - l;
 
 		r = r.normalize();
-		Vector3D<float> specular_light = (Vector3D<float> (255.f, 255.f, 255.f) * 0.70f);
+		Vector3D<float> specular_light = (light[i]->material_buffer->color * 0.70f);
 		if (std::pow(r.dot(v) ,16.f) < 0.f)
 			specular_light = specular_light * 0.f;
 		else
