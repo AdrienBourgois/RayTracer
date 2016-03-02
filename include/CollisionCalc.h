@@ -1,3 +1,6 @@
+#ifndef __COLLISIONCALC_DECLARATION__
+#define __COLLISIONCALC_DECLARATION__
+
 #include <vector>
 
 #include "GeometryBuffer.h"
@@ -11,3 +14,7 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 auto calculateCollisionPoint(float distance, Ray* ray) -> void;
 
 auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, GeometryBuffer* light, Vector3D<float> coll_point) -> bool;
+
+auto isNodeBeforeSource(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, Vector3D<float> coll_point) -> bool;
+
+#endif
