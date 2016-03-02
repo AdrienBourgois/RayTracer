@@ -10,8 +10,8 @@ class Event
 {
 public:
     ~Event() = default;
-     static auto eventListener(Device* device) -> void;
-
+    static auto eventListener(Device* device) -> void;
+	static unsigned int idx;
 private:
     Event() = default;
 

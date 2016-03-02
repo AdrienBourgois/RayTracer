@@ -43,7 +43,7 @@ auto Device::init() -> void
 
 	this->createSceneNode(Vector3D<float> (-4.f, 0.f, 0.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
 
-//	this->createSceneNode(Vector3D<float> (0.f, 0.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.1f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (0.f, 0.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.1f, EGeometry_type::SPHERE);
 
 	this->setLightList();
 }

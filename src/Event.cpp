@@ -4,11 +4,12 @@
 #include "Event.h"
 #include "MaterialBuffer.h"
 
+unsigned int Event::idx = 0;
 
 auto Event::eventListener(Device* device) -> void
 {
   SceneNode* node;
-    node = device->getLightList()[0];
+    node = device->getLightList()[Event::idx];
     
     float move = 0.f;
   
@@ -60,16 +61,15 @@ auto Event::eventListener(Device* device) -> void
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
                 
-/*                case SDL_SCANCODE_L:
-
-                    if (node == device->getNodeTest2())
-                    {
-                        std::cout<<"SCANCODE L"<<std::endl;
-                        node = device->getNodeTest3();
-                    }
-
+                case SDL_SCANCODE_L:
+					if(device->getLightList().size() != 0)
+						if(Event::idx < device->getLightList().size())
+							++Event::idx;
+						if(Event::idx == device->getLightList().size())
+							Event::idx = 0;
+					
                 	break;
-*/
+
                 	default:
                      break;
                                                  
