@@ -124,47 +124,8 @@ auto PNGExport::write() -> void
     //prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
 }
 
-auto PNGHeaderChunk::getDataForCRC() -> BIT8*
+auto PNGExport::calcCRC() -> BIT32
 {
-    BIT8* CRCdata = new BIT8[(2*4) + (5*1) + 4]; // 2 * BIT32 fields and 5 * BIT8 fields and BIT8 for name field
-
-    CRCdata[0] = this->type & 0xff;
-    CRCdata[1] = (this->type >> 8)  & 0xff;
-    CRCdata[2] = (this->type >> 16) & 0xff;
-    CRCdata[3] = (this->type >> 24) & 0xff;
-    CRCdata[4] = this->width & 0xff;
-    CRCdata[5] = (this->width >> 8)  & 0xff;
-    CRCdata[6] = (this->width >> 16) & 0xff;
-    CRCdata[7] = (this->width >> 24) & 0xff;
-    CRCdata[8] = this->height & 0xff;
-    CRCdata[9] = (this->height >> 8)  & 0xff;
-    CRCdata[10]= (this->height >> 16) & 0xff;
-    CRCdata[11]= (this->height >> 24) & 0xff;
-    CRCdata[12]= this->depth;
-    CRCdata[13]= this->colorType;
-    CRCdata[14]= this->compression;
-    CRCdata[15]= this->filter;
-    CRCdata[16]= this->interlace;
-
-    return CRCdata;
-}
-
-auto PNGDataChunk::getDataForCRC() -> BIT8*
-{
-    BIT8* CRCdata = new BIT8[this->length + 4]; // Add 4 bytes for name field
-    CRCdata[0] = this->type;
-
-    for (BIT32 i = 0; i < this->length; ++i)
-        CRCdata[i + 4] = this->colorData[i];
-
-    return CRCdata;
-}
-
-auto PNGExport::calcCRC(BIT8* data, BIT32 length) -> BIT32
-{
-    (void)data;
-    (void)length;
-
     this->CRCVector.erase(this->CRCVector.begin(), this->CRCVector.begin()+4);
 
     BIT32 table[256];
@@ -191,8 +152,6 @@ auto PNGExport::calcCRC(BIT8* data, BIT32 length) -> BIT32
 
     for (n = 0; n < (this->CRCVector.size()); n++)
         c = table[(c ^ this->CRCVector[n]) & 0xff] ^ (c >> 8);
-
-    //delete data;
 
     std::cout << "-->" << std::hex << (c ^ 0xffffffffL) << std::dec << std::endl;
     return c ^ 0xffffffffL;
