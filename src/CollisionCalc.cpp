@@ -188,11 +188,6 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	float dist_min = 100.f;
 	GeometryBuffer* coll_geo = nullptr;
 
-//	float length = std::sqrt((coll_point - light->position).dot(coll_point - light->position));
-
-//	std::cout << "length : " << length << std::endl;
-//	std::cout << "current_node : " << current_node->position << std::endl;
-
 	Ray* ray = new Ray();
 	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f);
 	ray->direction = coll_point - light->position;
@@ -203,16 +198,12 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 
 		float res = calculateCollision(temp_geo, ray);
 
-//	std::cout << "result : " << res << std::endl;
-
 		if(res < dist_min && res > -1.f)
 		{
 			dist_min = res;
 			coll_geo = temp_geo;
 		}
 	}	
-
-//	std::cout << "dist_min : " << dist_min << std::endl;
 
 	delete ray;
 	ray = nullptr;

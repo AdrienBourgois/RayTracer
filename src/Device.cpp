@@ -67,6 +67,8 @@ auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool ligh
 
 	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), type);
 	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, light);
+
+	delete scene_node;
 }
 
 auto Device::quit() -> void
@@ -78,8 +80,16 @@ auto Device::close() -> void
 {
     Log* log = Log::getInstance();
     log->info("Device closing...");
-    this->driver->close();
+
+	for (unsigned int i = 0; i < this->node_list.size(); ++i)
+	{
+		delete this->node_list[0];
+		this->node_list.erase(this->node_list.begin());
+	}
+
+	this->driver->close();
 	this->raytracer->close();
+
     log->info("Device closed.");
 }
 

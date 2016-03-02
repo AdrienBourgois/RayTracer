@@ -116,7 +116,7 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 
 	if (rad != 0.f)
 	{
-		/*SphereGeometryBuffer**/  GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry);
+		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 
@@ -161,6 +161,7 @@ auto Raytracer::close() -> void
 		this->geometry_list[idx]->close();
 		delete this->geometry_list[idx];
 	}
+	this->geometry_list.clear();
 
 	this->camera_ray->close();
 	delete this->camera_ray;
