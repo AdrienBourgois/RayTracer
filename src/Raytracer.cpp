@@ -89,18 +89,20 @@ auto Raytracer::render() -> void
 					calculateCollisionPoint(dist_min, camera_ray);
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
-					final_color += calculateDiffuseLight(coll_geo, light_list, camera_ray->collision_point);
-					final_color += calculateSpecularLight(coll_geo, light_list, camera_ray);
+					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray->collision_point);
+					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 					
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-
-					//this->render_buffer->setColorList(coll_geo->material_buffer->color);
-					//this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 				else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
 				{
 					this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+				}
+				else
+				{
+					this->render_buffer->setColorList(Vector3D<float>(0.f,0.f,0.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 		}
@@ -124,7 +126,7 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 
 	if (rad != 0.f)
 	{
-		/*SphereGeometryBuffer**/  GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
+		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 
@@ -186,6 +188,7 @@ auto Raytracer::close() -> void
 		this->geometry_list[idx]->close();
 		delete this->geometry_list[idx];
 	}
+	this->geometry_list.clear();
 
 	this->camera_ray->close();
 	delete this->camera_ray;

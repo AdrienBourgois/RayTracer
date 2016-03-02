@@ -2,6 +2,8 @@
 #include <iostream>
 
 #include "Event.h"
+#include "MaterialBuffer.h"
+
 
 auto Event::eventListener(Device* device) -> void
 {
@@ -10,6 +12,7 @@ auto Event::eventListener(Device* device) -> void
     
     float move = 0.f;
   
+ 
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
     {   
@@ -65,13 +68,9 @@ auto Event::eventListener(Device* device) -> void
                         node = device->getNodeTest3();
                     }
 
-                    else
-                    {
-                        node = device->getNodeTest2();
-                    }
-                    break;
+                	break;
 */
-                default:
+                	default:
                      break;
                                                  
            }

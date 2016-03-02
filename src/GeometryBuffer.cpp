@@ -57,3 +57,4 @@ TriangleGeometryBuffer::TriangleGeometryBuffer(Vector3D<float> pos, std::vector<
 	this->type = type_geometry;
 	this->id = id_geometry_buffer;
 }
+

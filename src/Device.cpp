@@ -46,7 +46,7 @@ auto Device::init() -> void
 //	this->createSceneNode(Vector3D<float> (0.f, 0.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), false, 1.f, EGeometry_type::MODEL);
 
 
-this->setLightList();
+	this->setLightList();
 }
 
 auto Device::run() -> void
@@ -90,8 +90,16 @@ auto Device::close() -> void
 {
     Log* log = Log::getInstance();
     log->info("Device closing...");
-    this->driver->close();
+
+	for (unsigned int i = 0; i < this->node_list.size(); ++i)
+	{
+		delete this->node_list[0];
+		this->node_list.erase(this->node_list.begin());
+	}
+
+	this->driver->close();
 	this->raytracer->close();
+
     log->info("Device closed.");
 }
 

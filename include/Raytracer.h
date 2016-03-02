@@ -33,6 +33,7 @@ class Raytracer final
 		auto getRenderBuffer() -> RenderBuffer* { return this->render_buffer.get(); }
 
 		auto close() -> void;
+		auto getGeometryList() -> std::vector<GeometryBuffer*> {return this->geometry_list;}
 
 	private:
 	
