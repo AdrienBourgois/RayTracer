@@ -13,9 +13,10 @@ SRC =  main.cpp\
 		MathCalc.cpp \
 		CollisionCalc.cpp \
 		SceneNode.cpp \
-	  RenderBuffer.cpp \
-	  Log.cpp \
+		RenderBuffer.cpp \
+		Log.cpp \
 		LightCalc.cpp \
+		ReflexionCalc.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 

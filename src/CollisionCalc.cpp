@@ -243,11 +243,10 @@ auto isNodeBeforeSource(GeometryBuffer* current_node, std::vector<GeometryBuffer
 	}	
 
 
-	if (dist_min != 100.f)
+	if (dist_min != 100.f && dist_min != -1.f)
 	{
 		if (coll_geo == current_node )
-			return false;
-		return true;
+			return true;
 	}
 	return false;
 }
