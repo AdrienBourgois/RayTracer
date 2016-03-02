@@ -12,7 +12,7 @@ auto calculateAmbiantLight(GeometryBuffer* node) -> Vector3D<float>
 	return color;
 }
 
-auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> light, Vector3D<float> coll_point) -> Vector3D<float>
+auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, std::vector<GeometryBuffer*> light, Vector3D<float> coll_point) -> Vector3D<float>
 {
 	if (light.size() == 0)	
 		return Vector3D<float> {0.f, 0.f, 0.f};
@@ -20,22 +20,27 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> li
 	Vector3D<float> final_diffuse_color;
 	for (unsigned int i = 0; i < light.size(); ++i)
 	{
-		Vector3D<float> node_color = node->material_buffer->color;
+		if (!isNodeBeforeLightSource(node, node_list, light[i], coll_point))
+		{
+			Vector3D<float> node_color = node->material_buffer->color;
 
-		Vector3D<float> l =  (coll_point - light[i]->position).normalize();
-		Vector3D<float> normal;
-		normal = normal.normalOnSphere(coll_point, light[i]->position);
-		float shade = normal.dot(l.normalize()) * 0.35f;
+			Vector3D<float> l =  (coll_point - light[i]->position).normalize();
+			Vector3D<float> normal;
+			normal = normal.normalOnSphere(coll_point, light[i]->position);
+			float shade = normal.dot(l.normalize()) * 0.35f;
 
-		if (shade < 0.f)
-			shade = 0.f;
+			if (shade < 0.f)
+				shade = 0.f;
 
-		Vector3D<float> color;
-		color.x = std::max((node_color.x - node_color.x * shade), 0.f);
-		color.y = std::max((node_color.y - node_color.y * shade), 0.f);
-		color.z = std::max((node_color.z - node_color.z * shade), 0.f);
+			Vector3D<float> color;
+			color.x = std::max((node_color.x - node_color.x * shade), 0.f);
+			color.y = std::max((node_color.y - node_color.y * shade), 0.f);
+			color.z = std::max((node_color.z - node_color.z * shade), 0.f);
 
-		final_diffuse_color += color;
+			final_diffuse_color += color;
+		}
+		else
+			final_diffuse_color += Vector3D<float> {0.f, 0.f, 0.f};
 	}
 	return final_diffuse_color;
 }
@@ -74,7 +79,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 			final_specular_light += specular_light;
 		}
 		else
-			return Vector3D<float> {0.f, 0.f, 0.f};
+			final_specular_light += Vector3D<float> {0.f, 0.f, 0.f};
 	}
 	return final_specular_light;
 }

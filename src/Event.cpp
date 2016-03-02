@@ -32,58 +32,51 @@ auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_
                 case SDL_SCANCODE_RIGHT:
 		{
 			node = light_list[num];
-                    ++node->position.x;
+                    node->position.x += 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
                  }   break;
 
                 case SDL_SCANCODE_LEFT:
 		{
 			node = light_list[num];
-                    --node->position.x;
+                    node->position.x -= 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
                  }   break;
 
                 case SDL_SCANCODE_UP:
 		{
 			node = light_list[num];
-                    ++node->position.y;
+                    node->position.y += 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
                  }   break;
 
                 case SDL_SCANCODE_DOWN:
 		{
 			node = light_list[num];
-                    --node->position.y;
+                    node->position.y -= 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
                  }   break;
                     
                 case SDL_SCANCODE_Q:
 		{
 			node = light_list[num];
-                    ++node->position.z;
+                    node->position.z += 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
 	         }  break;
 
                 case SDL_SCANCODE_E:
 		{
 			node = light_list[num];
-                     --node->position.z;
+                     node->position.z -= 0.5f;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
                  }    break;
                 
                 case SDL_SCANCODE_L:
 		{
                     if (num == light_list.size() - 1u)
-                    {
-			std::cout << "light_list.size() : " << light_list.size() << std::endl;
 			num = 0;
-                    }
                     else
-                    {
-			std::cout << "num : " << num << std::endl;
 			++num;
-			std::cout << "num : " << num << std::endl;
-                    }
                  }break;
 
                 default:

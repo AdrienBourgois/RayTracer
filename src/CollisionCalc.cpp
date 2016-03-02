@@ -217,8 +217,12 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	delete ray;
 	ray = nullptr;
 
+	if (dist_min != 100.f)
+	{
 	if (coll_geo == current_node )
 		return false;
 	return true;
+	}
+	return false;
 }
 
