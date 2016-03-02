@@ -19,14 +19,12 @@ auto PNGExport::prepareChunk(int _type) -> void
     {
         this->header.length = 13;
         this->header.type = makeBIT32('I', 'H', 'D', 'R');
-        this->header.crc = calcCRC(this->header.getDataForCRC(), this->header.length + 4);
     }
 
     if (_type == EchunkType::DataChunk)
     {
         this->data.length = this->header.width * this->header.height;
         this->data.type = makeBIT32('I', 'D', 'A', 'T');
-        this->data.crc = calcCRC(this->data.getDataForCRC(), this->data.length + 4);
     }
 
     if (_type == EchunkType::TrailerChunk)
@@ -37,15 +35,70 @@ auto PNGExport::prepareChunk(int _type) -> void
     }
 }
 
+auto PNGExport::writeData(BIT8 data) -> void
+{
+    this->file.write((char*)&data, sizeof(data));
+    this->CRCVector.push_back(data);
+}
+
+auto PNGExport::writeData(BIT32 data, bool rev) -> void
+{
+    if(rev)
+    {
+        for (int i = 3; i >= 0; i--)
+        {
+            BIT8* bytePointer = (BIT8*) &data;
+            this->file.write((char*)&bytePointer[i], sizeof(BIT8));
+            this->CRCVector.push_back((BIT8)bytePointer[i]);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            BIT8* bytePointer = (BIT8*) &data;
+            this->file.write((char*)&bytePointer[i], sizeof(BIT8));
+            this->CRCVector.push_back((BIT8)bytePointer[i]);
+        }
+    }
+}
+
 auto PNGExport::writeChunk(int type) -> void
 {
-    this->file << this->header.length;
-    this->file << this->header.type;
+    this->CRCVector.clear();
+
     if (type == EchunkType::HeaderChunk)
-        this->file << this->header.width << this->header.height << this->header.depth << this->header.colorType << this->header.compression << this->header.filter << this->header.interlace;
+    {
+        writeData(this->header.length, true);
+        writeData(this->header.type);
+        writeData(this->header.width, true);
+        writeData(this->header.height, true);
+        writeData(this->header.depth);
+        writeData(this->header.colorType);
+        writeData(this->header.compression);
+        writeData(this->header.filter);
+        writeData(this->header.interlace);
+        this->header.crc = calcCRC(this->header.getDataForCRC(), this->header.length + 4);
+        writeData(this->header.crc, true);
+    }
     if (type == EchunkType::DataChunk)
-        this->file << this->data.colorData;
-    this->file << this->header.crc;
+    {
+        writeData(this->data.length, true);
+        writeData(this->data.type);
+        for (unsigned int i = 0; i < ((this->header.width * this->header.height)*3); i++)
+        {
+            BIT8* bytePointer = (BIT8*) &this->data.colorData;
+            this->file.write((char*)&bytePointer[i], sizeof(BIT8));
+        }
+        this->data.crc = calcCRC(this->data.getDataForCRC(), this->data.length + 4);
+        writeData(this->data.crc, true);
+    }
+    if (type == EchunkType::TrailerChunk)
+    {
+        writeData(this->trailer.length, true);
+        writeData(this->trailer.type);
+        writeData(this->trailer.crc, true);
+    }
 }
 
 auto PNGExport::makeBIT32(int _1, int _2, int _3, int _4) -> BIT32
@@ -65,29 +118,33 @@ auto PNGExport::write() -> void
 {
     PNGSignature signature;
     for (int i = 0; i < 8; ++i)
-        this->file << signature.Signature[i];
+        this->file.write((char*)&signature.Signature[i], sizeof(BIT8));
     prepareChunk(EchunkType::HeaderChunk); writeChunk(EchunkType::HeaderChunk);
-    prepareChunk(EchunkType::DataChunk); writeChunk(EchunkType::DataChunk);
-    prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
+    //prepareChunk(EchunkType::DataChunk); writeChunk(EchunkType::DataChunk);
+    //prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
 }
 
 auto PNGHeaderChunk::getDataForCRC() -> BIT8*
 {
-    BIT8* CRCdata = new BIT8[(2*4) + 5]; // 2 * BIT32 fields and 5 * BIT8 fields
+    BIT8* CRCdata = new BIT8[(2*4) + (5*1) + 4]; // 2 * BIT32 fields and 5 * BIT8 fields and BIT8 for name field
 
-    CRCdata[0] = this->width & 0xff;
-    CRCdata[1] = (this->width >> 8)  & 0xff;
-    CRCdata[2] = (this->width >> 16) & 0xff;
-    CRCdata[3] = (this->width >> 24) & 0xff;
-    CRCdata[4] = this->height & 0xff;
-    CRCdata[5] = (this->height >> 8)  & 0xff;
-    CRCdata[6] = (this->height >> 16) & 0xff;
-    CRCdata[7] = (this->height >> 24) & 0xff;
-    CRCdata[8] = this->depth;
-    CRCdata[9] = this->colorType;
-    CRCdata[10]= this->compression;
-    CRCdata[11]= this->filter;
-    CRCdata[12]= this->interlace;
+    CRCdata[0] = this->type & 0xff;
+    CRCdata[1] = (this->type >> 8)  & 0xff;
+    CRCdata[2] = (this->type >> 16) & 0xff;
+    CRCdata[3] = (this->type >> 24) & 0xff;
+    CRCdata[4] = this->width & 0xff;
+    CRCdata[5] = (this->width >> 8)  & 0xff;
+    CRCdata[6] = (this->width >> 16) & 0xff;
+    CRCdata[7] = (this->width >> 24) & 0xff;
+    CRCdata[8] = this->height & 0xff;
+    CRCdata[9] = (this->height >> 8)  & 0xff;
+    CRCdata[10]= (this->height >> 16) & 0xff;
+    CRCdata[11]= (this->height >> 24) & 0xff;
+    CRCdata[12]= this->depth;
+    CRCdata[13]= this->colorType;
+    CRCdata[14]= this->compression;
+    CRCdata[15]= this->filter;
+    CRCdata[16]= this->interlace;
 
     return CRCdata;
 }
@@ -105,6 +162,11 @@ auto PNGDataChunk::getDataForCRC() -> BIT8*
 
 auto PNGExport::calcCRC(BIT8* data, BIT32 length) -> BIT32
 {
+    (void)data;
+    (void)length;
+
+    this->CRCVector.erase(this->CRCVector.begin(), this->CRCVector.begin()+4);
+
     BIT32 table[256];
 
     /* -----Make table----- */
@@ -127,10 +189,11 @@ auto PNGExport::calcCRC(BIT8* data, BIT32 length) -> BIT32
 
     c = 0xffffffffL;
 
-    for (n = 0; n < (length + 4); n++)
-        c = table[(c ^ data[n]) & 0xff] ^ (c >> 8);
+    for (n = 0; n < (this->CRCVector.size()); n++)
+        c = table[(c ^ this->CRCVector[n]) & 0xff] ^ (c >> 8);
 
-    delete data;
+    //delete data;
 
+    std::cout << "-->" << std::hex << (c ^ 0xffffffffL) << std::dec << std::endl;
     return c ^ 0xffffffffL;
 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 typedef unsigned char BIT8;
 typedef unsigned long BIT32;
@@ -24,11 +25,11 @@ struct PNGHeaderChunk
 {
     BIT32 width;
     BIT32 height;
-    BIT8  depth = 8;
-    BIT8  colorType = 2;
-    BIT8  compression = 0;
-    BIT8  filter = 0;
-    BIT8  interlace = 0;
+    BIT8  depth = 0x08;
+    BIT8  colorType = 0x02;
+    BIT8  compression = 0x00;
+    BIT8  filter = 0x00;
+    BIT8  interlace = 0x00;
 
     BIT8 size;
     auto getDataForCRC() -> BIT8*;
@@ -73,6 +74,8 @@ class PNGExport
         auto calcCRC(BIT8* data, BIT32 length) -> BIT32;
 
         auto write() -> void;
+        auto writeData(BIT8) -> void;
+        auto writeData(BIT32, bool rev = false) -> void;
 
     private:
         BIT8* dataPointer;
@@ -83,6 +86,7 @@ class PNGExport
         PNGTrailerChunk trailer;
 
         std::ofstream file;
+        std::vector<BIT8> CRCVector;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
