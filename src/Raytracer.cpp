@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "MathCalc.h"
 #include "CollisionCalc.h"
+#include "LightCalc.h"
 
 typedef unsigned char uint8;
 
@@ -53,6 +54,13 @@ auto Raytracer::render() -> void
 {
 	GeometryBuffer* current_geometry = nullptr;
 	(void) current_geometry;
+	
+	std::vector<GeometryBuffer*> light_list;
+	for (unsigned int i = 0; i < this->geometry_list.size(); ++i)
+	{
+		if (this->geometry_list[i]->material_buffer->is_light)
+			light_list.push_back(this->geometry_list[i]);
+	}
 
 	for (float idx_y = 0.f; idx_y < this->render_size.y; ++idx_y)
 	{
@@ -63,42 +71,67 @@ auto Raytracer::render() -> void
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 					
 				float dist_min = 100.f;
-				SphereGeometryBuffer* coll_geo = nullptr;
+				GeometryBuffer* coll_geo = nullptr;
 			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
 			{
 				current_geometry = this->geometry_list[idx];
 
-				float res = calculateCollision(this->getGeometryPointer<SphereGeometryBuffer>(current_geometry), camera_ray);
+				float res = calculateCollision(current_geometry, camera_ray);
 				if(res < dist_min && res > -1.f)
 				{
 					dist_min = res;
-					coll_geo = this->getGeometryPointer<SphereGeometryBuffer>(current_geometry);
+					coll_geo = current_geometry;
 					
 				}
 			}	
-				if (coll_geo != nullptr)
+				if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
 				{
-					this->render_buffer->setColorList(coll_geo->material_buffer->color);
+					calculateCollisionPoint(dist_min, camera_ray);
+					Vector3D<float> final_color;
+					final_color += calculateAmbiantLight(coll_geo);
+					final_color += calculateDiffuseLight(coll_geo, light_list, camera_ray->collision_point);
+					final_color += calculateSpecularLight(coll_geo, light_list, camera_ray);
+					
+					this->render_buffer->setColorList(final_color);
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+
+					//this->render_buffer->setColorList(coll_geo->material_buffer->color);
+					//this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+				}
+				else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
+				{
+					this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 		}
 	}
 }
 
-auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry) -> void
+auto Raytracer::genGeometryBufferId() -> unsigned int
+{
+	 unsigned int id = 0;
+
+	if (this->geometry_list.size() != 0)
+		id += this->geometry_list[this->geometry_list.size() - 1]->getId() + 1;
+	
+	return id;
+}
+
+auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id) -> void
 {
 	Log* log = Log::getInstance();
 	log->info("Geometry buffer creation...");
 
 	if (rad != 0.f)
 	{
-		/*SphereGeometryBuffer**/  GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry);
+		/*SphereGeometryBuffer**/  GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 
 	else
 	{
-
+		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);
+		this->geometry_list.push_back(triangle_buffer);
 	}
 
 	log->info("Geometry buffer created.");
@@ -108,6 +141,23 @@ auto Raytracer::genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, 
 {
 	long unsigned int last_element = this->geometry_list.size() - 1u;
 	this->geometry_list.at(last_element)->createMaterialBuffer(color_node, reflct_idx, refrct_idx, light);
+}
+
+auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void
+{
+	GeometryBuffer* current_geometry_buffer = nullptr;
+
+	for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)
+	{
+		current_geometry_buffer = this->geometry_list[idx];
+		if(current_geometry_buffer->getId() == id)
+		{
+			current_geometry_buffer->position = pos;
+			current_geometry_buffer->material_buffer->color = col;
+			current_geometry_buffer->material_buffer->reflection_idx = reflect_idx;
+			current_geometry_buffer->material_buffer->refraction_idx = refract_idx;
+		}
+	}
 }
 
 template <typename T>

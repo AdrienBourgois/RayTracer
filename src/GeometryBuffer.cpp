@@ -37,7 +37,7 @@ auto GeometryBuffer::close() -> void
 	log->info("GeometryBuffer closed.");
 }
 
-SphereGeometryBuffer::SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry)
+SphereGeometryBuffer::SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer)
 {
 	this->position = pos;
 	this->radius = rad;
@@ -45,4 +45,15 @@ SphereGeometryBuffer::SphereGeometryBuffer(Vector3D<float> pos, float rad, std::
 	
 	this->material_buffer = nullptr;
 	this->type = type_geometry;
+	this->id = id_geometry_buffer;
+}
+
+TriangleGeometryBuffer::TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer)
+{
+	this->position = pos;
+	this->vertice_list = vert_list;
+	
+	this->material_buffer = nullptr;
+	this->type = type_geometry;
+	this->id = id_geometry_buffer;
 }

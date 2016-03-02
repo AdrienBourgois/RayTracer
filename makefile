@@ -15,6 +15,7 @@ SRC =  main.cpp\
 		SceneNode.cpp \
 	  RenderBuffer.cpp \
 	  Log.cpp \
+		LightCalc.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 

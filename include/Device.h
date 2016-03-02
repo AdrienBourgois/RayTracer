@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include "Vector.h"
+#include "Enum.h"
 
 class Driver;
 class Raytracer;
@@ -20,20 +21,24 @@ class Device final
     
         auto init() -> void;
         auto run() -> void;
-		auto createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad) -> void;
+		auto createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void;
         auto quit() -> void;
         auto close() -> void;
 
         auto getDriver() const -> Driver const*     {return driver.get(); }
+		auto setLightList() -> void;
+		auto getLightList() -> std::vector<SceneNode*> { return this->light_list; }
 
     private:
         std::unique_ptr<Driver>     driver;
 		std::unique_ptr<Raytracer>  raytracer;
 		std::vector<SceneNode*>			node_list;		
-
+		
         Vector2D<float>             screen_size;
 		
         bool                        running;
+		
+		std::vector<SceneNode*>		light_list;
 };
 
 #endif

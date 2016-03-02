@@ -4,18 +4,22 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
+#include "Raytracer.h"
 #include "Vector.h"
+#include "Enum.h"
 
 class SceneNode
 {
 	public:
-		SceneNode();
+		SceneNode(Raytracer* raytrace);
 		~SceneNode() = default;
 
-		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad) -> void;
+		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
+		auto draw() -> void;
 		
-		auto setPosition(Vector3D<float> pos) -> void { this->position = pos; }
+		auto setPosition(Vector3D<float> pos) -> void;
 		auto setColor(Vector3D<float> col) -> void { this->color = col; }
+		auto setGeometryBufferId(unsigned int id) -> void { this->geometry_buffer_id = id; }
 
 		auto getPosition() -> Vector3D<float> { return this->position; }
 		auto getColor() -> Vector3D<float> { return this->color; }
@@ -29,10 +33,15 @@ class SceneNode
 		
 		std::vector<float> vertice;
 
+		unsigned int geometry_buffer_id;
+
 		float reflection_idx;
+		float refraction_idx;
 		float radius;
 
 		bool is_light;
+
+		Raytracer*		raytracer;
 };
 
 #endif

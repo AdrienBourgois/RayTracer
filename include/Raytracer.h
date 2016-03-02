@@ -22,8 +22,10 @@ class Raytracer final
 
 		auto init(Vector2D<float> screen_res) -> void;
 		auto render() -> void;
-		auto genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry) -> void;
+		auto genGeometryBufferId() -> unsigned int;
+		auto genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id) -> void;
 		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
+		auto updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void;
 
 		template <typename T>
 		auto getGeometryPointer(GeometryBuffer* geometry_pointer) -> T*;
@@ -38,7 +40,8 @@ class Raytracer final
 		std::unique_ptr<Camera> 		camera;
 
 		std::vector<GeometryBuffer*> 	geometry_list;
-
+		std::vector<unsigned int>		geometry_buffer_id_list;
+		
 		Vector2D<float> 				render_size;
 		
 		Ray* 							camera_ray;

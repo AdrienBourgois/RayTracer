@@ -37,38 +37,48 @@ auto Device::init() -> void
     this->driver->init(this->screen_size, this->raytracer.get());
 	this->raytracer->init(this->screen_size);
 
-	this->createSceneNode(Vector3D<float> (1.f, 0.f, -1.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (2.f, 0.f, -3.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (0.f, 1.f, -1.f), Vector3D<float> (255.f, 255.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (-4.f, 0.f, -3.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (-1.f, 0.f, -1.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f);
+	this->createSceneNode(Vector3D<float> (-1.f, 0.f, -3.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (0.f, -1.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), false, 1.f);
+//	this->createSceneNode(Vector3D<float> (0.f, 0.f, -1.f), Vector3D<float> (255.f, 255.f, 255.f), false, 1.f, EGeometry_type::MODEL);
 
-   // this->driver->changePixelColor(255, 255, 255, 120, 0);
+
+this->setLightList();
 }
 
 auto Device::run() -> void
 {
     Log* log = Log::getInstance();
     log->info("Device running...");
+	SceneNode* current_node = nullptr;
     while(running)
     {
+		for(unsigned int idx = 0; idx < node_list.size(); ++idx)
+		{
+			current_node = node_list[idx];
+			current_node->draw();
+		}	
 		this->raytracer->render();
         driver->render();
-        Event::eventListener(this);
+		Event::eventListener(this);
     }
 }
 
-auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad) -> void
+auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void
 {
-	SceneNode* scene_node = new SceneNode();
-	scene_node->init(pos, col, light, rad);
+	SceneNode* scene_node = new SceneNode(this->raytracer.get());
+	scene_node->init(pos, col, light, rad, type);
 
 	this->node_list.push_back(scene_node);
 
-	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), EGeometry_type::SPHERE);
-	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, false);
+	unsigned int id = this->raytracer->genGeometryBufferId();
+	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), type, id);
+	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, light);
+	
+	scene_node->setGeometryBufferId(id);
 }
 
 auto Device::quit() -> void
@@ -85,3 +95,14 @@ auto Device::close() -> void
     log->info("Device closed.");
 }
 
+auto Device::setLightList() -> void
+{
+	SceneNode* current_node = nullptr;
+
+	for(unsigned int idx = 0; idx < this->node_list.size(); ++idx)
+	{
+		current_node = node_list[idx];
+		if (current_node->getIsLight())
+			this->light_list.push_back(current_node);
+	}
+}

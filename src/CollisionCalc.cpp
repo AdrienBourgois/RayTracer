@@ -5,7 +5,36 @@
 #include "Vector.h"
 #include "Log.h"
 
-auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> float
+
+auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
+{
+	switch(current_geometry->type)
+	{
+		case EGeometry_type::SPHERE: 
+		{
+			SphereGeometryBuffer* derived = nullptr;
+			derived = static_cast<SphereGeometryBuffer*> (current_geometry);
+			return calculateSphereCollision(derived, ray);
+		}break;
+
+		case EGeometry_type::TRIANGLE:
+		{
+			TriangleGeometryBuffer* derived = nullptr;
+			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
+			return calculateTriangleCollision(derived, ray);
+		}break;
+
+		default :
+		{
+			TriangleGeometryBuffer* derived = nullptr;
+			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
+			return calculateModelCollision(derived, ray);
+		}break;
+	}
+	return -1.f;
+}
+
+auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> float
 {
 	Log* log = Log::getInstance();
 	
@@ -41,7 +70,6 @@ auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> flo
             t0 = t1;
 		}
 
-
        // Verify t0 larger than 0 and less than the original t 
         if ((t0 > 0.001f) && (t0 < ray->lenght))
         {
@@ -49,6 +77,104 @@ auto calculateCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> flo
         }
     }
     return -1.f;	
+}
+
+auto calculateTriangleCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
+{
+	std::vector<float> _vertice = current_geometry->vertice_list;
+
+        Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]);
+        Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]);
+        Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]);
+		a += current_geometry->position;
+		b += current_geometry->position;
+		c += current_geometry->position;
+
+	Vector3D<float> ab_edge = (b - a);
+	Vector3D<float> ac_edge = (c - a);
+        Vector3D<float> p = ray->origin.normalize();
+        Vector3D<float> d = ray->direction.normalize();
+
+	Vector3D<float> h = (d * ac_edge);
+	float _a = h.dot(ab_edge);
+ 
+	if (_a > -0.00001f && _a < 0.00001f)
+		return -1.f;
+
+	float f = 1.f/_a;
+	Vector3D<float> s = (p - a);
+	float u = f * s.dot(h);
+
+	if (u < 0.0f || u > 1.0f)
+		return -1.f;
+
+	Vector3D<float> q = (s * ab_edge);
+	float v = f * d.dot(q);
+
+	if (v < 0.0f || u + v > 1.0f)
+		return -1.f;
+
+	// at this stage we can compute t to find out where
+	// the intersection point is on the line
+	float t = f * q.dot(ac_edge);
+
+	if (t > 0.00001f) // ray intersection
+	{
+		return t;
+	}
+	return -1.f;
+}
+
+auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
+{
+        std::vector<float> _vertice = current_geometry->vertice_list;
+	float t_coll = 100.f;
+
+	for (unsigned int i = 0; i < _vertice.size(); i += 9)
+	{
+		Vector3D<float> a = Vector3D<float>(_vertice[i + 0], _vertice[i + 1], _vertice[i + 2]);
+		Vector3D<float> b = Vector3D<float>(_vertice[i + 3], _vertice[i + 4], _vertice[i + 5]);
+		Vector3D<float> c = Vector3D<float>(_vertice[i + 6], _vertice[i + 7], _vertice[i + 8]);
+			a += current_geometry->position;
+			b += current_geometry->position;
+			c += current_geometry->position;
+
+		Vector3D<float> ab_edge = (b - a);
+		Vector3D<float> ac_edge = (c - a);
+		Vector3D<float> p = ray->origin.normalize();
+		Vector3D<float> d = ray->direction.normalize();
+
+		Vector3D<float> h = (d * ac_edge);
+
+		float _a = h.dot(ab_edge);
+	 
+		if (_a > -0.00001f && _a < 0.00001f)
+			continue;
+
+		float f = 1.f/_a;
+		Vector3D<float> s = (p - a);
+		float u = f * h.dot(s);
+
+		if (u < 0.0f || u > 1.0f)
+			continue;
+
+		Vector3D<float> q = (s * ab_edge);
+		float v = f * d.dot(q);
+
+		if (v < 0.0f || u + v > 1.0f)
+			continue;
+	
+		// at this stage we can compute t to find out where
+		// the intersection point is on the line
+		float t = f * q.dot(ac_edge);
+
+		if (t > 0.00001f && t < t_coll) // ray intersection
+			t_coll = t;
+	}
+	if (t_coll != 100.f)
+		return t_coll;
+
+	return -1.f;
 }
 
 auto calculateCollisionPoint(float distance, Ray* ray) -> void
