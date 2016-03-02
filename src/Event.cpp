@@ -4,6 +4,8 @@
 #include "Event.h"
 #include "MaterialBuffer.h"
 
+unsigned int Event::num = 0;
+
 auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_list) -> void
 {
  
@@ -14,13 +16,11 @@ auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_
 			light_list.push_back(geometry_list[i]);
 	} 
     
-	unsigned int num = 0;
- 
+	GeometryBuffer* node;	 
+
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
     {   
-	GeometryBuffer* node = light_list[num];	 
-
         if (evt.type == SDL_KEYDOWN)
         {
             switch (evt.key.keysym.scancode)
@@ -30,47 +30,61 @@ auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_
                     break;
 
                 case SDL_SCANCODE_RIGHT:
+		{
+			node = light_list[num];
                     ++node->position.x;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                    break;
+                 }   break;
 
                 case SDL_SCANCODE_LEFT:
+		{
+			node = light_list[num];
                     --node->position.x;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                    break;
+                 }   break;
 
                 case SDL_SCANCODE_UP:
+		{
+			node = light_list[num];
                     ++node->position.y;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                    break;
+                 }   break;
 
                 case SDL_SCANCODE_DOWN:
+		{
+			node = light_list[num];
                     --node->position.y;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                    break;
+                 }   break;
                     
                 case SDL_SCANCODE_Q:
+		{
+			node = light_list[num];
                     ++node->position.z;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                     break;
+	         }  break;
 
                 case SDL_SCANCODE_E:
+		{
+			node = light_list[num];
                      --node->position.z;
                     std::cout<<"Light pos = "<<node->position<<std::endl;
-                     break;
+                 }    break;
                 
                 case SDL_SCANCODE_L:
-
-                    if (num == light_list.size() - 1)
+		{
+                    if (num == light_list.size() - 1u)
                     {
+			std::cout << "light_list.size() : " << light_list.size() << std::endl;
 			num = 0;
                     }
-
                     else
                     {
+			std::cout << "num : " << num << std::endl;
 			++num;
+			std::cout << "num : " << num << std::endl;
                     }
-                    break;
+                 }break;
 
                 default:
                      break;

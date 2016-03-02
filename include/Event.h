@@ -14,6 +14,7 @@ public:
 
 private:
     Event() = default;
+	static unsigned int num;
 };
 
 #endif

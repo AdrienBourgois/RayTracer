@@ -100,6 +100,11 @@ auto Raytracer::render() -> void
 					this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
+				else
+				{
+					this->render_buffer->setColorList(Vector3D<float>(0.f,0.f,0.f));
+					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+				}
 		}
 	}
 }
