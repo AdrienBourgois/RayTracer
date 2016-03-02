@@ -78,7 +78,7 @@ auto PNGExport::writeChunk(int type) -> void
         writeData(this->header.compression);
         writeData(this->header.filter);
         writeData(this->header.interlace);
-        this->header.crc = calcCRC(this->header.getDataForCRC(), this->header.length + 4);
+        this->header.crc = calcCRC();
         writeData(this->header.crc, true);
     }
     if (type == EchunkType::DataChunk)
@@ -90,7 +90,7 @@ auto PNGExport::writeChunk(int type) -> void
             BIT8* bytePointer = (BIT8*) &this->data.colorData;
             this->file.write((char*)&bytePointer[i], sizeof(BIT8));
         }
-        this->data.crc = calcCRC(this->data.getDataForCRC(), this->data.length + 4);
+        this->data.crc = calcCRC();
         writeData(this->data.crc, true);
     }
     if (type == EchunkType::TrailerChunk)
