@@ -23,7 +23,7 @@ auto PNGExport::prepareChunk(int _type) -> void
 
     if (_type == EchunkType::DataChunk)
     {
-        this->data.length = this->header.width * this->header.height;
+        this->data.length = (this->header.width * this->header.height) * 3;
         this->data.type = makeBIT32('I', 'D', 'A', 'T');
     }
 
@@ -120,8 +120,8 @@ auto PNGExport::write() -> void
     for (int i = 0; i < 8; ++i)
         this->file.write((char*)&signature.Signature[i], sizeof(BIT8));
     prepareChunk(EchunkType::HeaderChunk); writeChunk(EchunkType::HeaderChunk);
-    //prepareChunk(EchunkType::DataChunk); writeChunk(EchunkType::DataChunk);
-    //prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
+    prepareChunk(EchunkType::DataChunk); writeChunk(EchunkType::DataChunk);
+    prepareChunk(EchunkType::TrailerChunk); writeChunk(EchunkType::TrailerChunk);
 }
 
 auto PNGExport::calcCRC() -> BIT32
