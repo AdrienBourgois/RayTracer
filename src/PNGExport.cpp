@@ -87,7 +87,7 @@ auto PNGExport::writeChunk(int type) -> void
         writeData(this->data.length, true);
         writeData(this->data.type);
         for (unsigned int i = 0; i < ((this->header.width * this->header.height)*3); i++)
-            this->file.write((char*)&this->data.colorData[i], sizeof(BIT8));
+            writeData(this->data.colorData[i]);
         this->data.crc = calcCRC();
         writeData(this->data.crc, true);
     }
