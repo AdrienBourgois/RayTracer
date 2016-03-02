@@ -26,38 +26,38 @@ auto Event::eventListener(Device* device) -> void
                     break;
 
                 case SDL_SCANCODE_RIGHT:
-                    move = node->getPosition().x;
-                    node->setPosition(Vector3D<float>(++move, node->getPosition().y, node->getPosition().z)); 
+                    move = node->getPosition().x + 0.5f;
+                    node->setPosition(Vector3D<float>(move, node->getPosition().y, node->getPosition().z)); 
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 
                 case SDL_SCANCODE_LEFT:
-                    move = node->getPosition().x;
-                    node->setPosition(Vector3D<float>(--move, node->getPosition().y, node->getPosition().z));
+                    move = node->getPosition().x - 0.5f;
+                    node->setPosition(Vector3D<float>(move, node->getPosition().y, node->getPosition().z));
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 
                 case SDL_SCANCODE_UP:
-                    move = node->getPosition().y;
-                    node->setPosition(Vector3D<float>(node->getPosition().x, ++move, node->getPosition().z));
+                    move = node->getPosition().y + 0.5f;
+                    node->setPosition(Vector3D<float>(node->getPosition().x, move, node->getPosition().z));
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
 
                 case SDL_SCANCODE_DOWN:
-                    move = node->getPosition().y;
-                    node->setPosition(Vector3D<float>(node->getPosition().x, --move, node->getPosition().z));
+                    move = node->getPosition().y - 0.5f;
+                    node->setPosition(Vector3D<float>(node->getPosition().x, move, node->getPosition().z));
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                     break;
                     
                 case SDL_SCANCODE_Q:
-                     move = node->getPosition().z;
-                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, --move));
+                     move = node->getPosition().z - 0.5f;
+                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, move));
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
 
                 case SDL_SCANCODE_E:
-                     move = node->getPosition().z;
-                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, ++move));
+                     move = node->getPosition().z + 0.5f;
+                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, move));
                     std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
                      break;
                 
