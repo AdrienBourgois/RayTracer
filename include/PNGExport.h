@@ -30,18 +30,12 @@ struct PNGHeaderChunk
     BIT8  compression = 0x00;
     BIT8  filter = 0x00;
     BIT8  interlace = 0x00;
-
-    BIT8 size;
-    auto getDataForCRC() -> BIT8*;
 };
 
 struct PNGDataChunk
 :public PNGChunk
 {
     BIT8* colorData;
-
-    BIT8 size;
-    auto getDataForCRC() -> BIT8*;
 };
 
 struct PNGTrailerChunk
