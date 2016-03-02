@@ -5,6 +5,8 @@
 # Editor files
 *~
 *.swp
+*.swo
+*.swl
 *.ini
 
 # Folders

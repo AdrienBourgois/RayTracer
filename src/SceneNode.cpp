@@ -2,11 +2,15 @@
 
 #include "SceneNode.h"
 
-SceneNode::SceneNode()
+SceneNode::SceneNode(Raytracer* raytrace)
 {
 	this->reflection_idx = 0.f;
+	this->refraction_idx = 0.f;
 	this->radius = 0.f;
 	this->is_light = false;
+	this->geometry_buffer_id = 0;
+	
+	this->raytracer = raytrace;
 }
 
 auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void
@@ -59,4 +63,12 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 	}
 }
 
+auto SceneNode::draw() -> void
+{
+	raytracer->updateGeometryBuffer(this->geometry_buffer_id, this->position, this->color, this->reflection_idx, this->refraction_idx);
+}
 
+auto SceneNode::setPosition(Vector3D<float> pos) -> void
+{
+	this->position = pos;
+}

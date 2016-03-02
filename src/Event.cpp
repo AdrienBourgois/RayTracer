@@ -4,20 +4,15 @@
 #include "Event.h"
 #include "MaterialBuffer.h"
 
-unsigned int Event::num = 0;
 
-auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_list) -> void
+auto Event::eventListener(Device* device) -> void
 {
- 
-	std::vector<GeometryBuffer*> light_list;
-	for (unsigned int i = 0; i < geometry_list.size(); ++i)
-	{
-		if (geometry_list[i]->material_buffer->is_light)
-			light_list.push_back(geometry_list[i]);
-	} 
+  SceneNode* node;
+    node = device->getLightList()[0];
     
-	GeometryBuffer* node;	 
-
+    float move = 0.f;
+  
+ 
     SDL_Event evt;
     while (SDL_PollEvent(&evt))
     {   
@@ -30,56 +25,52 @@ auto Event::eventListener(Device* device, std::vector<GeometryBuffer*> geometry_
                     break;
 
                 case SDL_SCANCODE_RIGHT:
-		{
-			node = light_list[num];
-                    node->position.x += 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-                 }   break;
+                    move = node->getPosition().x + 0.5f;
+                    node->setPosition(Vector3D<float>(move, node->getPosition().y, node->getPosition().z)); 
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                    break;
 
                 case SDL_SCANCODE_LEFT:
-		{
-			node = light_list[num];
-                    node->position.x -= 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-                 }   break;
+                    move = node->getPosition().x - 0.5f;
+                    node->setPosition(Vector3D<float>(move, node->getPosition().y, node->getPosition().z));
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                    break;
 
                 case SDL_SCANCODE_UP:
-		{
-			node = light_list[num];
-                    node->position.y += 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-                 }   break;
+                    move = node->getPosition().y + 0.5f;
+                    node->setPosition(Vector3D<float>(node->getPosition().x, move, node->getPosition().z));
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                    break;
 
                 case SDL_SCANCODE_DOWN:
-		{
-			node = light_list[num];
-                    node->position.y -= 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-                 }   break;
+                    move = node->getPosition().y - 0.5f;
+                    node->setPosition(Vector3D<float>(node->getPosition().x, move, node->getPosition().z));
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                    break;
                     
                 case SDL_SCANCODE_Q:
-		{
-			node = light_list[num];
-                    node->position.z += 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-	         }  break;
+                     move = node->getPosition().z - 0.5f;
+                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, move));
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                     break;
 
                 case SDL_SCANCODE_E:
-		{
-			node = light_list[num];
-                     node->position.z -= 0.5f;
-                    std::cout<<"Light pos = "<<node->position<<std::endl;
-                 }    break;
+                     move = node->getPosition().z + 0.5f;
+                     node->setPosition(Vector3D<float>(node->getPosition().x, node->getPosition().y, move));
+                    std::cout<<"Light pos = "<<node->getPosition()<<std::endl;
+                     break;
                 
-                case SDL_SCANCODE_L:
-		{
-                    if (num == light_list.size() - 1u)
-			num = 0;
-                    else
-			++num;
-                 }break;
+/*                case SDL_SCANCODE_L:
 
-                default:
+                    if (node == device->getNodeTest2())
+                    {
+                        std::cout<<"SCANCODE L"<<std::endl;
+                        node = device->getNodeTest3();
+                    }
+
+                	break;
+*/
+                	default:
                      break;
                                                  
            }

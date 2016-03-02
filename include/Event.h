@@ -4,17 +4,18 @@
 #include <vector>
 
 #include "Device.h"
-#include "GeometryBuffer.h"
+#include "SceneNode.h"
 
 class Event
 {
 public:
     ~Event() = default;
-    static auto eventListener(Device* device, std::vector<GeometryBuffer*> geometry_list) -> void;
+     static auto eventListener(Device* device) -> void;
 
 private:
     Event() = default;
-	static unsigned int num;
+
+	unsigned int light_idx = 0;
 };
 
 #endif

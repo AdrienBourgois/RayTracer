@@ -14,6 +14,8 @@ struct GeometryBuffer
 	virtual ~GeometryBuffer();
 
 	auto createMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
+ 
+	auto getId() -> unsigned int { return this->id; }
 
 	auto close() -> void;
 
@@ -25,6 +27,9 @@ struct GeometryBuffer
 
 	EGeometry_type			type;
 
+	protected:
+
+		unsigned int 		id;
 };
 
 
@@ -32,7 +37,7 @@ struct GeometryBuffer
 
 struct SphereGeometryBuffer : public GeometryBuffer
 {
-	SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry);
+	SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
 	~SphereGeometryBuffer() = default;
 
 	float 					radius;
@@ -40,7 +45,7 @@ struct SphereGeometryBuffer : public GeometryBuffer
 
 struct TriangleGeometryBuffer : public GeometryBuffer
 {
-	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry);
+	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
 	~TriangleGeometryBuffer() = default;
 };
 
