@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include "Log.h"
 
+#include "Enum.h"
 
 auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 {
@@ -181,3 +182,43 @@ auto calculateCollisionPoint(float distance, Ray* ray) -> void
 {
 	ray->collision_point = (ray->direction * distance) + ray->origin;
 }
+
+auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, GeometryBuffer* light, Vector3D<float> coll_point) -> bool
+{
+	float dist_min = 100.f;
+	GeometryBuffer* coll_geo = nullptr;
+
+//	float length = std::sqrt((coll_point - light->position).dot(coll_point - light->position));
+
+//	std::cout << "length : " << length << std::endl;
+//	std::cout << "current_node : " << current_node->position << std::endl;
+
+	Ray* ray = new Ray();
+	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f);
+	ray->direction = coll_point - light->position;
+
+	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
+	{
+		GeometryBuffer* temp_geo = node_list[idx];
+
+		float res = calculateCollision(temp_geo, ray);
+
+//	std::cout << "result : " << res << std::endl;
+
+		if(res < dist_min && res > -1.f)
+		{
+			dist_min = res;
+			coll_geo = temp_geo;
+		}
+	}	
+
+//	std::cout << "dist_min : " << dist_min << std::endl;
+
+	delete ray;
+	ray = nullptr;
+
+	if (coll_geo == current_node )
+		return false;
+	return true;
+}
+

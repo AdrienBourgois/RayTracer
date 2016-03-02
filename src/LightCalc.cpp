@@ -1,5 +1,7 @@
 #include "LightCalc.h"
 
+#include "CollisionCalc.h"
+
 auto calculateAmbiantLight(GeometryBuffer* node) -> Vector3D<float>
 {
 	Vector3D<float> node_color = node->material_buffer->color;
@@ -38,7 +40,7 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> li
 	return final_diffuse_color;
 }
 
-auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> light, Ray* ray) -> Vector3D<float>
+auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, std::vector<GeometryBuffer*> light, Ray* ray) -> Vector3D<float>
 {
 	if (light.size() == 0)  
 		return Vector3D<float> {0.f, 0.f, 0.f};
@@ -46,27 +48,33 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> l
 	Vector3D<float> final_specular_light;
 	for (unsigned int i = 0; i < light.size(); ++i)
 	{
-		Vector3D<float> n;
-		n = n.normalOnSphere(ray->collision_point, node->position).normalize();
-		Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
-		Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
+		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
+		{
+			Vector3D<float> n;
+			n = n.normalOnSphere(ray->collision_point, node->position) - node->position;
+			n = n.normalize();
+			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
+			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
 
-		float nl = std::max(n.dot(l), 0.f); 
-		Vector3D<float> r = (n * nl * 2.f) - l;
+			float nl = std::max(n.dot(l), 0.f); 
+			Vector3D<float> r = (n * nl * 2.f) - l;
 
-		r = r.normalize();
-		Vector3D<float> specular_light = (light[i]->material_buffer->color * 0.70f);
-		if (std::pow(r.dot(v) ,16.f) < 0.f)
-			specular_light = specular_light * 0.f;
+			r = r.normalize();
+			Vector3D<float> specular_light = (light[i]->material_buffer->color * 0.70f);
+			if (std::pow(r.dot(v) ,16.f) < 0.f)
+				specular_light = specular_light * 0.f;
+			else
+				specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,16.f);
+			
+		    if (nl <= 0.0f)
+				specular_light = specular_light * 0.0f;
+
+			specular_light.normalize();
+
+			final_specular_light += specular_light;
+		}
 		else
-			specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,16.f);
-		
-	    if (nl <= 0.0f)
-			specular_light = specular_light * 0.0f;
-
-		specular_light.normalize();
-
-		final_specular_light += specular_light;
+			return Vector3D<float> {0.f, 0.f, 0.f};
 	}
 	return final_specular_light;
 }

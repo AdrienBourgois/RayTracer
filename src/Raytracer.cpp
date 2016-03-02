@@ -72,7 +72,7 @@ auto Raytracer::render() -> void
 					
 				float dist_min = 100.f;
 				GeometryBuffer* coll_geo = nullptr;
-			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
+			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)
 			{
 				current_geometry = this->geometry_list[idx];
 
@@ -90,13 +90,10 @@ auto Raytracer::render() -> void
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
 					final_color += calculateDiffuseLight(coll_geo, light_list, camera_ray->collision_point);
-					final_color += calculateSpecularLight(coll_geo, light_list, camera_ray);
+					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 					
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-
-					//this->render_buffer->setColorList(coll_geo->material_buffer->color);
-					//this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
 				else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
 				{
