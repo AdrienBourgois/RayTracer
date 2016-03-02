@@ -25,6 +25,7 @@ auto PNGExport::prepareChunk(int _type) -> void
     {
         this->data.length = (this->header.width * this->header.height) * 3;
         this->data.type = makeBIT32('I', 'D', 'A', 'T');
+        this->data.colorData = this->dataPointer;
     }
 
     if (_type == EchunkType::TrailerChunk)
@@ -86,10 +87,7 @@ auto PNGExport::writeChunk(int type) -> void
         writeData(this->data.length, true);
         writeData(this->data.type);
         for (unsigned int i = 0; i < ((this->header.width * this->header.height)*3); i++)
-        {
-            BIT8* bytePointer = (BIT8*) &this->data.colorData;
-            this->file.write((char*)&bytePointer[i], sizeof(BIT8));
-        }
+            this->file.write((char*)&this->data.colorData[i], sizeof(BIT8));
         this->data.crc = calcCRC();
         writeData(this->data.crc, true);
     }
