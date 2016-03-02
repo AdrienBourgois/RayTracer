@@ -6,6 +6,6 @@
 #include "GeometryBuffer.h"
 #include "CollisionCalc.h"
 
-auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Vector3D<float> coll_point) -> Vector3D<float>;
+auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound = 0) -> Vector3D<float>;
 
 #endif

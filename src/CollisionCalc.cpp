@@ -217,36 +217,29 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	return false;
 }
 
-auto isNodeBeforeSource(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, Vector3D<float> coll_point) -> bool
+auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, Ray* ray) -> GeometryBuffer*
 {
 	float dist_min = 100.f;
 	GeometryBuffer* coll_geo = nullptr;
 
 	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
 	{
-		Ray* ray = new Ray();
-		ray->init(Eray_type::REFLECTION_RAY, node_list[idx]->position, 100.f, 100.f);
-		ray->direction = coll_point - node_list[idx]->position;
-
 		GeometryBuffer* temp_geo = node_list[idx];
 
-		float res = calculateCollision(temp_geo, ray);
+                float res = calculateCollision(temp_geo, ray);
 
-		if(res < dist_min && res > -1.f)
-		{
-			dist_min = res;
-			coll_geo = temp_geo;
-		}
-
-		delete ray;
-		ray = nullptr;
+                if(res < dist_min && res > -1.f)
+                {
+                        dist_min = res;
+                        coll_geo = temp_geo;
+                }
 	}	
 
 
 	if (dist_min != 100.f && dist_min != -1.f)
 	{
-		if (coll_geo == current_node )
-			return true;
+		if (coll_geo != current_node)
+			return coll_geo;
 	}
-	return false;
+	return nullptr;
 }

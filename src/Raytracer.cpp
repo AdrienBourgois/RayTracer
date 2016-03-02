@@ -10,6 +10,8 @@
 #include "CollisionCalc.h"
 #include "LightCalc.h"
 
+#include "ReflexionCalc.h"
+
 typedef unsigned char uint8;
 
 Raytracer::Raytracer()
@@ -91,6 +93,10 @@ auto Raytracer::render() -> void
 					final_color += calculateAmbiantLight(coll_geo);
 					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray->collision_point);
 					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
+			//////////////////////////
+					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
+			/////////////////////////
+
 					
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));

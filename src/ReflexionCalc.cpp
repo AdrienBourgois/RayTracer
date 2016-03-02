@@ -1,25 +1,35 @@
 #include "ReflexionCalc.h"
 #include "MaterialBuffer.h"
 
-auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Vector3D<float> coll_point) -> Vector3D<float>
+auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
-	if (node_list.size() == 1)
-		return Vector3D<float>(0.f, 0.f, 0.f);
+	unsigned int max_rebound = 4;
 
-(void)node;
-	Vector3D<float> final_reflected_color;
-	for (unsigned int i = 0; i < node_list.size(); ++i)
+	if (rebound < max_rebound)
 	{
-		if (!node_list[i]->material_buffer->is_light)
+		Vector3D<float> normal;
+
+		normal = normal.normalOnSphere(ray->collision_point, node->position) - node->position;
+
+		Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
+
+		Ray *ref_ray = new Ray();
+		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f);
+		ref_ray->direction = ref_ray_dir;
+
+		if (ray->power > 10.f)
 		{
-			if (!isNodeBeforeSource(node_list[i], node_list, coll_point))
+			GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);	
+			if (coll_node)
 			{
-//				std::cout << "ref color : " << node_list[i]->material_buffer->color << std::endl;	
-				final_reflected_color += node_list[i]->material_buffer->color;
+				Vector3D<float> ref_color = coll_node->material_buffer->color;
+				++rebound;
+				ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
+
+				delete ref_ray;
+				return ref_color;
 			}
-			else
-				final_reflected_color += Vector3D<float>(0.f, 0.f, 0.f);
 		}
 	}
-	return final_reflected_color;
+	return Vector3D<float>(0.f, 0.f, 0.f);
 }
