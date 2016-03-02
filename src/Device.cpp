@@ -52,9 +52,9 @@ auto Device::run() -> void
     log->info("Device running...");
     while(running)
     {
-		this->raytracer->render();
+	this->raytracer->render();
         driver->render();
-        Event::eventListener(this);
+        Event::eventListener(this, this->raytracer->getGeometryList());
     }
 }
 
