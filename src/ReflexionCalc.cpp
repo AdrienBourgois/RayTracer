@@ -9,26 +9,40 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 	{
 		Vector3D<float> normal;
 
-		normal = normal.normalOnSphere(ray->collision_point, node->position) - node->position;
+		normal = normal.normalOnSphere(ray->collision_point, node->position) - ray->collision_point;
+		Vector3D<float> ray_dir = ray->direction;//.normalize();
+//		normal = normal.normalize();
 
-		Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
-
+		
+//		std::cout << "refrac angle : " << normal.dot(ray_dir) << std::endl;
+		if (normal.dot(ray_dir) < 0.f)
+		{
+		Vector3D<float> ref_ray_dir = ray_dir - (normal * 2.f * normal.dot(ray_dir));
+//		ref_ray_dir = ref_ray_dir.normalize();
 		Ray *ref_ray = new Ray();
 		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f);
 		ref_ray->direction = ref_ray_dir;
+/*
+		Vector3D<float> ref_ray_dir = (ray_dir * normal) * 2.f;
+		ref_ray_dir = ref_ray_dir;
+		//new ray
+		Ray *ref_ray = new Ray();
+                ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f);
+		ref_ray_dir = ray_dir - ref_ray_dir * normal;
+		ref_ray->direction = ref_ray_dir;
+*/
+		GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);	
 
-		if (ray->power > 10.f)
+		if (coll_node)
 		{
-			GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);	
-			if (coll_node)
-			{
-				Vector3D<float> ref_color = coll_node->material_buffer->color;
-				++rebound;
-				ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
+			Vector3D<float> ref_color = coll_node->material_buffer->color * 0.2f;
+			++rebound;
+			ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
 
-				delete ref_ray;
-				return ref_color;
-			}
+			delete ref_ray;
+			return ref_color;
+		}
+		delete ref_ray;
 		}
 	}
 	return Vector3D<float>(0.f, 0.f, 0.f);

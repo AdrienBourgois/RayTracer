@@ -12,10 +12,9 @@ public:
     ~Event() = default;
     static auto eventListener(Device* device) -> void;
 	static unsigned int idx;
+	static bool node_mode;
 private:
     Event() = default;
-
-	unsigned int light_idx = 0;
 };
 
 #endif
