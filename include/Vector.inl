@@ -232,11 +232,11 @@ auto Vector3D<T>::dot(Vector3D const& b) -> T
 }
 
 template <typename T>
-auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D
+auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D sphere_origin) -> Vector3D
 {
 	Vector3D<T> vector;
 
-	return vector = (intersect_point - origin);
+	return vector = (intersect_point - sphere_origin);
 }
 
 template <typename T> template <typename U>

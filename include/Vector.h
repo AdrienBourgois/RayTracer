@@ -48,6 +48,7 @@ class Vector3D
         Vector3D&   operator =(Vector3D const& a);
         Vector3D    operator +(Vector3D const& a); 
         Vector3D    operator -(Vector3D const& a); 
+		Vector3D    operator -(T const& a);
         Vector3D&   operator +=(Vector3D const& a); 
         Vector3D&   operator -=(Vector3D const& a);
         Vector3D    operator *(Vector3D const& a);
@@ -60,7 +61,7 @@ class Vector3D
 		auto 		normalize() -> Vector3D;
 		auto 		pow(T exp) -> Vector3D;
 		auto		dot(Vector3D const& b) -> T;
-		auto		normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
+		auto		normalOnSphere(Vector3D intersect_point, Vector3D sphere_origin) -> Vector3D;
 		template <typename U>
 		auto		cast(Vector3D<U> vec) -> Vector3D<T>;
 
