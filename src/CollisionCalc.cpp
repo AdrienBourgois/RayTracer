@@ -205,20 +205,15 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 		}
 	}	
 
+	delete ray;
+	ray = nullptr;
 
-	if (dist_min != ray->lenght)
+	if (dist_min != 100.f)
 	{
-		delete ray;
-		ray = nullptr;
-
 		if (coll_geo == current_node )
 			return false;
 		return true;
 	}
-
-	delete ray;
-	ray = nullptr;
-
 	return false;
 }
 
@@ -240,41 +235,11 @@ auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffe
                 }
 	}	
 
-	if (dist_min != 100.f)
-	{
-		if (coll_geo != current_node)
-		{
-			calculateCollisionPoint(dist_min, ray);
-			return coll_geo;
-		}
-	}
-	return nullptr;
-}
 
-/*
-auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, Ray* ray) -> GeometryBuffer*
-{
-	float dist_min = 100.f;
-	GeometryBuffer* coll_geo = nullptr;
-
-	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
-	{
-		GeometryBuffer* temp_geo = node_list[idx];
-
-                float res = calculateCollision(temp_geo, ray);
-
-                if(res < dist_min && res > 0.f)
-                {
-                        dist_min = res;
-                        coll_geo = temp_geo;
-                }
-	}	
-
-	if (dist_min != 100.f)
+	if (dist_min != 100.f && dist_min != -1.f)
 	{
 		if (coll_geo != current_node)
 			return coll_geo;
 	}
 	return nullptr;
 }
-*/

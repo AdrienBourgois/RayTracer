@@ -55,6 +55,7 @@ auto Raytracer::init(Vector2D<float> rend_size) -> void
 auto Raytracer::render() -> void
 {
 	GeometryBuffer* current_geometry = nullptr;
+	(void) current_geometry;
 	
 	std::vector<GeometryBuffer*> light_list;
 	for (unsigned int i = 0; i < this->geometry_list.size(); ++i)
@@ -90,12 +91,12 @@ auto Raytracer::render() -> void
 					calculateCollisionPoint(dist_min, camera_ray);
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
-					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
+					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray->collision_point);
 					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 			//////////////////////////
-					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
+					//final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
 			/////////////////////////
-
+					final_color += calculateRefraction(coll_geo, this->geometry_list, camera_ray);
 					
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));

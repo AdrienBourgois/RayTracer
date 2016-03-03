@@ -21,3 +21,33 @@ auto NormalizeRenderSpace(Vector2D<float> render_size, float idx_x, float idx_y)
 	
 	return NDC;
 }
+
+auto QuadraticEquation(float a, float b, float c) -> Vector2D<float>
+{
+	float discriminant = (b * b) - (4 * a * c);
+
+	Vector2D<float> k;
+
+	if(discriminant == 0)
+	{
+		k.x = (-b + sqrt(discriminant)) / (2 * a);
+		k.y = k.x;
+		
+		return k;
+	}
+
+	if(discriminant > 0)
+	{
+		k.x = (-b + sqrt(discriminant)) / (2 * a);
+		k.y = (-b - sqrt(discriminant)) / (2 * a);
+		
+		return k;
+	}
+
+	if(discriminant < 0)
+	{
+		std::cout<<" Discriminant < 0"<<std::endl;
+	}
+
+	return k;
+}

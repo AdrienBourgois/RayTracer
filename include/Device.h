@@ -28,7 +28,6 @@ class Device final
         auto getDriver() const -> Driver const*     {return driver.get(); }
 		auto setLightList() -> void;
 		auto getLightList() -> std::vector<SceneNode*> { return this->light_list; }
-		auto getObjectList() -> std::vector<SceneNode*> { return this->object_list; }
 
     private:
         std::unique_ptr<Driver>     driver;
@@ -40,7 +39,6 @@ class Device final
         bool                        running;
 		
 		std::vector<SceneNode*>		light_list;
-		std::vector<SceneNode*>		object_list;
 };
 
 #endif
