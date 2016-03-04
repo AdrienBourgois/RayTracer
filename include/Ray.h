@@ -22,10 +22,13 @@ struct Ray
 		Vector3D<float> collision_point;
 		float power;
 		float lenght;
+		unsigned int max_depth;
 		
 	private:
 		Eray_type type;
 		std::vector<Ray*> child_list;
+
+		unsigned int current_depth;
 };
 
 #endif
