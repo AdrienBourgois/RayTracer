@@ -14,6 +14,7 @@ struct Ray
 		~Ray() = default;
 
 		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void;
+		auto getCurrentDepth() -> unsigned int { return current_depth; }
 		auto close() -> void;
 
 

@@ -25,6 +25,7 @@ class Raytracer final
 		auto genGeometryBufferId() -> unsigned int;
 		auto genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id) -> void;
 		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
+		auto genLightList() -> std::vector<GeometryBuffer*>;
 		auto updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void;
 
 		template <typename T>
