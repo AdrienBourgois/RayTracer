@@ -62,8 +62,8 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 	{
 		//std::cout<<"Collision inside else"<<std::endl;
 		float sqrt_discri = (float)(sqrt(discri));
-        float t0 = (-B + sqrt_discri)/(2);
-        float t1 = (-B - sqrt_discri)/(2);
+        float t0 = (-B + sqrt_discri)/(2 * A);
+        float t1 = (-B - sqrt_discri)/(2 * A);
 
         // We want the closest one 
         if (t0 > t1)

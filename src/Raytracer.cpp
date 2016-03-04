@@ -70,6 +70,8 @@ auto Raytracer::render() -> void
 			float dist_min = 100.f;
 			GeometryBuffer* collided_geometry = nullptr;
 			float collision_result = 0.f;
+			Ray* current_ray = this->camera_ray;
+			(void) current_ray;
 
 			//while(/*camera_ray->getCurrentDepth() != camera_ray->max_depth &&*/ collision_result != -1.f)
 			//{
@@ -77,7 +79,7 @@ auto Raytracer::render() -> void
 				{
 					current_geometry = this->geometry_list[idx];
 					
-					collision_result = calculateCollision(current_geometry, camera_ray);
+					collision_result = calculateCollision(current_geometry, current_ray);
 					if(collision_result < dist_min && collision_result > 1.f)
 					{
 						dist_min = collision_result;
@@ -87,14 +89,15 @@ auto Raytracer::render() -> void
 
 				if(collided_geometry != nullptr && !collided_geometry->material_buffer->is_light)
 				{
-					calculateCollisionPoint(dist_min, camera_ray);
-					
+					calculateCollisionPoint(dist_min, current_ray);
+					//camera_ray->createChild(Eray_type::REFLECTION_RAY, camera_ray->origin, 100.f, 1000.f);
 					
 					Vector3D<float> final_color;
+					//Ray*
+
 					final_color += calculateAmbiantLight(collided_geometry);
-					final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray->collision_point);
-					final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
-					
+					final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, current_ray->collision_point);
+					final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, current_ray);
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 				}
