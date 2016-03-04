@@ -4,13 +4,13 @@
 
 auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
-	unsigned int max_rebound = 4;
+	unsigned int max_rebound = 50;
 
 	if (rebound < max_rebound)
 	{
 		Vector3D<float> normal;
 
-		normal = normal.normalOnSphere(ray->collision_point, node->position);
+		normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
 			
 		Vector3D<float> ray_dir = ray->direction.normalize();
 

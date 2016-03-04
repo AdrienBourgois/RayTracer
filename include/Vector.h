@@ -55,14 +55,15 @@ class Vector3D
 
         bool        operator ==(Vector3D const& a); 
 
-        auto        convert() -> Vector3D;
-		auto		direction(Vector3D origin, Vector3D destination) -> Vector3D;
-		auto 		normalize() -> Vector3D;
-		auto 		pow(T exp) -> Vector3D;
-		auto		dot(Vector3D const& b) -> T;
-		auto		normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
-		template <typename U>
-		auto		cast(Vector3D<U> vec) -> Vector3D<T>;
+        auto		convert() -> Vector3D;
+	auto		direction(Vector3D origin, Vector3D destination) -> Vector3D;
+	auto 		normalize() -> Vector3D;
+	auto 		pow(T exp) -> Vector3D;
+	auto		dot(Vector3D const& b) -> T;
+	static auto	normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
+
+	template <typename U>
+	auto		cast(Vector3D<U> vec) -> Vector3D<T>;
 
     private:
 

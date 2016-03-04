@@ -12,7 +12,7 @@ class SceneNode
 {
 	public:
 		SceneNode(Raytracer* raytrace);
-		~SceneNode() = default;
+		~SceneNode() {raytracer = nullptr;};
 
 		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
 		auto draw() -> void;
