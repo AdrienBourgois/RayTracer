@@ -62,8 +62,8 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 	{
 		//std::cout<<"Collision inside else"<<std::endl;
 		float sqrt_discri = (float)(sqrt(discri));
-        float t0 = (-B + sqrt_discri)/(2);
-        float t1 = (-B - sqrt_discri)/(2);
+        float t0 = (-B + sqrt_discri)/(2 * A);
+        float t1 = (-B - sqrt_discri)/(2 * A);
 
         // We want the closest one 
         if (t0 > t1)
@@ -251,30 +251,3 @@ auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffe
 	return nullptr;
 }
 
-/*
-auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffer*> node_list, Ray* ray) -> GeometryBuffer*
-{
-	float dist_min = 100.f;
-	GeometryBuffer* coll_geo = nullptr;
-
-	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
-	{
-		GeometryBuffer* temp_geo = node_list[idx];
-
-                float res = calculateCollision(temp_geo, ray);
-
-                if(res < dist_min && res > 0.f)
-                {
-                        dist_min = res;
-                        coll_geo = temp_geo;
-                }
-	}	
-
-	if (dist_min != 100.f)
-	{
-		if (coll_geo != current_node)
-			return coll_geo;
-	}
-	return nullptr;
-}
-*/

@@ -27,16 +27,17 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 
 			Vector3D<float> l =  (ray->collision_point - light[i]->position).normalize();
 			Vector3D<float> normal;
-			normal = normal.normalOnSphere(ray->collision_point, light[i]->position) - node->position;
-			float shade = normal.dot(l.normalize()) * 0.35f;
+//			normal = normal.normalOnSphere(ray->collision_point, node->position);
+			normal = normal.normalOnSphere(node->position, ray->collision_point);
+			float shade = normal.dot(l) * 0.5f;
 
 			if (shade < 0.f)
 				shade = 0.f;
 
 			Vector3D<float> color;
-			color.x = std::max((node_color.x - node_color.x * shade), 0.f);
-			color.y = std::max((node_color.y - node_color.y * shade), 0.f);
-			color.z = std::max((node_color.z - node_color.z * shade), 0.f);
+			color.x = std::max((/*node_color.x -*/ node_color.x * shade), 0.f);
+			color.y = std::max((/*node_color.y -*/ node_color.y * shade), 0.f);
+			color.z = std::max((/*node_color.z -*/ node_color.z * shade), 0.f);
 
 			final_diffuse_color += color;
 		}
@@ -57,7 +58,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
 		{
 			Vector3D<float> n;
-			n = n.normalOnSphere(ray->collision_point, node->position) - node->position;
+			n = n.normalOnSphere(ray->collision_point, node->position);
 			n = n.normalize();
 			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();

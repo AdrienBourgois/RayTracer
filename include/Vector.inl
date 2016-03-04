@@ -236,7 +236,8 @@ auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> V
 {
 	Vector3D<T> vector;
 
-	return vector = (intersect_point - origin);
+	vector = (origin - intersect_point) * -1.f;
+	return vector.normalize();
 }
 
 template <typename T> template <typename U>
