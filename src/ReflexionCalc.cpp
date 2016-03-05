@@ -17,7 +17,7 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 		Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
 
 		Ray *ref_ray = new Ray();
-		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f);
+		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f, 0);
 		ref_ray->direction = ref_ray_dir;
 
 		if (ray->power > 10.f)
@@ -35,6 +35,16 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 		}
 	}
 	return Vector3D<float>(0.f, 0.f, 0.f);
+}
+
+auto calcReflexion(GeometryBuffer* node, Ray* ray) -> Vector3D<float>
+{
+	Vector3D<float> normal;
+
+	normal = normal.normalOnSphere(ray->collision_point, node->position) - node->position;
+	Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
+
+	return ref_ray_dir;
 }
 
 auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray) -> Vector3D<float>
