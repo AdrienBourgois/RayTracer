@@ -8,6 +8,8 @@ Ray::Ray()
 	this->lenght = 0.f;
 	this->max_depth = 4;
 	this->current_depth = 0;
+	this->dist_min = 100.f;
+	this->nearest_collision_distance = 0.f;
 }
 
 auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth) -> void

@@ -29,6 +29,8 @@ struct Ray
 		float power;
 		float lenght;
 		unsigned int max_depth;
+		float dist_min;
+		float nearest_collision_distance;
 		
 	private:
 		Eray_type type;
