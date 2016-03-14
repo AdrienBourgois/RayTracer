@@ -27,7 +27,7 @@ class Raytracer final
 		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
 		auto genLightList() -> std::vector<GeometryBuffer*>;
 		auto updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void;
-		auto searchForCollidedGeometry() -> GeometryBuffer*;
+		auto searchForCollidedGeometry(Ray* ray) -> GeometryBuffer*;
 		auto recursiveReflection(GeometryBuffer* geometry) -> Vector3D<float>;
 		auto recursiveRefraction() -> Vector3D<float>;
 		auto close() -> void;
@@ -47,8 +47,8 @@ class Raytracer final
 		
 		Ray* 							camera_ray;
 
-		float							dist_min;
-		float							collision_result;
+		float							distance_min;
+		float							coll_result;
 };
 
 #endif
