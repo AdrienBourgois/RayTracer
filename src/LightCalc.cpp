@@ -1,5 +1,7 @@
 #include "LightCalc.h"
 
+#include "MathCalc.h"
+
 #include "CollisionCalc.h"
 #include "ReflexionCalc.h"
 
@@ -26,7 +28,11 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			Vector3D<float> node_color = node->material_buffer->color;
 
 			Vector3D<float> l =  (ray->collision_point - light[i]->position).normalize();
-			Vector3D<float> normal = Vector3D<float>::normalOnSphere(node->position, ray->collision_point);
+			Vector3D<float> normal;
+			if (node->type == EGeometry_type::SPHERE)
+				normal = /*Vector3D<float>::*/normalOnSphere(node->position, ray->collision_point);
+			else
+				normal = /*Vector3D<float>::*/normalOnModel(node->vertice_list, node->position);
 			float shade = normal.dot(l) * 0.3f;
 
 			if (shade < 0.f)
@@ -55,7 +61,13 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 	{
 		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
 		{
-			Vector3D<float> n = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
+			Vector3D<float> n;
+			if (node->type == EGeometry_type::SPHERE)
+                                n = /*Vector3D<float>::*/normalOnSphere(ray->collision_point, node->position);
+                        else
+                                n = /*Vector3D<float>::*/normalOnModel(node->vertice_list, node->position) - ray->collision_point;
+	std::cout << "n : " << n << std::endl;
+n = n.normalize();
 			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
 

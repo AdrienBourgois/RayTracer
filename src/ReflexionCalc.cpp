@@ -1,6 +1,6 @@
 #include "ReflexionCalc.h"
 #include "MaterialBuffer.h"
-
+#include "MathCalc.h"
 
 auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
@@ -10,8 +10,11 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 	{
 		Vector3D<float> normal;
 
-		normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
-			
+		if (node->type == EGeometry_type::SPHERE)
+			normal = /*Vector3D<float>::*/normalOnSphere(ray->collision_point, node->position);
+		else
+			normal = /*Vector3D<float>::*/normalOnModel(node->vertice_list, node->position) - ray->collision_point;
+	
 		Vector3D<float> ray_dir = ray->direction.normalize();
 
 		if (normal.dot(ray_dir) < 0.f)

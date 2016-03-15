@@ -1,6 +1,7 @@
 #include "math.h"
 
 #include "SceneNode.h"
+#include "Model.h"
 
 SceneNode::SceneNode(Raytracer* raytrace)
 {
@@ -45,6 +46,13 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 		1.f, -1.f, 0.f,
 		-1.f, -1.f, 0.f
 		};
+	}break;
+
+	case EGeometry_type::MODEL :
+	{
+		Model model = Model();
+		model.loadFile("Little_Lantern.obj");
+		vertice = model.getMesh();
 	}break;
 	
 	default : 
