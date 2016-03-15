@@ -240,6 +240,33 @@ auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> V
 	return vector.normalize();
 }
 
+template <typename T>
+auto Vector3D<T>::normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector3D
+{
+	Vector3D<T> U = b - a;
+	Vector3D<T> V = c - a;
+
+	Vector3D<T> normal = U * V;
+	return normal.normalize();
+}
+
+template <typename T>
+auto Vector3D<T>::normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi) -> Vector3D<float>
+{
+        Vector3D<float> normal;
+
+        for (unsigned int i = 0; i < verti_list.size(); i += 9)
+        {
+                Vector3D<float> a = Vector3D<float>(verti_list[i], verti_list[i + 1],verti_list[i + 2]) + node_posi;
+                Vector3D<float> b = Vector3D<float>(verti_list[i + 3], verti_list[i + 4],verti_list[i + 5]) + node_posi;
+                Vector3D<float> c = Vector3D<float>(verti_list[i + 6], verti_list[i + 7],verti_list[i + 8]) + node_posi;
+
+                normal += normalOnTriangle(a, b, c);
+        }
+
+        return normal;
+}
+
 template <typename T> template <typename U>
 auto Vector3D<T>::cast(Vector3D<U> vec) -> Vector3D<T>
 {
