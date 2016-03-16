@@ -181,7 +181,7 @@ auto Raytracer::searchForCollidedGeometry(Ray* ray) -> GeometryBuffer*
 	{
 		current_geometry = this->geometry_list[idx];
 		collision_result = calculateCollision(current_geometry, ray);
-		if(collision_result < dist_min && collision_result > 1.f)
+		if(collision_result < dist_min && collision_result > -1.f)
 		{
 			dist_min = collision_result;
 			collided_geometry = current_geometry;
@@ -195,19 +195,20 @@ auto Raytracer::searchForCollidedGeometry(Ray* ray) -> GeometryBuffer*
 
 auto Raytracer::recursiveReflection(GeometryBuffer* geometry) -> Vector3D<float>
 {
+	GeometryBuffer* collided_geometry = geometry;
 	float current_depth = 0.f;
 	Vector3D<float> reflection_color;
 	Ray* current_ray = camera_ray;
-// you must check collision_result
-	while(current_depth < current_ray->max_depth && this->coll_result != -1.f)
+	while(current_depth < current_ray->max_depth && /*this->coll_result != -1.f*/ collided_geometry != nullptr)
 	{
+		++current_depth;
 		Ray* reflection_ray = new Ray();
-		reflection_ray->init(Eray_type::REFLECTION_RAY, current_ray->collision_point, 100.f, 1000.f, ++current_depth);
-		reflection_ray->direction = calcReflexion(geometry, current_ray);
+		reflection_ray->init(Eray_type::REFLECTION_RAY, current_ray->collision_point, 100.f, 1000.f, current_depth);
+		reflection_ray->direction = calcReflexion(collided_geometry, current_ray);
 		current_ray = reflection_ray;
-	
+		//std::cout<<"current_depth = "<<current_depth<<std::endl;	
 //		this->collision_result = 0.f;
-		GeometryBuffer* collided_geometry = searchForCollidedGeometry(current_ray);
+		collided_geometry = searchForCollidedGeometry(current_ray);
 		if(collided_geometry != nullptr)
 		{
 			calculateCollisionPoint(this->distance_min, current_ray);
