@@ -90,8 +90,8 @@ auto Raytracer::render() -> void
 					calculateCollisionPoint(dist_min, camera_ray);
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
-//					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
-//					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
+					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
+					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 			//////////////////////////
 					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
 			/////////////////////////

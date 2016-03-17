@@ -13,7 +13,7 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 		if (node->type == EGeometry_type::SPHERE)
 			normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
 		else
-			normal = Vector3D<float>::normalOnModel(node->vertice_list, node->position) - ray->collision_point;
+			normal = Vector3D<float>::normalOnModel(node->vertice_list, node->position);
 	
 		Vector3D<float> ray_dir = ray->direction.normalize();
 

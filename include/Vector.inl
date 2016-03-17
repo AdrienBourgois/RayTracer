@@ -1,3 +1,5 @@
+#include "MathCalc.h"
+
 template <typename T>
 Vector2D<T>::Vector2D()
 {
@@ -246,7 +248,7 @@ auto Vector3D<T>::normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector
 	Vector3D<T> U = b - a;
 	Vector3D<T> V = c - a;
 
-	Vector3D<T> normal = U * V;
+	Vector3D<T> normal = U * V * -1.f;
 	return normal.normalize();
 }
 
@@ -260,7 +262,7 @@ auto Vector3D<T>::normalOnModel(std::vector<float> verti_list, Vector3D<float> n
                 Vector3D<float> a = Vector3D<float>(verti_list[i], verti_list[i + 1],verti_list[i + 2]) + node_posi;
                 Vector3D<float> b = Vector3D<float>(verti_list[i + 3], verti_list[i + 4],verti_list[i + 5]) + node_posi;
                 Vector3D<float> c = Vector3D<float>(verti_list[i + 6], verti_list[i + 7],verti_list[i + 8]) + node_posi;
-
+		
                 normal += normalOnTriangle(a, b, c);
         }
 
