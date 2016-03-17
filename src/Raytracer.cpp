@@ -90,6 +90,7 @@ auto Raytracer::render() -> void
 					final_color += reflection_color;
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+					this->camera_ray->resetChildList();
 				}
 				else if(collided_geometry != nullptr && collided_geometry->material_buffer->is_light)
 				{
@@ -202,8 +203,10 @@ auto Raytracer::recursiveReflection(GeometryBuffer* geometry) -> Vector3D<float>
 	while(current_depth < current_ray->max_depth && /*this->coll_result != -1.f*/ collided_geometry != nullptr)
 	{
 		++current_depth;
-		Ray* reflection_ray = new Ray();
-		reflection_ray->init(Eray_type::REFLECTION_RAY, current_ray->collision_point, 100.f, 1000.f, current_depth);
+		/*Ray* reflection_ray = new Ray();
+		reflection_ray->init(Eray_type::REFLECTION_RAY, current_ray->collision_point, 100.f, 1000.f, current_depth);*/
+		Ray* reflection_ray = nullptr;
+		reflection_ray = current_ray->createChild(Eray_type::REFLECTION_RAY, current_ray->collision_point, 100.f, 1000.f, current_depth);
 		reflection_ray->direction = calcReflexion(collided_geometry, current_ray);
 		current_ray = reflection_ray;
 		//std::cout<<"current_depth = "<<current_depth<<std::endl;	

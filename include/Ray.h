@@ -15,11 +15,12 @@ struct Ray
 
 		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth) -> void;
 		auto getCurrentDepth() -> unsigned int { return current_depth; }
-		//auto createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void;
 		auto createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth) -> Ray*;
 		auto getType() -> Eray_type { return this->type;}
 		auto getLastChildByType(Eray_type type_ray) -> Ray*;
+		auto getChildList() -> std::vector<Ray*> { return this->child_list; }
 		auto setDepth(unsigned int new_depth) -> void { this->current_depth = new_depth; }
+		auto resetChildList() -> void;
 		auto close() -> void;
 
 

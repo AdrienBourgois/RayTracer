@@ -21,13 +21,6 @@ auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, 
 	this->current_depth = depth;
 }
 
-/*auto Ray::createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void
-{
-	Ray* child_ray = new Ray();
-	child_ray->init(type_ray, origin_ray, power_ray, lenght_ray);
-	child_list.push_back(child_ray);
-}*/
-
 auto Ray::createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth) -> Ray*
 {
 	Ray* child_ray = new Ray();
@@ -50,6 +43,19 @@ auto Ray::getLastChildByType(Eray_type type_ray) -> Ray*
 		}
 	}
 	return current_child;
+}
+
+auto Ray::resetChildList() -> void
+{
+	if(child_list.size() > 0)
+	{
+		for(unsigned int idx = 0; idx < child_list.size(); ++idx)
+    	{   
+        	this->child_list[idx]->resetChildList();
+        	delete this->child_list[idx];
+			child_list.erase(child_list.begin() + idx);
+    	}
+	}
 }
 
 auto Ray::close() -> void
