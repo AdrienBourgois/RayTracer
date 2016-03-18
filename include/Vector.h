@@ -63,7 +63,7 @@ class Vector3D
 	auto		dot(Vector3D const& b) -> T;
 	static auto	normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
 	static auto	normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector3D;
-	static auto	normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi) -> Vector3D<float>;
+	static auto	normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi, int triangle_posi) -> Vector3D<float>;
 
 	template <typename U>
 	auto		cast(Vector3D<U> vec) -> Vector3D<T>;

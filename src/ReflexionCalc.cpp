@@ -13,8 +13,12 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 		if (node->type == EGeometry_type::SPHERE)
 			normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
 		else
-			normal = Vector3D<float>::normalOnModel(node->vertice_list, node->position);
-	
+		{
+			 TriangleGeometryBuffer* derived = nullptr;
+                        derived = static_cast<TriangleGeometryBuffer*> (node);
+			normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
+		}	
+
 		Vector3D<float> ray_dir = ray->direction.normalize();
 
 		if (normal.dot(ray_dir) < 0.f)

@@ -18,13 +18,13 @@ auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 			return calculateSphereCollision(derived, ray);
 		}break;
 
-		case EGeometry_type::TRIANGLE:
+/*		case EGeometry_type::TRIANGLE:
 		{
 			TriangleGeometryBuffer* derived = nullptr;
 			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
 			return calculateTriangleCollision(derived, ray);
 		}break;
-
+*/
 		default :
 		{
 			TriangleGeometryBuffer* derived = nullptr;
@@ -125,6 +125,7 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 {
         std::vector<float> list_vertice = current_geometry->vertice_list;
 	float t_coll = 100.f;
+	int triangle_num = -1;
 
 	for (unsigned int i = 0; i < list_vertice.size(); i += 9)
 	{
@@ -165,10 +166,18 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 		float t = f * q.dot(ac_edge);
 
 		if (t > 0.00001f && t < t_coll) // ray intersection
+		{
+			triangle_num = i;
 			t_coll = t;
+		}
 	}
+
+
 	if (t_coll != 100.f)
+	{
+		current_geometry->coll_triangle = triangle_num;
 		return t_coll;
+	}
 
 	return -1.f;
 }

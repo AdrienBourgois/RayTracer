@@ -30,7 +30,12 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			if (node->type == EGeometry_type::SPHERE)
 				normal = Vector3D<float>::normalOnSphere(node->position, ray->collision_point);
 			else
-				normal = Vector3D<float>::normalOnModel(node->vertice_list, node->position) * -1.f;
+                {
+                         TriangleGeometryBuffer* derived = nullptr;
+                        derived = static_cast<TriangleGeometryBuffer*> (node);
+                        normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
+                }
+//				normal = Vector3D<float>::normalOnModel(node->vertice_list, node->position) * -1.f;
 			float shade = normal.dot(l) * 0.3f;
 
 			if (shade < 0.f)
@@ -63,7 +68,12 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 			if (node->type == EGeometry_type::SPHERE)
                                 n = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
                         else
-                                n = Vector3D<float>::normalOnModel(node->vertice_list, node->position);
+                {
+                         TriangleGeometryBuffer* derived = nullptr;
+                        derived = static_cast<TriangleGeometryBuffer*> (node);
+                        n = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
+                }
+                 //               n = Vector3D<float>::normalOnModel(node->vertice_list, node->position);
 
 			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
@@ -76,7 +86,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 			if (std::pow(r.dot(v) ,16.f) < 0.f)
 				specular_light = specular_light * 0.f;
 			else
-				specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,16.f);
+				specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,5.f);
 			
 		    if (nl <= 0.0f)
 				specular_light = specular_light * 0.0f;
