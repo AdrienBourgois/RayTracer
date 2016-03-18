@@ -26,7 +26,8 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 
 			Vector3D<float> l =  (coll_point - light[i]->position).normalize();
 			Vector3D<float> normal;
-			normal = normal.normalOnSphere(coll_point, light[i]->position);
+//			normal = normal.normalOnSphere(coll_point, light[i]->position); // with light distance gestion bug
+			normal = normal.normalOnSphere(node->position, coll_point);  // without light distqnce gestion bug
 			float shade = normal.dot(l.normalize()) * 0.35f;
 
 			if (shade < 0.f)
@@ -56,7 +57,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
 		{
 			Vector3D<float> n;
-			n = n.normalOnSphere(ray->collision_point, node->position) - node->position;
+			n = n.normalOnSphere(ray->collision_point, node->position);
 			n = n.normalize();
 			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();

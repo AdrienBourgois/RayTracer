@@ -18,13 +18,6 @@ auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 			return calculateSphereCollision(derived, ray);
 		}break;
 
-		case EGeometry_type::TRIANGLE:
-		{
-			TriangleGeometryBuffer* derived = nullptr;
-			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
-			return calculateTriangleCollision(derived, ray);
-		}break;
-
 		default :
 		{
 			TriangleGeometryBuffer* derived = nullptr;
@@ -55,9 +48,7 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 	float discri = B * B - 4 * A * C;
 
 	if (discri < 0)
-	{
 		return -1.f; // no colision
-	}
 	else
 	{
 		//std::cout<<"Collision inside else"<<std::endl;
@@ -67,63 +58,13 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 
         // We want the closest one 
         if (t0 > t1)
-		{
             t0 = t1;
-		}
 
        // Verify t0 larger than 0 and less than the original t 
-        if ((t0 > 0.001f) && (t0 < ray->lenght))
-        {
+        if ((t0 > 0.f) && (t0 < ray->lenght))
             return t0;
-        }
     }
     return -1.f;	
-}
-
-auto calculateTriangleCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
-{
-	std::vector<float> _vertice = current_geometry->vertice_list;
-
-        Vector3D<float> a = Vector3D<float>(_vertice[0], _vertice[1], _vertice[2]);
-        Vector3D<float> b = Vector3D<float>(_vertice[3], _vertice[4], _vertice[5]);
-        Vector3D<float> c = Vector3D<float>(_vertice[6], _vertice[7], _vertice[8]);
-		a += current_geometry->position;
-		b += current_geometry->position;
-		c += current_geometry->position;
-
-	Vector3D<float> ab_edge = (b - a);
-	Vector3D<float> ac_edge = (c - a);
-        Vector3D<float> p = ray->origin.normalize();
-        Vector3D<float> d = ray->direction.normalize();
-
-	Vector3D<float> h = (d * ac_edge);
-	float _a = h.dot(ab_edge);
- 
-	if (_a > -0.00001f && _a < 0.00001f)
-		return -1.f;
-
-	float f = 1.f/_a;
-	Vector3D<float> s = (p - a);
-	float u = f * s.dot(h);
-
-	if (u < 0.0f || u > 1.0f)
-		return -1.f;
-
-	Vector3D<float> q = (s * ab_edge);
-	float v = f * d.dot(q);
-
-	if (v < 0.0f || u + v > 1.0f)
-		return -1.f;
-
-	// at this stage we can compute t to find out where
-	// the intersection point is on the line
-	float t = f * q.dot(ac_edge);
-
-	if (t > 0.00001f) // ray intersection
-	{
-		return t;
-	}
-	return -1.f;
 }
 
 auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
