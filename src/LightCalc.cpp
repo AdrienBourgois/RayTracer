@@ -28,15 +28,15 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			Vector3D<float> normal;
 //			normal = normal.normalOnSphere(coll_point, light[i]->position); // with light distance gestion bug
 			normal = normal.normalOnSphere(node->position, coll_point);  // without light distqnce gestion bug
-			float shade = normal.dot(l.normalize()) * 0.35f;
+			float shade = normal.dot(l/*.normalize()*/) * 0.35f;
 
 			if (shade < 0.f)
 				shade = 0.f;
 
 			Vector3D<float> color;
-			color.x = std::max((node_color.x - node_color.x * shade), 0.f);
-			color.y = std::max((node_color.y - node_color.y * shade), 0.f);
-			color.z = std::max((node_color.z - node_color.z * shade), 0.f);
+			color.x = std::max((node_color.x * shade), 0.f);
+			color.y = std::max((node_color.y * shade), 0.f);
+			color.z = std::max((node_color.z * shade), 0.f);
 
 			final_diffuse_color += color;
 		}
