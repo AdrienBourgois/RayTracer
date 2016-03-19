@@ -26,9 +26,8 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 
 			Vector3D<float> l =  (coll_point - light[i]->position).normalize();
 			Vector3D<float> normal;
-//			normal = normal.normalOnSphere(coll_point, light[i]->position); // with light distance gestion bug
 			normal = normal.normalOnSphere(node->position, coll_point);  // without light distqnce gestion bug
-			float shade = normal.dot(l/*.normalize()*/) * 0.35f;
+			float shade = normal.dot(l.normalize()) * 0.35f;
 
 			if (shade < 0.f)
 				shade = 0.f;
