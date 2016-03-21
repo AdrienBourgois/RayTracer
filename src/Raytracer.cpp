@@ -212,7 +212,7 @@ auto Raytracer::recursiveReflection(GeometryBuffer* geometry) -> Vector3D<float>
 		//std::cout<<"current_depth = "<<current_depth<<std::endl;	
 //		this->collision_result = 0.f;
 		collided_geometry = searchForCollidedGeometry(current_ray);
-		if(collided_geometry != nullptr)
+		if(collided_geometry != nullptr && !collided_geometry->material_buffer->is_light)
 		{
 			calculateCollisionPoint(this->distance_min, current_ray);
 			reflection_color += collided_geometry->material_buffer->color;
