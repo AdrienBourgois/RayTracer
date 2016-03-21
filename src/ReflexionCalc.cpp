@@ -63,7 +63,14 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 	else
 		N2 = refraction_index;
 
-	float b = alpha * 2.f;
+	float Ni = N2 / N1;
+		
+	Vector3D<float> cosl = incident_ray_direction_unit * normal;
+	Vector3D<float> cost = 1 - (1 / std::pow(Ni, 2)) * (1 - incident_ray_direction_unit * normal);
+	refracted_ray = - ((1 / Ni) * incident_ray_direction_unit) - ((cost - (1 / Ni)) * cosl) * normal;
+
+
+/*	float b = alpha * 2.f;
 
 	float c = (1.f - std::pow((N2/N1), 2.f));
 
@@ -88,15 +95,15 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 		Vector3D<float> refracted_ray_temp2 = incident_ray_direction_unit + (normal * k);
 		res2 = ray->direction.dot(refracted_ray_temp2);
 
-	/*	if(res1 > res2)
+		if(res1 > res2)
 			refracted_ray = refracted_ray_temp1;
 		else if(res2 > res1)
-			refracted_ray = refracted_ray_temp2;*/
+			refracted_ray = refracted_ray_temp2;
 		if(res1 >= 0.f)
 			refracted_ray = refracted_ray_temp1;
 		else if(res2 >= 0.f)
-			refracted_ray = refracted_ray_temp2;
-	}
+			refracted_ray = refracted_ray_temp2;*/
+	//}
 
 	return refracted_ray;
 }
