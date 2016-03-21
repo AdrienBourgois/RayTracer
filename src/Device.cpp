@@ -37,9 +37,9 @@ auto Device::init() -> void
     this->driver->init(this->screen_size, this->raytracer.get());
 	this->raytracer->init(this->screen_size);
 
-	this->createSceneNode(Vector3D<float> (-1.25f, 1.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-1.25f, 1.f, -1.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
-	this->createSceneNode(Vector3D<float> (1.25f, 1.f, -2.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-1.25f, 1.f, -4.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 
 	this->createSceneNode(Vector3D<float> (1.25f, -1.25f, -2.f), Vector3D<float> (0.f, 0.f, 255.f), false, 1.f, EGeometry_type::SPHERE);
 

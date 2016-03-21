@@ -54,7 +54,7 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 	Vector3D<float> incident_ray_direction_unit = ray->direction.normalize();
 	Vector3D<float> normal = normal.normalOnSphere(ray->collision_point, node->position);
 
-	float alpha = incident_ray_direction_unit.dot(normal);
+	//float alpha = incident_ray_direction_unit.dot(normal);
 
 	float N1 = ray->getCurrentMaterialRefractionIndex();
 	float N2 = 0.f;
@@ -65,10 +65,23 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 
 	float Ni = N2 / N1;
 		
-	Vector3D<float> cosl = incident_ray_direction_unit * normal;
-	Vector3D<float> cost = 1 - (1 / std::pow(Ni, 2)) * (1 - incident_ray_direction_unit * normal);
-	refracted_ray = - ((1 / Ni) * incident_ray_direction_unit) - ((cost - (1 / Ni)) * cosl) * normal;
+	float cosl = normal.dot(ray->direction);
+	//cosl = cosl * -1.f;
+	//float cost = 1.f - Ni * Ni * (1.f - cosl - cosl);
+	float sint = Ni * Ni * (1.f - cosl * cosl);
+	
+	if (sint > 1.f)
+		return Vector3D<float>(0.f, 0.f, 0.f);
 
+	/*if (cost < 0)
+		return Vector3D<float>(0.f, 0.f, 0.f);*/
+
+	float cost = std::sqrt(1.f - sint);
+	refracted_ray = Ni * ray->direction + (Ni * cosl - cost) * normal;
+
+	//refracted_ray = (ray->direction * Ni) + (normal * (Ni * cosl - std::sqrt(cost)));
+	//refracted_ray.normalize();
+	//std::cout<<"HELLO"<<std::endl;
 
 /*	float b = alpha * 2.f;
 

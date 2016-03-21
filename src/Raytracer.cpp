@@ -83,10 +83,10 @@ auto Raytracer::render() -> void
 					Vector3D<float> reflection_color;
 					Vector3D<float> refraction_color;
 
-					//final_color += calculateAmbiantLight(collided_geometry);
-					//final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray->collision_point);
-					//final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
-					//reflection_color = recursiveReflection(collided_geometry);
+					final_color += calculateAmbiantLight(collided_geometry);
+					final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray->collision_point);
+					final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
+					reflection_color = recursiveReflection(collided_geometry);
 					refraction_color = recursiveRefraction(collided_geometry);
 					
 					final_color += reflection_color;
@@ -249,10 +249,10 @@ auto Raytracer::recursiveRefraction(GeometryBuffer* geometry) -> Vector3D<float>
             calculateCollisionPoint(this->distance_min, current_ray);
             refraction_color += collided_geometry->material_buffer->color;
 			//refraction_color += Vector3D<float> (155.f, 155.f, 0.f);
-			return refraction_color;
+		//	return refraction_color;
         }
     }  
-//	std::cout<<"Refraction_color = "<< refraction_color<<std::endl; 
+	//std::cout<<"Refraction_color = "<< refraction_color<<std::endl; 
     return refraction_color;
 	//return Vector3D<float> ( 255.f, 255.f, 255.f );
 }
