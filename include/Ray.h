@@ -13,12 +13,13 @@ struct Ray
 		Ray();
 		~Ray() = default;
 
-		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth) -> void;
+		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth, float new_material_refraction_index) -> void;
 		auto getCurrentDepth() -> unsigned int { return current_depth; }
-		auto createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth) -> Ray*;
+		auto createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth, float new_material_refraction_index) -> Ray*;
 		auto getType() -> Eray_type { return this->type;}
 		auto getLastChildByType(Eray_type type_ray) -> Ray*;
 		auto getChildList() -> std::vector<Ray*> { return this->child_list; }
+		auto getCurrentMaterialRefractionIndex() -> float { return this->current_material_refraction_index; }
 		auto setDepth(unsigned int new_depth) -> void { this->current_depth = new_depth; }
 		auto resetChildList() -> void;
 		auto close() -> void;
@@ -38,6 +39,8 @@ struct Ray
 		std::vector<Ray*> child_list;
 
 		unsigned int current_depth;
+		
+		float current_material_refraction_index;
 };
 
 #endif

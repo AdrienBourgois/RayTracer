@@ -130,7 +130,7 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	GeometryBuffer* coll_geo = nullptr;
 
 	Ray* ray = new Ray();
-	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f, 0);
+	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f, 0, 1.f);
 	ray->direction = coll_point - light->position;
 
 	for(unsigned int idx = 0; idx < node_list.size(); ++idx)

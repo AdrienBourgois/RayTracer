@@ -6,25 +6,27 @@ Ray::Ray()
 	this->type = Eray_type::CAMERA_RAY;
 	this->power = 0.f;
 	this->lenght = 0.f;
-	this->max_depth = 4;
+	this->max_depth = 50;
 	this->current_depth = 0;
 	this->dist_min = 100.f;
 	this->nearest_collision_distance = 0.f;
+	this->current_material_refraction_index = 0.f;
 }
 
-auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth) -> void
+auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth, float new_material_refraction_index) -> void
 {
 	this->type = type_ray;
 	this->origin = origin_ray;
 	this->power = power_ray;
 	this->lenght = lenght_ray;
 	this->current_depth = depth;
+	this->current_material_refraction_index = new_material_refraction_index;
 }
 
-auto Ray::createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth) -> Ray*
+auto Ray::createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth, float new_material_refraction_index) -> Ray*
 {
 	Ray* child_ray = new Ray();
-	child_ray->init(type_ray, origin_ray, power_ray, lenght_ray, new_depth);
+	child_ray->init(type_ray, origin_ray, power_ray, lenght_ray, new_depth, new_material_refraction_index);
 	child_list.push_back(child_ray);
 	
 	return child_ray;

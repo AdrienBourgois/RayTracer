@@ -17,7 +17,7 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 		Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
 
 		Ray *ref_ray = new Ray();
-		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f, 0);
+		ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, (ray->power * 0.75f), 100.f, 0, 1.f);
 		ref_ray->direction = ref_ray_dir;
 
 		if (ray->power > 10.f)
@@ -47,9 +47,8 @@ auto calcReflexion(GeometryBuffer* node, Ray* ray) -> Vector3D<float>
 	return ref_ray_dir;
 }
 
-auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray) -> Vector3D<float>
+auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> node_list,*/ Ray* ray, float refraction_index) -> Vector3D<float>
 {
-	(void) node_list;
 	Vector3D<float> refracted_ray;
 	
 	Vector3D<float> incident_ray_direction_unit = ray->direction.normalize();
@@ -57,15 +56,19 @@ auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node
 
 	float alpha = incident_ray_direction_unit.dot(normal);
 
-	float N1 = 1.3333f;
-	float N2 = 1.5f;
+	float N1 = ray->getCurrentMaterialRefractionIndex();
+	float N2 = 0.f;
+	if(refraction_index != -1.f)
+		N2 = node->material_buffer->refraction_idx;
+	else
+		N2 = refraction_index;
 
-	float b = alpha * 2;
+	float b = alpha * 2.f;
 
-	float c = (1 - std::pow((N2/N1), 2));
+	float c = (1.f - std::pow((N2/N1), 2.f));
 
-	Vector2D<float> koef = QuadraticEquation(1, b, c);
-	float k = 0;
+	Vector2D<float> koef = QuadraticEquation(1.f, b, c);
+	float k = 0.f;
 
 	if(koef.x == koef.y)
 	{
@@ -74,25 +77,26 @@ auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node
 	}
 	else
 	{
-		float res1 = 0;
-		float res2 = 0;
+		float res1 = 0.f;
+		float res2 = 0.f;
 
 		k = koef.x;
-		Vector3D<float> refracted_ray_temp1 = incident_ray_direction_unit + normal * k;
+		Vector3D<float> refracted_ray_temp1 = incident_ray_direction_unit + (normal * k);
 		res1 = ray->direction.dot(refracted_ray_temp1);
 		
 		k = koef.y;
-		Vector3D<float> refracted_ray_temp2 = incident_ray_direction_unit + normal * k;
+		Vector3D<float> refracted_ray_temp2 = incident_ray_direction_unit + (normal * k);
 		res2 = ray->direction.dot(refracted_ray_temp2);
 
-		if(res1 > res2)
+	/*	if(res1 > res2)
 			refracted_ray = refracted_ray_temp1;
 		else if(res2 > res1)
+			refracted_ray = refracted_ray_temp2;*/
+		if(res1 >= 0.f)
+			refracted_ray = refracted_ray_temp1;
+		else if(res2 >= 0.f)
 			refracted_ray = refracted_ray_temp2;
 	}
 
-		
-
-	return normal;
-
+	return refracted_ray;
 }

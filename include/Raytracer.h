@@ -29,7 +29,7 @@ class Raytracer final
 		auto updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void;
 		auto searchForCollidedGeometry(Ray* ray) -> GeometryBuffer*;
 		auto recursiveReflection(GeometryBuffer* geometry) -> Vector3D<float>;
-		auto recursiveRefraction() -> Vector3D<float>;
+		auto recursiveRefraction(GeometryBuffer* geometry) -> Vector3D<float>;
 		auto close() -> void;
 
 		auto getRenderBuffer() -> RenderBuffer* { return this->render_buffer.get(); }
