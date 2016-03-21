@@ -9,6 +9,7 @@
 #include "MathCalc.h"
 #include "CollisionCalc.h"
 #include "LightCalc.h"
+#include "Tools.h"
 
 #include "ReflexionCalc.h"
 
@@ -174,10 +175,7 @@ auto Raytracer::getGeometryPointer(GeometryBuffer* geometry_pointer) -> T*
 
 	if (geometry_pointer->type == EGeometry_type::SPHERE)
 	{
-		
-		SphereGeometryBuffer* derived = nullptr;
-		derived_class = derived;
-		  derived_class = static_cast<SphereGeometryBuffer*> (geometry_pointer);
+		derived_class = SphereCast(geometry_pointer);
 		return derived_class;
 	}
 	return nullptr;

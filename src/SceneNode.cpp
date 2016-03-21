@@ -50,14 +50,14 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 
 	case EGeometry_type::MODEL :
 	{
-/*		Model model = Model();
-		model.loadFile("Little_Lantern.obj");
+		Model model = Model();
+		model.loadFile("Bread.obj");
 		vertice = model.getMesh();
 	}break;
 	
 	default : 
 	{
-*/		vertice = {
+		vertice = {
                 1.f, 1.f, 0.f,
                 -1.f, 1.f, 0.f,
                 -1.f, -1.f, 0.f,

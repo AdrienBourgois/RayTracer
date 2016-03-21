@@ -1,6 +1,7 @@
 #include "ReflexionCalc.h"
 #include "MaterialBuffer.h"
 #include "MathCalc.h"
+#include "Tools.h"
 
 auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
@@ -14,8 +15,7 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 			normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
 		else
 		{
-			 TriangleGeometryBuffer* derived = nullptr;
-                        derived = static_cast<TriangleGeometryBuffer*> (node);
+			TriangleGeometryBuffer* derived = TriangleCast(node);
 			normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
 		}	
 

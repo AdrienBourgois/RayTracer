@@ -38,22 +38,22 @@ auto Device::init() -> void
     this->driver->init(this->screen_size, this->raytracer.get());
 	this->raytracer->init(this->screen_size);
 
-	this->createSceneNode(Vector3D<float> (0.f, 0.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::MODEL);
-	this->createSceneNode(Vector3D<float> (0.f, 0.f, 0.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
+//	this->createSceneNode(Vector3D<float> (0.f, 0.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::MODEL);
+//	this->createSceneNode(Vector3D<float> (0.f, 0.f, 0.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
 
-//	this->createSceneNode(Vector3D<float> (0.f, -1.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-1.75f, 0.f, -2.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (1.75f, 0.f, -2.f), Vector3D<float> (0.f, 0.f, 255.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-5.f, -2.f, -4.f), Vector3D<float> (0.f, 255.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (2.75f, 3.5f, -4.f), Vector3D<float> (255.f, 0.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-1.f, 2.f, -6.f), Vector3D<float> (55.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-8.f, 4.f, -6.f), Vector3D<float> (55.f, 55.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (5.f, -3.f, -6.f), Vector3D<float> (0.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (0.f, -1.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-1.75f, 0.f, -2.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (1.75f, 0.f, -2.f), Vector3D<float> (0.f, 0.f, 255.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-5.f, -2.f, -4.f), Vector3D<float> (0.f, 255.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (2.75f, 3.5f, -4.f), Vector3D<float> (255.f, 0.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-1.f, 2.f, -6.f), Vector3D<float> (55.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-8.f, 4.f, -6.f), Vector3D<float> (55.f, 55.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (5.f, -3.f, -6.f), Vector3D<float> (0.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
 
-//	this->createSceneNode(Vector3D<float> (-3.f, 1.f, -4.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-3.f, 1.f, -4.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
 
 
 	this->setLightList();

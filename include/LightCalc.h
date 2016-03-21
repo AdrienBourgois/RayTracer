@@ -14,4 +14,6 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 
 auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, std::vector<GeometryBuffer*> light, Ray* ray) -> Vector3D<float>;
 
+auto distanceFromLight(Vector3D<float> coll_point, Vector3D<float> light_posi) -> float;
+
 #endif
