@@ -95,6 +95,7 @@ auto Raytracer::render() -> void
 //					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 			//////////////////////////
 					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
+					final_color += calculateRefraction(coll_geo, this->geometry_list, camera_ray);
 			/////////////////////////
 
 					
