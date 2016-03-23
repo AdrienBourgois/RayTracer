@@ -257,28 +257,36 @@ auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> V
 template <typename T>
 auto Vector3D<T>::normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector3D
 {
-	Vector3D<T> U = a - b;
-	Vector3D<T> V = c - b;
+	Vector3D<T> U = b - a;
+	Vector3D<T> V = c - a;
 
 	Vector3D<T> normal = U * V;
-	return normal.normalize();
+	return normal;
 }
 
 template <typename T>
 auto Vector3D<T>::normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi, int triangle_posi) -> Vector3D<float>
 {
         Vector3D<float> normal;
+//	std::cout << "triangle_posi : " << triangle_posi << std::endl;
+(void)triangle_posi;
+/*	for (unsigned int i = 0; i < verti_list.size(); i += 9)
+	{
+		Vector3D<float> a = Vector3D<float>(verti_list[i], verti_list[i+1], verti_list[i+2]) + node_posi;
+        Vector3D<float> b = Vector3D<float>(verti_list[i+3], verti_list[i+4], verti_list[i+5]) + node_posi;
+        Vector3D<float> c = Vector3D<float>(verti_list[i+6], verti_list[i+7], verti_list[i+8]) + node_posi;
+		normal += normalOnTriangle(a, b, c);
+	}
+*/
+//	std::cout << "num triangle : " << triangle_posi/9 << std::endl;
 
-	std::cout << "triangle_posi : " << triangle_posi << std::endl;
-
-	Vector3D<float> a = Vector3D<float>(verti_list[triangle_posi], verti_list[triangle_posi + 1],verti_list[triangle_posi + 2]) + node_posi;
-	Vector3D<float> b = Vector3D<float>(verti_list[triangle_posi + 3], verti_list[triangle_posi + 4],verti_list[triangle_posi + 5]) + node_posi;
-	Vector3D<float> c = Vector3D<float>(verti_list[triangle_posi + 6], verti_list[triangle_posi + 7],verti_list[triangle_posi + 8]) + node_posi;
+	Vector3D<float> a = Vector3D<float>(verti_list[triangle_posi], verti_list[triangle_posi+1], verti_list[triangle_posi+2]) + node_posi;
+        Vector3D<float> b = Vector3D<float>(verti_list[triangle_posi+3], verti_list[triangle_posi+4], verti_list[triangle_posi+5]) + node_posi;
+        Vector3D<float> c = Vector3D<float>(verti_list[triangle_posi+6], verti_list[triangle_posi+7], verti_list[triangle_posi+8]) + node_posi;
 	
 	normal = normalOnTriangle(a, b, c);
 
-//	std::cout << "normal : " << normal << std::endl;
-        return normal;
+        return normal.normalize();
 }
 
 template <typename T> template <typename U>

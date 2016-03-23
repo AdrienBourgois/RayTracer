@@ -28,12 +28,12 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 			
 			ref_ray_dir = ref_ray_dir.normalize();
 			Ray *ref_ray = new Ray();
-			ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power, 100.f);
+			ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
 			ref_ray->direction = ref_ray_dir;
 			GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);	
 			if (coll_node)
 			{
-				Vector3D<float> ref_color = coll_node->material_buffer->color * 0.2f;
+				Vector3D<float> ref_color = coll_node->material_buffer->color * 0.1f;
 				++rebound;
 				ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
 

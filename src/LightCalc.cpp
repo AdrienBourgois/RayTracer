@@ -33,7 +33,9 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			else
 	               {
                         TriangleGeometryBuffer* derived = TriangleCast(node);
+//		std::cout << "derived->coll_triangle : " << derived->coll_triangle << std::endl;
                         normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle) * -1.f;
+//			normal = normal * -1.f;
 	               }
 			float shade = normal.dot(l) * 0.3f;
 
@@ -45,8 +47,8 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			color.y = std::max((node_color.y * shade), 0.f);
 			color.z = std::max((node_color.z * shade), 0.f);
 
-			float dist = distanceFromLight(ray->collision_point ,light[i]->position);
-			color = color * ray->power / (dist * dist);	
+//			float dist = distanceFromLight(ray->collision_point ,light[i]->position);
+//			color = color * ray->power / (dist * dist);	
 
 			final_diffuse_color += color;
 

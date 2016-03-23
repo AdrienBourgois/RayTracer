@@ -92,7 +92,7 @@ auto Raytracer::render() -> void
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
 					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
-					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
+//					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 			//////////////////////////
 					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
 			/////////////////////////
@@ -135,7 +135,6 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
 		this->geometry_list.push_back(sphere_buffer);
 	}
-
 	else
 	{
 		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);

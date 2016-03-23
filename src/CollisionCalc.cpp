@@ -124,7 +124,10 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 	if (t_coll != 100.f)
 	{
 		if (current_geometry->coll_triangle != triangle_num)
+		{
 			current_geometry->coll_triangle = triangle_num;
+//		std::cout << "coll_triangle : " << triangle_num << std::endl;
+		}
 		return t_coll;
 	}
 
