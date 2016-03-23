@@ -6,7 +6,7 @@ Ray::Ray()
 	this->type = Eray_type::CAMERA_RAY;
 	this->power = 0.f;
 	this->lenght = 0.f;
-	this->max_depth = 50;
+	this->max_depth = 5;
 	this->current_depth = 0;
 	this->dist_min = 100.f;
 	this->nearest_collision_distance = 0.f;
@@ -49,14 +49,14 @@ auto Ray::getLastChildByType(Eray_type type_ray) -> Ray*
 
 auto Ray::resetChildList() -> void
 {
-	if(child_list.size() > 0)
+	if(!child_list.empty())
 	{
-		for(unsigned int idx = 0; idx < child_list.size(); ++idx)
+		for (auto&& child : this->child_list)
     	{   
-        	this->child_list[idx]->resetChildList();
-        	delete this->child_list[idx];
-			child_list.erase(child_list.begin() + idx);
+        	child->resetChildList();
+        	delete child;
     	}
+		this->child_list.clear();
 	}
 }
 

@@ -12,7 +12,8 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 	{
 		Vector3D<float> normal;
 
-		normal = normal.normalOnSphere(ray->collision_point, node->position) - node->position;
+		normal = normalOnSphere(ray->collision_point, node->position) - node->position;
+		// WARN: may cause problem as normalOnSphere now return normalized vector
 
 		Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
 
@@ -41,7 +42,8 @@ auto calcReflexion(GeometryBuffer* node, Ray* ray) -> Vector3D<float>
 {
 	Vector3D<float> normal;
 
-	normal = normal.normalOnSphere(ray->collision_point, node->position) - node->position;
+	normal = normalOnSphere(ray->collision_point, node->position) - node->position;
+	// WARN: may cause problem as normalOnSphere now return normalized vector
 	Vector3D<float> ref_ray_dir = (ray->direction + normal) * 2.f;
 
 	return ref_ray_dir;
@@ -52,35 +54,55 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 	Vector3D<float> refracted_ray;
 	
 	Vector3D<float> incident_ray_direction_unit = ray->direction.normalize();
-	Vector3D<float> normal = normal.normalOnSphere(ray->collision_point, node->position);
+	Vector3D<float> normal = normalOnSphere(ray->collision_point, node->position);
 
 	//float alpha = incident_ray_direction_unit.dot(normal);
-
+	//std::cout<<"node->material_buffer->refraction_idx = "<<node->material_buffer->refraction_idx<<std::endl;
 	float N1 = ray->getCurrentMaterialRefractionIndex();
 	float N2 = 0.f;
-	if(refraction_index != -1.f)
-		N2 = node->material_buffer->refraction_idx;
-	else
+	//if(refraction_index == -1.f)
+	//	N2 = node->material_buffer->refraction_idx;
+	//else if (refraction_index != -1.f)
 		N2 = refraction_index;
+	//std::cout<<"N1 = "<<N1<<std::endl;
+	//std::cout<<"N2 = "<<N2<<std::endl;
 
-	float Ni = N2 / N1;
-		
-	float cosl = normal.dot(ray->direction);
+	float N_coeff = N1 / N2;
+	//std::cout<<"Ni = "<<Ni<<std::endl;
+	float cos_incident_angle = -1.0f * normal.dot(incident_ray_direction_unit);
+	
+	float N_coeff_squared = N_coeff*N_coeff;
+	float cos_incident_angle_squared = cos_incident_angle*cos_incident_angle;
+	float cos_refracted_angle = std::sqrt(1.f - N_coeff_squared - N_coeff_squared * cos_incident_angle_squared);
+	Vector3D<float> res3 = incident_ray_direction_unit * N_coeff;
+	//float res4 = Ni * refraction_calc - refraction_sqrt;
+	Vector3D<float> res5 = normal * cos_incident_angle * N_coeff;
+	Vector3D<float> res6 = normal * cos_refracted_angle;
+	refracted_ray = res3 + res5 - res6;
+	refracted_ray.normalize();
+	//refracted_ray =  refracted_ray;	
+	//float cosl = normal.dot(ray->direction) * -1; /////////
+	//std::cout<<"cosl = "<<cosl<<std::endl;
+	//cosl = cosl * -1;
+	//std::cout<<" - cosl = "<<cosl<<std::endl;
 	//cosl = cosl * -1.f;
 	//float cost = 1.f - Ni * Ni * (1.f - cosl - cosl);
-	float sint = Ni * Ni * (1.f - cosl * cosl);
+	//float sint = Ni * Ni * (1.f - cosl * cosl); //////////
+	//std::cout<<"sint = "<<sint<<std::endl;
 	
-	if (sint > 1.f)
+	/*if (sint > 1.f)
+	{
 		return Vector3D<float>(0.f, 0.f, 0.f);
-
+	}*//////////
 	/*if (cost < 0)
 		return Vector3D<float>(0.f, 0.f, 0.f);*/
 
-	float cost = std::sqrt(1.f - sint);
-	refracted_ray = Ni * ray->direction + (Ni * cosl - cost) * normal;
-
+	//float cost = std::sqrt(1.f - sint);/////////
+	//std::cout<<"cost "<<cost<<std::endl;
+	//refracted_ray = Ni * ray->direction + (Ni * cosl - cost) * normal;
+	//refracted_ray = ray->direction * Ni + normal * (Ni * cosl - cost);//////////
+	//std::cout<<"refracted_direction = "<<refracted_ray<<std::endl;
 	//refracted_ray = (ray->direction * Ni) + (normal * (Ni * cosl - std::sqrt(cost)));
-	//refracted_ray.normalize();
 	//std::cout<<"HELLO"<<std::endl;
 
 /*	float b = alpha * 2.f;
@@ -113,10 +135,16 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 		else if(res2 > res1)
 			refracted_ray = refracted_ray_temp2;
 		if(res1 >= 0.f)
-			refracted_ray = refracted_ray_temp1;
-		else if(res2 >= 0.f)
-			refracted_ray = refracted_ray_temp2;*/
-	//}
-
+		{
+			if(res1 > res2)
+				refracted_ray = refracted_ray_temp1;
+		}
+		if(res2 >= 0.f)
+		{
+			if(res2 > res1)
+				refracted_ray = refracted_ray_temp2;
+		}
+	}*/
+	//std::cout<<"refracted_direction = "<<refracted_ray<<std::endl;
 	return refracted_ray;
 }

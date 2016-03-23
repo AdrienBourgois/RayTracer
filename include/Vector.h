@@ -37,6 +37,8 @@ template <typename T>
 class Vector3D
 {
     public:
+		using value_type = T;
+
         T x, y, z;
 
         Vector3D();
@@ -61,13 +63,17 @@ class Vector3D
 		auto 		normalize() -> Vector3D;
 		auto 		pow(T exp) -> Vector3D;
 		auto		dot(Vector3D const& b) -> T;
-		auto		normalOnSphere(Vector3D intersect_point, Vector3D sphere_origin) -> Vector3D;
 		template <typename U>
 		auto		cast(Vector3D<U> vec) -> Vector3D<T>;
 
     private:
 
 };
+
+using Vector = Vector3D<float>;
+
+template <typename T>
+auto		normalOnSphere(Vector3D<T> intersect_point, Vector3D<T> sphere_origin) -> Vector3D<T>;
 
 template <typename T>
 std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
