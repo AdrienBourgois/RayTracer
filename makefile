@@ -10,7 +10,7 @@ SRC = ImGui/imgui.cpp \
 	  Log.cpp \
 	  PNGExport.cpp \
 
-LIBS = SDL2 GL GLEW SDL2_image
+LIBS = SDL2 GL GLEW SDL2_image z
 
 MODE = release
 BIN_DIR = bin/$(MODE)/

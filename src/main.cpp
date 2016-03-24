@@ -10,9 +10,9 @@
 
 auto main() -> int
 {
-    BIT8 pixels[] = {255, 255, 255, 255, 0, 0};
+    BIT8 pixels[] = {255, 255, 255, 1, 1, 1, 2, 2, 2};
     
-    PNGExport png(pixels, 2, 1, "assets/test.png");
+    PNGExport png(pixels, 3, 1, "assets/test.png");
 
     png.write();
 

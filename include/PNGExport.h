@@ -74,10 +74,9 @@ class PNGExport
         auto write() -> void;
         auto writeData(BIT8) -> void;
         auto writeData(BIT32, bool rev = false) -> void;
-        auto compressData(PNGDataChunk data) -> void;
+        auto compressData() -> void;
 
     private:
-        BIT8* dataPointer;
         std::string pathFile;
 
         PNGHeaderChunk header;

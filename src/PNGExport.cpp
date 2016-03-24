@@ -1,8 +1,9 @@
 #include "PNGExport.h"
 
 PNGExport::PNGExport(BIT8* _dataPointer, int _width, int _height, std::string _pathFile)
-: dataPointer(_dataPointer), pathFile(_pathFile)
+: pathFile(_pathFile)
 {
+    this->data.colorData = _dataPointer;
     this->header.width = _width;
     this->header.height = _height;
     this->file.open(this->pathFile, std::ofstream::binary | std::ofstream::trunc);
@@ -25,8 +26,7 @@ auto PNGExport::prepareChunk(int _type) -> void
     {
         this->data.length = (this->header.width * this->header.height) * 3;
         this->data.type = makeBIT32('I', 'D', 'A', 'T');
-        this->data.colorData = this->dataPointer;
-        this->compressData(this->data);
+        this->compressData();
     }
 
     if (_type == EchunkType::TrailerChunk)
@@ -65,21 +65,21 @@ auto PNGExport::writeData(BIT32 data, bool rev) -> void
     }
 }
 
-auto PNGExport::compressData(PNGDataChunk data) -> void
+auto PNGExport::compressData() -> void
 {
     this->defstream.zalloc = Z_NULL;
     this->defstream.zfree = Z_NULL;
     this->defstream.opaque = Z_NULL;
-    this->defstream.avail_in = (uInt)data.length+1; // size of input, string + terminator
-    this->defstream.next_in = (Bytef *)data.colorData; // input char array
-    this->defstream.avail_out = (uInt)sizeof(data.compressedData); // size of output
-    this->defstream.next_out = (Bytef *)data.compressedData; // output char array
+    this->defstream.avail_in = (uInt)this->data.length+1; // size of input, string + terminator
+    this->defstream.next_in = (Bytef *)this->data.colorData; // input char array
+    this->defstream.avail_out = (uInt)sizeof(this->data.compressedData); // size of output
+    this->defstream.next_out = (Bytef *)this->data.compressedData; // output char array
     
     deflateInit(&this->defstream, Z_BEST_COMPRESSION);
     deflate(&this->defstream, Z_FINISH);
     deflateEnd(&this->defstream);
 
-    data.lengthCompressed = makeBIT32(0, 0, 0, 4);
+    this->data.lengthCompressed = std::strlen((const char*)this->data.compressedData);
 }
 
 auto PNGExport::writeChunk(int type) -> void
@@ -97,15 +97,14 @@ auto PNGExport::writeChunk(int type) -> void
         writeData(this->header.compression);
         writeData(this->header.filter);
         writeData(this->header.interlace);
-        this->CRCVector.erase(this->CRCVector.begin(), this->CRCVector.begin()+4);
         this->header.crc = calcCRC();
         writeData(this->header.crc, true);
     }
     if (type == EchunkType::DataChunk)
     {
-        writeData(this->data.length, true);
+        writeData(this->data.lengthCompressed, true);
         writeData(this->data.type);
-        for (unsigned int i = 0; i < std::strlen((const char*)data.compressedData); i++)
+        for(unsigned int i = 0; i < this->data.lengthCompressed; i++)
             writeData(this->data.compressedData[i]);
         this->data.crc = calcCRC();
         writeData(this->data.crc, true);
@@ -143,6 +142,7 @@ auto PNGExport::write() -> void
 
 auto PNGExport::calcCRC() -> BIT32
 {
+    this->CRCVector.erase(this->CRCVector.begin(), this->CRCVector.begin()+4);
     BIT32 table[256];
 
     /* -----Make table----- */
