@@ -27,6 +27,9 @@ Device::~Device()
     this->driver = nullptr;
 	this->raytracer = nullptr;
     this->running = false;
+	this->light_list.clear();
+	this->object_list.clear();
+
 
     log->info("Device destructed.");
 }
@@ -44,16 +47,16 @@ auto Device::init() -> void
 	this->createSceneNode(Vector3D<float> (0.f, -1.f, -2.f), Vector3D<float> (255.f, 0.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 	this->createSceneNode(Vector3D<float> (-1.75f, 0.f, -2.f), Vector3D<float> (0.f, 255.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
 	this->createSceneNode(Vector3D<float> (1.75f, 0.f, -2.f), Vector3D<float> (0.f, 0.f, 255.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-5.f, -2.f, -4.f), Vector3D<float> (0.f, 255.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (2.75f, 3.5f, -4.f), Vector3D<float> (255.f, 0.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-1.f, 2.f, -6.f), Vector3D<float> (55.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (-8.f, 4.f, -6.f), Vector3D<float> (55.f, 55.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (5.f, -3.f, -6.f), Vector3D<float> (0.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-5.f, -2.f, -4.f), Vector3D<float> (0.f, 255.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (2.75f, 3.5f, -4.f), Vector3D<float> (255.f, 0.f, 255.f),false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-1.f, 2.f, -6.f), Vector3D<float> (55.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (-8.f, 4.f, -6.f), Vector3D<float> (55.f, 55.f, 0.f), false, 1.f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (5.f, -3.f, -6.f), Vector3D<float> (0.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
 
 	this->createSceneNode(Vector3D<float> (-3.f, 1.f, -4.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-//	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
+	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
 
 
 	this->setLightList();
@@ -89,8 +92,6 @@ auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool ligh
 	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, light);
 	
 	scene_node->setGeometryBufferId(id);
-
-//	delete scene_node;
 }
 
 auto Device::quit() -> void
@@ -106,6 +107,11 @@ auto Device::close() -> void
 	this->driver->close();
 	this->raytracer->close();
 
+	for (unsigned int i = 0; i < this->node_list.size(); ++i)
+	{
+		delete this->node_list[0];
+		this->node_list.erase(this->node_list.begin());
+	}
     log->info("Device closed.");
 }
 

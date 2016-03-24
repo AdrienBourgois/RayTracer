@@ -22,7 +22,6 @@ auto FindNearestCollision(std::vector<GeometryBuffer*> node_list, Ray* ray, floa
 auto TriangleCast(GeometryBuffer* node) -> TriangleGeometryBuffer*
 {
 	TriangleGeometryBuffer* derived = nullptr;
-//	derived = dynamic_cast<TriangleGeometryBuffer*> (node);
 	derived = static_cast<TriangleGeometryBuffer*> (node);
 
 	if (derived == nullptr)

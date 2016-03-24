@@ -55,8 +55,6 @@ auto Raytracer::init(Vector2D<float> rend_size) -> void
 
 auto Raytracer::render() -> void
 {
-	GeometryBuffer* current_geometry = nullptr;
-	
 	std::vector<GeometryBuffer*> light_list;
 	for (unsigned int i = 0; i < this->geometry_list.size(); ++i)
 	{
@@ -74,25 +72,16 @@ auto Raytracer::render() -> void
 					
 				float dist_min = 100.f;
 				GeometryBuffer* coll_geo = nullptr;
-			for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)		 
-			{
-				current_geometry = this->geometry_list[idx];
 
-				float res = calculateCollision(current_geometry, camera_ray);
-				if(res < dist_min && res > -1.f)
-				{
-					dist_min = res;
-					coll_geo = current_geometry;
-					
-				}
-			}	
+			coll_geo = FindNearestCollision(this->geometry_list, camera_ray, dist_min);
+
 				if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
 				{
 					calculateCollisionPoint(dist_min, camera_ray);
 					Vector3D<float> final_color;
 					final_color += calculateAmbiantLight(coll_geo);
 					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
-//					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
+					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
 			//////////////////////////
 					final_color += calculateReflexion(coll_geo, this->geometry_list, camera_ray);
 					final_color += calculateRefraction(coll_geo, this->geometry_list, camera_ray);

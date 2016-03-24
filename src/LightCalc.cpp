@@ -47,8 +47,8 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			color.y = std::max((node_color.y * shade), 0.f);
 			color.z = std::max((node_color.z * shade), 0.f);
 
-//			float dist = distanceFromLight(ray->collision_point ,light[i]->position);
-//			color = color * ray->power / (dist * dist);	
+			float dist = distanceFromLight(ray->collision_point ,light[i]->position);
+			color = color * ray->power / (dist * dist);	
 
 			final_diffuse_color += color;
 

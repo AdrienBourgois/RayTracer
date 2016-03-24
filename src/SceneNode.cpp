@@ -23,7 +23,7 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 
 	this->reflection_idx = 100.f;
 
-	double r = (double)this->radius;
+	double r = static_cast<double>(this->radius);
 	switch (type)
 	{
 	case EGeometry_type::SPHERE :
@@ -32,9 +32,9 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 	    {
 		for (double theta = 0.; theta < M_PI; theta += M_PI/10.) // Elevation [0, PI]
 		{
-		    vertice.push_back((float)(r * cos(phi) * sin(theta)) + position.x);
-		    vertice.push_back((float)(r * sin(phi) * sin(theta)) + position.y);
-		    vertice.push_back((float)(r * cos(theta)) + position.z);
+		    vertice.push_back(static_cast<float>(r * cos(phi) * sin(theta)) + position.x);
+		    vertice.push_back(static_cast<float>(r * sin(phi) * sin(theta)) + position.y);
+		    vertice.push_back(static_cast<float>(r * cos(theta)) + position.z);
 		}
 	    }
 	}break;
