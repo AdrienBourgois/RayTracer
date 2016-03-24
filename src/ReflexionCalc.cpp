@@ -68,20 +68,21 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 	//std::cout<<"N2 = "<<N2<<std::endl;
 
 	float N_coeff = N1 / N2;
+	N_coeff = 0.3f;
 	//std::cout<<"Ni = "<<Ni<<std::endl;
-	float cos_incident_angle = -1.0f * normal.dot(incident_ray_direction_unit);
 	
-	float N_coeff_squared = N_coeff*N_coeff;
+	float cos_i = -1.0f * normal.dot(incident_ray_direction_unit);
+	float cos_t2 = 1.0f - N_coeff * N_coeff * (1.0f - cos_i * cos_i);
+	if (cos_t2 > 0.f)
+	{
+		refracted_ray = (incident_ray_direction_unit * N_coeff) + (normal *(N_coeff * cos_i - std::sqrt(cos_t2)));
+
+		
+	}
+
+//	float N_coeff_squared = N_coeff*N_coeff;
+/*
 	float cos_incident_angle_squared = cos_incident_angle*cos_incident_angle;
-	float cos_refracted_angle = std::sqrt(1.f - N_coeff_squared - N_coeff_squared * cos_incident_angle_squared);
-	Vector3D<float> res3 = incident_ray_direction_unit * N_coeff;
-	//float res4 = Ni * refraction_calc - refraction_sqrt;
-	Vector3D<float> res5 = normal * cos_incident_angle * N_coeff;
-	Vector3D<float> res6 = normal * cos_refracted_angle;
-	refracted_ray = res3 + res5 - res6;
-	refracted_ray.normalize();
-	//refracted_ray =  refracted_ray;	
-	//float cosl = normal.dot(ray->direction) * -1; /////////
 	//std::cout<<"cosl = "<<cosl<<std::endl;
 	//cosl = cosl * -1;
 	//std::cout<<" - cosl = "<<cosl<<std::endl;
