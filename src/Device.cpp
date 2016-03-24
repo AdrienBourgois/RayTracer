@@ -101,6 +101,11 @@ auto Device::close() -> void
 	this->driver->close();
 	this->raytracer->close();
 
+	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
+	{
+		delete node_list[idx];
+	}	
+
     log->info("Device closed.");
 }
 

@@ -22,6 +22,7 @@ Driver::~Driver()
     this->window = nullptr;
     this->screenSurface = nullptr;
     this->format = nullptr;
+	this->raytracer = nullptr;
     SDL_Quit();
     log->info("Driver destroyed.");
 }

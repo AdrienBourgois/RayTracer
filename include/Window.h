@@ -10,7 +10,7 @@ class Window final
     public:
         Window();
         Window(Window const&) = delete;
-        ~Window() = default;
+        ~Window();
 
         auto init(const char* title, Vector2D<float> screen_res) -> void;
         auto update() -> void;

@@ -9,6 +9,11 @@ Window::Window()
     log->info("Window created.");
 }
 
+Window::~Window()
+{
+	this->window = nullptr;
+}
+
 auto Window::init(const char* title, Vector2D<float> screen_res) -> void
 {
     Log* log = Log::getInstance();
