@@ -66,8 +66,11 @@ auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node
 
                 if (normal.dot(ray_dir) < 0.f)
                 {
-                        float cl = normal.dot(ray_dir);
-                        Vector3D<float> ref_ray_dir = ray_dir - (normal * -2.f * cl);
+			float cosI = -normal.dot(ray_dir);
+			float cosT2 = 1.f - 0.3f * 0.3f * (1.f - cosI * cosI);
+			Vector3D<float> ref_ray_dir;
+			if (cosT2 > 0.f)
+				ref_ray_dir = (ray_dir * 0.3f) + normal * (0.3f * cosI - std::sqrt(cosT2));
 
                         ref_ray_dir = ref_ray_dir.normalize();
                         Ray *ref_ray = new Ray();
@@ -78,7 +81,7 @@ auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node
                         {
                                 Vector3D<float> ref_color = coll_node->material_buffer->color * 0.1f;
                                 ++rebound;
-                                ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
+                                ref_color += calculateRefraction(coll_node, node_list, ref_ray, rebound);
 
                                 delete ref_ray;
                                 return ref_color;
