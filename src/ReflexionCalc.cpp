@@ -83,8 +83,6 @@ auto calculateRefraction(GeometryBuffer* node, /*std::vector<GeometryBuffer*> no
 //	float N_coeff_squared = N_coeff*N_coeff;
 /*
 	float cos_incident_angle_squared = cos_incident_angle*cos_incident_angle;
-	//std::cout<<"cosl = "<<cosl<<std::endl;
-	//cosl = cosl * -1;
 	//std::cout<<" - cosl = "<<cosl<<std::endl;
 	//cosl = cosl * -1.f;
 	//float cost = 1.f - Ni * Ni * (1.f - cosl - cosl);
