@@ -89,7 +89,7 @@ auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool ligh
 
 	unsigned int id = this->raytracer->genGeometryBufferId();
 	this->raytracer->genGeometryBuffer(pos, rad, scene_node->getVerticeList(), type, id);
-	this->raytracer->genMaterialBuffer(col, 100.f, 0.f, light);
+	this->raytracer->genMaterialBuffer(col, 100.f, 1.5f, light);
 	
 	scene_node->setGeometryBufferId(id);
 }

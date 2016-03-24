@@ -157,19 +157,6 @@ auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vecto
 	}
 }
 
-template <typename T>
-auto Raytracer::getGeometryPointer(GeometryBuffer* geometry_pointer) -> T*
-{
-	T* derived_class = nullptr;
-
-	if (geometry_pointer->type == EGeometry_type::SPHERE)
-	{
-		derived_class = SphereCast(geometry_pointer);
-		return derived_class;
-	}
-	return nullptr;
-}
-
 auto Raytracer::close() -> void
 {
 	Log* log = Log::getInstance();

@@ -5,7 +5,7 @@
 
 auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
-	unsigned int max_rebound = 50;
+	unsigned int max_rebound = 10;
 
 	if (rebound < max_rebound)
 	{
@@ -48,7 +48,7 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 
 auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
-        unsigned int max_rebound = 50;
+        unsigned int max_rebound = 10;
 
         if (rebound < max_rebound)
         {

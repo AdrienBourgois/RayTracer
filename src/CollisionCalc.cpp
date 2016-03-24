@@ -150,18 +150,15 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 
 	coll_geo = FindNearestCollision(node_list, ray, dist_min);
 
-	if (dist_min != ray->lenght)
-	{
-		delete ray;
-		ray = nullptr;
+	delete ray;
+	ray = nullptr;
 
+	if (dist_min != 100.f)
+	{
 		if (coll_geo == current_node )
 			return false;
 		return true;
 	}
-
-	delete ray;
-	ray = nullptr;
 
 	return false;
 }
