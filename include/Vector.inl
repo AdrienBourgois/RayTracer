@@ -1,3 +1,5 @@
+#include "MathCalc.h"
+
 template <typename T>
 Vector2D<T>::Vector2D()
 {
@@ -164,6 +166,18 @@ Vector3D<T> Vector3D<T>::operator *(Vector3D const& a)
 }
 
 template <typename T>
+Vector3D<T> Vector3D<T>::operator /(T a)
+{
+    Vector3D<T> res;
+
+    res.x = this->x / a;
+    res.y = this->y / a;
+    res.z = this->z / a;
+
+    return res;
+}    
+
+template <typename T>
 Vector3D<T> Vector3D<T>::operator *(T a)
 {
     Vector3D<T> res;
@@ -173,7 +187,7 @@ Vector3D<T> Vector3D<T>::operator *(T a)
     res.z = this->z * a;
 
     return res;
-}    
+}
 
 template <typename T>
 bool Vector3D<T>::operator ==(Vector3D const& a)
@@ -235,6 +249,30 @@ template <typename T>
 auto normalOnSphere(Vector3D<T> intersect_point, Vector3D<T> sphere_origin) -> Vector3D<T>
 {
 	return (intersect_point - sphere_origin).normalize();
+}
+
+template <typename T>
+auto normalOnTriangle(Vector3D<T> a, Vector3D<T> b, Vector3D<T> c) -> Vector3D<T>
+{
+	Vector3D<T> U = b - a;
+	Vector3D<T> V = c - a;
+
+	Vector3D<T> normal = U * V;
+	return normal;
+}
+
+template <typename T, typename U>
+auto normalOnModel(std::vector<T> verti_list, Vector3D<T> node_posi, U triangle_posi) -> Vector3D<T>
+{
+        Vector3D<T> normal;
+
+	Vector3D<T> a = Vector3D<T>(verti_list[triangle_posi], verti_list[triangle_posi+1], verti_list[triangle_posi+2]) + node_posi;
+        Vector3D<T> b = Vector3D<T>(verti_list[triangle_posi+3], verti_list[triangle_posi+4], verti_list[triangle_posi+5]) + node_posi;
+        Vector3D<T> c = Vector3D<T>(verti_list[triangle_posi+6], verti_list[triangle_posi+7], verti_list[triangle_posi+8]) + node_posi;
+	
+	normal = normalOnTriangle(a, b, c);
+
+        return normal.normalize();
 }
 
 template <typename T> template <typename U>

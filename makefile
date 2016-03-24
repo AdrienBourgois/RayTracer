@@ -17,6 +17,8 @@ SRC =  main.cpp\
 		Log.cpp \
 		LightCalc.cpp \
 		ReflexionCalc.cpp \
+		Model.cpp \
+		Tools.cpp \
 
 LIBS = SDL2 GL GLEW SDL2_image
 

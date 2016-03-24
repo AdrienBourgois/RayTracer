@@ -1,6 +1,8 @@
 #include "LightCalc.h"
 
 #include "CollisionCalc.h"
+#include "ReflexionCalc.h"
+#include "Tools.h"
 
 auto calculateAmbiantLight(GeometryBuffer* node) -> Vector3D<float>
 {
@@ -12,7 +14,7 @@ auto calculateAmbiantLight(GeometryBuffer* node) -> Vector3D<float>
 	return color;
 }
 
-auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, std::vector<GeometryBuffer*> light, Vector3D<float> coll_point) -> Vector3D<float>
+auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, std::vector<GeometryBuffer*> light, Ray* ray) -> Vector3D<float>
 {
 	if (light.size() == 0)	
 		return Vector3D<float> {0.f, 0.f, 0.f};
@@ -20,14 +22,20 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 	Vector3D<float> final_diffuse_color;
 	for (unsigned int i = 0; i < light.size(); ++i)
 	{
-		if (!isNodeBeforeLightSource(node, node_list, light[i], coll_point))
+		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
 		{
 			Vector3D<float> node_color = node->material_buffer->color;
 
-			Vector3D<float> l =  (coll_point - light[i]->position).normalize();
+			Vector3D<float> l =  (ray->collision_point - light[i]->position).normalize();
 			Vector3D<float> normal;
-			normal = normalOnSphere(node->position, coll_point);  // without light distqnce gestion bug
-			float shade = normal.dot(l.normalize()) * 0.35f;
+			if (node->type == EGeometry_type::SPHERE)
+				normal = normalOnSphere(node->position, ray->collision_point);
+			else
+	               {
+                        TriangleGeometryBuffer* derived = TriangleCast(node);
+                        normal = normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle) * -1.f;
+	               }
+			float shade = normal.dot(l) * 0.3f;
 
 			if (shade < 0.f)
 				shade = 0.f;
@@ -38,6 +46,7 @@ auto calculateDiffuseLight(GeometryBuffer* node, std::vector<GeometryBuffer*> no
 			color.z = std::max((node_color.z * shade), 0.f);
 
 			final_diffuse_color += color;
+
 		}
 		else
 			final_diffuse_color += Vector3D<float> {0.f, 0.f, 0.f};
@@ -56,7 +65,14 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 		if (!isNodeBeforeLightSource(node, node_list, light[i], ray->collision_point))
 		{
 			Vector3D<float> n;
-			n = normalOnSphere(ray->collision_point, node->position);
+			if (node->type == EGeometry_type::SPHERE)
+                                n = normalOnSphere(ray->collision_point, node->position);
+                        else
+	                {
+                         TriangleGeometryBuffer* derived = TriangleCast(node);
+                        n = normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
+	                }
+
 			Vector3D<float> l = (light[i]->position - ray->collision_point).normalize();
 			Vector3D<float> v = (ray->origin - ray->collision_point).normalize();
 
@@ -68,11 +84,12 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 			if (std::pow(r.dot(v) ,16.f) < 0.f)
 				specular_light = specular_light * 0.f;
 			else
-				specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,16.f);
+				specular_light = specular_light * std::pow(std::max(r.dot(v), 0.f) ,5.f);
 			
 		    if (nl <= 0.0f)
 				specular_light = specular_light * 0.0f;
-
+			float dist = distanceFromLight(ray->collision_point ,light[i]->position);
+			specular_light = specular_light * ray->power / (dist * dist);
 			specular_light.normalize();
 
 			final_specular_light += specular_light;
@@ -83,3 +100,7 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 	return final_specular_light;
 }
 
+auto distanceFromLight(Vector3D<float> coll_point, Vector3D<float> light_posi) -> float
+{
+	return (coll_point - light_posi).dot(coll_point - light_posi);
+}

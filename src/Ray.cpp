@@ -13,20 +13,21 @@ Ray::Ray()
 	this->current_material_refraction_index = 0.f;
 }
 
-auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth, float new_material_refraction_index) -> void
+auto Ray::init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, float new_material_refraction_index) -> void
 {
 	this->type = type_ray;
 	this->origin = origin_ray;
 	this->power = power_ray;
 	this->lenght = lenght_ray;
-	this->current_depth = depth;
 	this->current_material_refraction_index = new_material_refraction_index;
 }
 
 auto Ray::createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth, float new_material_refraction_index) -> Ray*
 {
+(void)new_depth;
+
 	Ray* child_ray = new Ray();
-	child_ray->init(type_ray, origin_ray, power_ray, lenght_ray, new_depth, new_material_refraction_index);
+	child_ray->init(type_ray, origin_ray, power_ray, lenght_ray, new_material_refraction_index);
 	child_list.push_back(child_ray);
 	
 	return child_ray;

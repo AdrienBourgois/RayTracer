@@ -9,6 +9,7 @@
 #include "MathCalc.h"
 #include "CollisionCalc.h"
 #include "LightCalc.h"
+#include "Tools.h"
 
 #include "ReflexionCalc.h"
 
@@ -49,7 +50,7 @@ auto Raytracer::init(Vector2D<float> rend_size) -> void
 
 	this->camera->init();
 
-	this->camera_ray->init(Eray_type::CAMERA_RAY, this->camera->position, 1.f, 1000.f, 0, 1.f);
+	this->camera_ray->init(Eray_type::CAMERA_RAY, this->camera->position, 1.f, 1000.f, 1.f);
 
 	log->info("Raytracer initialized.");
 }
@@ -80,18 +81,13 @@ auto Raytracer::render() -> void
 					calculateCollisionPoint(this->distance_min, camera_ray);
 				
 					Vector3D<float> final_color;
-					Vector3D<float> reflection_color;
-					Vector3D<float> refraction_color;
-
 					final_color += calculateAmbiantLight(collided_geometry);
-					final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray->collision_point);
-					//final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
-					reflection_color = recursiveReflection(collided_geometry);
-					refraction_color = recursiveRefraction(collided_geometry);
-					
-					final_color += reflection_color;
-					final_color += refraction_color;
-//					std::cout<<"color = "<<final_color<<std::endl;
+					final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray);
+					final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
+			//////////////////////////
+					final_color += calculateReflexion(collided_geometry, this->geometry_list, camera_ray);
+					final_color += calculateRefraction(collided_geometry, this->geometry_list, camera_ray);
+			/////////////////////////
 					this->render_buffer->setColorList(final_color);
 					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 					this->camera_ray->resetChildList();
@@ -130,7 +126,6 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
 		this->geometry_list.push_back(sphere_buffer);
 	}
-
 	else
 	{
 		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);
@@ -200,70 +195,6 @@ auto Raytracer::searchForCollidedGeometry(Ray* ray) -> GeometryBuffer*
 	return collided_geometry;
 }
 
-auto Raytracer::recursiveReflection(GeometryBuffer* geometry, float current_depth) -> Vector3D<float>
-{
-	GeometryBuffer* collided_geometry = geometry;
-	Vector3D<float> reflection_color;
-	Ray* current_ray = camera_ray;
-	while(current_depth < current_ray->max_depth &&  collided_geometry != nullptr)
-	{
-		++current_depth;
-		Ray* reflection_ray = nullptr;
-		reflection_ray = current_ray->createChild(Eray_type::REFLECTION_RAY, current_ray->collision_point, current_ray->power * 0.4f, 1000.f, current_depth, current_ray->getCurrentMaterialRefractionIndex());
-		reflection_ray->direction = calcReflexion(collided_geometry, current_ray);
-		current_ray = reflection_ray;
-		collided_geometry = searchForCollidedGeometry(current_ray);
-		if(collided_geometry != nullptr && !collided_geometry->material_buffer->is_light)
-		{
-			calculateCollisionPoint(this->distance_min, current_ray);
-			reflection_color += collided_geometry->material_buffer->color * 0.25f * current_ray->power;
-			reflection_color += recursiveRefraction(collided_geometry, current_depth) * current_ray->power;
-		}
-	}
-	return reflection_color;
-}
-
-auto Raytracer::recursiveRefraction(GeometryBuffer* geometry, float current_depth) -> Vector3D<float>
-{
-    GeometryBuffer* collided_geometry = geometry;
-    Vector3D<float> refraction_color;
-    Ray* current_ray = camera_ray;
-    while(current_depth < current_ray->max_depth &&  collided_geometry != nullptr)
-    {   
-        ++current_depth;
-        Ray* refraction_ray = nullptr;
-		if (current_ray->getCurrentMaterialRefractionIndex() == 1.f)
-		{
-        	refraction_ray = current_ray->createChild(Eray_type::REFRACTION_RAY, current_ray->collision_point, current_ray->power * 0.4f, 1000.f, current_depth, geometry->material_buffer->refraction_idx);
-        	refraction_ray->direction = calculateRefraction(collided_geometry, current_ray, collided_geometry->material_buffer->refraction_idx); //check for quadric equation when discriminant < 0
-		}
-		else
-		{
-			refraction_ray = current_ray->createChild(Eray_type::REFRACTION_RAY, current_ray->collision_point, current_ray->power * 0.4f, 1000.f, current_depth, 1.f);
-            refraction_ray->direction = calculateRefraction(collided_geometry, current_ray, 1.f); //check for quadric equation when discriminant < 0
-		}
-		
-        current_ray = refraction_ray;
-        collided_geometry = searchForCollidedGeometry(current_ray);
-        if(collided_geometry != nullptr && !collided_geometry->material_buffer->is_light)
-        {
-            calculateCollisionPoint(this->distance_min, current_ray);
-            refraction_color += collided_geometry->material_buffer->color * current_ray->power;
-			refraction_color += recursiveReflection(collided_geometry, current_depth) * current_ray->power;
-			//refraction_color += Vector3D<float> (155.f, 155.f, 0.f);
-		//	return refraction_color;
-        }
-		if(collided_geometry == nullptr)
-		{
-			//refraction_color += geometry->material_buffer->color;
-		}
-    }  
-	//std::cout<<"Refraction_color = "<< refraction_color<<std::endl; 
-    return refraction_color;
-	//return Vector3D<float> ( 255.f, 255.f, 255.f );
-}
-
-
 auto Raytracer::close() -> void
 {
 	Log* log = Log::getInstance();
@@ -283,10 +214,3 @@ auto Raytracer::close() -> void
 }
 
 
-auto Raytracer::DebugCheckValueGeometryContainers() -> void
-{
-	for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)
-	{
-		std::cout<<"Refraction_idx = "<<this->geometry_list[idx]->material_buffer->refraction_idx<<std::endl;
-	}
-}

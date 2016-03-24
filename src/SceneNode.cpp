@@ -1,6 +1,7 @@
 #include "math.h"
 
 #include "SceneNode.h"
+#include "Model.h"
 
 SceneNode::SceneNode(Raytracer* raytrace)
 {
@@ -31,7 +32,7 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 	    {
 		for (double theta = 0.; theta < M_PI; theta += M_PI/10.) // Elevation [0, PI]
 		{
-			vertice.push_back((float)(r * cos(phi) * sin(theta)) + position.x);
+		    vertice.push_back((float)(r * cos(phi) * sin(theta)) + position.x);
 		    vertice.push_back((float)(r * sin(phi) * sin(theta)) + position.y);
 		    vertice.push_back((float)(r * cos(theta)) + position.z);
 		}
@@ -42,22 +43,45 @@ auto SceneNode::init(Vector3D<float> pos, Vector3D<float> col, bool light, float
 	{
 		vertice = {
 		1.f, 1.f, 0.f,
-		1.f, -1.f, 0.f,
+		-1.f, 1.f, 0.f,
 		-1.f, -1.f, 0.f
 		};
+	}break;
+
+	case EGeometry_type::MODEL :
+	{
+/*		Model model = Model();
+		model.loadFile("Bread.obj");
+		vertice = model.getMesh();
 	}break;
 	
 	default : 
 	{
-		vertice = {
-                1.f, 1.f, 0.f,
-                -1.f, 1.f, 0.f,
+*/		vertice = {
+                0.f, 0.f, 0.f,
+                -1.f, 0.f, 0.f,
                 -1.f, -1.f, 0.f,
 
-		1.f, 1.f, 0.f,
-		1.f, -1.f, 0.f,
-		-1.f, -1.f, 0.f
-                };
+                0.f, 0.f, 0.f,
+		-1.f, -1.f, 0.f,
+                0.f, -1.f, 0.f,
+
+		0.f, 0.f, 0.f,
+		0.f, 1.f, -1.f,
+		-1.f, 0.f, 0.f,
+
+		0.f, 0.f, 0.f,
+		1.f, 1.f, -1.f,
+		0.f, 1.f, -1.f,
+
+		0.f, 0.f, 0.f,
+		0.f, -1.f, 0.f,
+		1.f, 1.f, -1.f,
+
+		1.f, 1.f, -1.f,
+		0.f, -1.f, 0.f,
+		1.f, 0.f, -1.f,
+              };
 	}break;
 
 	}

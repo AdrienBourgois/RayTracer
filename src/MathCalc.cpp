@@ -22,32 +22,29 @@ auto NormalizeRenderSpace(Vector2D<float> render_size, float idx_x, float idx_y)
 	return NDC;
 }
 
-auto QuadraticEquation(float a, float b, float c) -> Vector2D<float>
+auto CalculateU(Vector3D<float> a, Vector3D<float> b,Vector3D<float> c, Vector3D<float> ray_dir, Vector3D<float> ray_origin) -> float
 {
-	float discriminant = (b * b) - (4.f * a * c);
+	Vector3D<float> h = (c-a) * ray_dir;
+	float _a = h.dot(b-a);
+	
+	if (_a > -0.00001f && _a < 0.00001f)
+		return -1.f;
 
-	Vector2D<float> k;
+	float f = 1.f/_a;
+        Vector3D<float> s = (ray_origin - a);
+        return f * s.dot(h);
+}
 
-	if(discriminant == 0.f)
-	{
-		k.x = (-b + sqrt(discriminant)) / (2.f * a);
-		k.y = k.x;
-		
-		return k;
-	}
+auto CalculateV(Vector3D<float> a, Vector3D<float> b,Vector3D<float> c, Vector3D<float> ray_dir, Vector3D<float> ray_origin) -> float
+{
+	Vector3D<float> h = ray_dir * (c - a);
+        float _a = h.dot(b - a);
+	float f = 1.f / _a;
 
-	if(discriminant > 0.f)
-	{
-		k.x = (-b + sqrt(discriminant)) / (2.f * a);
-		k.y = (-b - sqrt(discriminant)) / (2.f * a);
-		
-		return k;
-	}
-
-	if(discriminant < 0.f)
-	{
-		std::cout<<" Discriminant < 0"<<std::endl;
-	}
-
-	return k;
+	if (_a > -0.00001f && _a < 0.00001f)
+		return -1.f;
+	
+	Vector3D<float> s = ray_origin - a;
+	Vector3D<float> q = s * (b - a);
+	return f * ray_dir.dot(q);
 }

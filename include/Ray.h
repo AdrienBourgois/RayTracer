@@ -13,7 +13,7 @@ struct Ray
 		Ray();
 		~Ray() = default;
 
-		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int depth, float new_material_refraction_index) -> void;
+		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, float new_material_refraction_index) -> void;
 		auto getCurrentDepth() -> unsigned int { return current_depth; }
 		auto createChild(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, unsigned int new_depth, float new_material_refraction_index) -> Ray*;
 		auto getType() -> Eray_type { return this->type;}

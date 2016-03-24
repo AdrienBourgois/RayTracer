@@ -5,6 +5,7 @@
 #include "Vector.h"
 #include "Log.h"
 
+#include "Tools.h"
 #include "Enum.h"
 
 auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
@@ -31,7 +32,7 @@ auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) -> float
 {
 	Log* log = Log::getInstance();
-	
+
 	if(current_geometry == nullptr)
 		log->error("Can't calculate collision. Reason: current_geometry is null.");
 
@@ -69,14 +70,15 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 
 auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
 {
-        std::vector<float> _vertice = current_geometry->vertice_list;
+        std::vector<float> list_vertice = current_geometry->vertice_list;
 	float t_coll = 100.f;
+	int triangle_num = -1;
 
-	for (unsigned int i = 0; i < _vertice.size(); i += 9)
+	for (unsigned int i = 0; i < list_vertice.size(); i += 9)
 	{
-		Vector3D<float> a = Vector3D<float>(_vertice[i + 0], _vertice[i + 1], _vertice[i + 2]);
-		Vector3D<float> b = Vector3D<float>(_vertice[i + 3], _vertice[i + 4], _vertice[i + 5]);
-		Vector3D<float> c = Vector3D<float>(_vertice[i + 6], _vertice[i + 7], _vertice[i + 8]);
+		Vector3D<float> a = Vector3D<float>(list_vertice[i + 0], list_vertice[i + 1], list_vertice[i + 2]);
+		Vector3D<float> b = Vector3D<float>(list_vertice[i + 3], list_vertice[i + 4], list_vertice[i + 5]);
+		Vector3D<float> c = Vector3D<float>(list_vertice[i + 6], list_vertice[i + 7], list_vertice[i + 8]);
 			a += current_geometry->position;
 			b += current_geometry->position;
 			c += current_geometry->position;
@@ -111,10 +113,22 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 		float t = f * q.dot(ac_edge);
 
 		if (t > 0.00001f && t < t_coll) // ray intersection
+		{
+			triangle_num = i;
 			t_coll = t;
+		}
 	}
+
+
 	if (t_coll != 100.f)
+	{
+		if (current_geometry->coll_triangle != triangle_num)
+		{
+			current_geometry->coll_triangle = triangle_num;
+//		std::cout << "coll_triangle : " << triangle_num << std::endl;
+		}
 		return t_coll;
+	}
 
 	return -1.f;
 }
@@ -130,22 +144,10 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	GeometryBuffer* coll_geo = nullptr;
 
 	Ray* ray = new Ray();
-	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f, 0, 1.f);
+	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f, 1.f);
 	ray->direction = coll_point - light->position;
 
-	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
-	{
-		GeometryBuffer* temp_geo = node_list[idx];
-
-		float res = calculateCollision(temp_geo, ray);
-
-		if(res < dist_min && res > -1.f)
-		{
-			dist_min = res;
-			coll_geo = temp_geo;
-		}
-	}	
-
+	coll_geo = FindNearestCollision(node_list, ray, dist_min);
 	delete ray;
 	ray = nullptr;
 
@@ -163,19 +165,7 @@ auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffe
 	float dist_min = 100.f;
 	GeometryBuffer* coll_geo = nullptr;
 
-	for(unsigned int idx = 0; idx < node_list.size(); ++idx)
-	{
-		GeometryBuffer* temp_geo = node_list[idx];
-
-                float res = calculateCollision(temp_geo, ray);
-
-                if(res < dist_min && res > -1.f)
-                {
-                        dist_min = res;
-                        coll_geo = temp_geo;
-                }
-	}	
-
+	coll_geo = FindNearestCollision(node_list, ray, dist_min);
 
 	if (dist_min != 100.f && dist_min != -1.f)
 	{

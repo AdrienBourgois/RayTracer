@@ -47,6 +47,8 @@ struct TriangleGeometryBuffer : public GeometryBuffer
 {
 	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
 	~TriangleGeometryBuffer() = default;
+
+	int coll_triangle = 0;
 };
 
 #endif
