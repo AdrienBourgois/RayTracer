@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <zlib.h>
+#include <cstring>
 
 typedef unsigned char BIT8;
 typedef unsigned long BIT32;
@@ -36,6 +38,8 @@ struct PNGDataChunk
 :public PNGChunk
 {
     BIT8* colorData;
+    BIT8 compressedData[500];
+    BIT32 lengthCompressed;
 };
 
 struct PNGTrailerChunk
@@ -70,6 +74,7 @@ class PNGExport
         auto write() -> void;
         auto writeData(BIT8) -> void;
         auto writeData(BIT32, bool rev = false) -> void;
+        auto compressData(PNGDataChunk data) -> void;
 
     private:
         BIT8* dataPointer;
@@ -81,6 +86,8 @@ class PNGExport
 
         std::ofstream file;
         std::vector<BIT8> CRCVector;
+
+        z_stream defstream;
 };
 
 #endif //__PNGEXPORT_DECLARATION__
