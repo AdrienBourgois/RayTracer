@@ -73,6 +73,9 @@ class Vector3D
 using Vector = Vector3D<float>;
 
 template <typename T>
+std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
+
+template <typename T>
 auto		normalOnSphere(Vector3D<T> intersect_point, Vector3D<T> sphere_origin) -> Vector3D<T>;
 
 template <typename T>
@@ -80,12 +83,6 @@ auto normalOnTriangle(Vector3D<T> a, Vector3D<T> b, Vector3D<T> c) -> Vector3D<T
 
 template <typename T, typename U>
 auto normalOnModel(std::vector<T> verti_list, Vector3D<T> node_posi, U triangle_posi) -> Vector3D<T>;
-
-
-
-template <typename T>
-std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
-
 
 template <typename T>
 class Vector4D
