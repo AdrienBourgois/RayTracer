@@ -42,7 +42,7 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 				++rebound;
 				ref_color += ReflectRay(refl_coll_node, node_list, refl_ray, rebound);
 				
-				delete refl_ray;
+				//delete refl_ray;
 			}
 			if (refr_coll_node)
 			{
@@ -50,12 +50,12 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 				++rebound;
 				ref_color += ReflectRay(refr_coll_node, node_list, refr_ray, rebound);
 				
-				delete refr_ray;
+				//delete refr_ray;
 			}
 
-			return ref_color;			
 			delete refl_ray;
 			delete refr_ray;
+			return ref_color;			
 		}
 	}
 	return Vector3D<float>(0.f, 0.f, 0.f);
