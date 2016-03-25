@@ -1,11 +1,11 @@
 #include <cassert>
 
-#include "ReflexionCalc.h"
+#include "ReflectionRefraction.h"
 #include "MaterialBuffer.h"
 #include "MathCalc.h"
 #include "Tools.h"
 
-auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
+auto ReflectAndRefractRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
 	unsigned int max_rebound = 10;
 
@@ -45,13 +45,13 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 			{
 				ref_color += refl_coll_node->material_buffer->color * 0.1f;
 				++rebound;
-				ref_color += ReflectRay(refl_coll_node, node_list, refl_ray, rebound);
+				ref_color += ReflectAndRefractRay(refl_coll_node, node_list, refl_ray, rebound);
 			}
 			if (refr_coll_node)
 			{
 				ref_color += refr_coll_node->material_buffer->color * 0.1f;
 				++rebound;
-				ref_color += ReflectRay(refr_coll_node, node_list, refr_ray, rebound);
+				ref_color += ReflectAndRefractRay(refr_coll_node, node_list, refr_ray, rebound);
 			}
 
 			delete refl_ray;

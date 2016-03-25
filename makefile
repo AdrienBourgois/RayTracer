@@ -16,7 +16,7 @@ SRC =  main.cpp\
 		RenderBuffer.cpp \
 		Log.cpp \
 		LightCalc.cpp \
-		ReflexionCalc.cpp \
+		ReflectionRefraction.cpp \
 		Model.cpp \
 		Tools.cpp \
 
