@@ -109,8 +109,7 @@ auto Device::close() -> void
 
 	for (unsigned int i = 0; i < this->node_list.size(); ++i)
 	{
-		delete this->node_list[0];
-		this->node_list.erase(this->node_list.begin());
+		delete this->node_list[i];
 	}
     log->info("Device closed.");
 }
