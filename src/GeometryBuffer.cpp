@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "GeometryBuffer.h"
 #include "MaterialBuffer.h"
 #include "Log.h"
@@ -20,6 +22,7 @@ auto GeometryBuffer::createMaterialBuffer(Vector3D<float> color_node, float refl
 	if(this->material_buffer == nullptr)
 	{
 		this->material_buffer = new MaterialBuffer(color_node, reflct_idx, refrct_idx, light);
+		assert(this->material_buffer);
 		log->info("Material buffer created.");
 	}
 	

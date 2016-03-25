@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "ReflexionCalc.h"
 #include "MaterialBuffer.h"
 #include "MathCalc.h"
@@ -29,6 +31,9 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 
 			Ray *refl_ray = new Ray();
 			Ray *refr_ray = new Ray();
+			assert(refl_ray);
+			assert(refr_ray);
+		
 			refl_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
 			refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
 			refl_ray->direction = refl_ray_dir;
@@ -41,16 +46,12 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 				ref_color += refl_coll_node->material_buffer->color * 0.1f;
 				++rebound;
 				ref_color += ReflectRay(refl_coll_node, node_list, refl_ray, rebound);
-				
-				//delete refl_ray;
 			}
 			if (refr_coll_node)
 			{
 				ref_color += refr_coll_node->material_buffer->color * 0.1f;
 				++rebound;
 				ref_color += ReflectRay(refr_coll_node, node_list, refr_ray, rebound);
-				
-				//delete refr_ray;
 			}
 
 			delete refl_ray;

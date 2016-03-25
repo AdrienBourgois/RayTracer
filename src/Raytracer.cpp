@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <SDL2/SDL.h>
+#include <cassert>
 
 #include "Raytracer.h"
 #include "GeometryBuffer.h"
@@ -23,6 +23,7 @@ Raytracer::Raytracer()
 	this->render_buffer.reset(new RenderBuffer);
 	this->camera.reset(new Camera());
 	this->camera_ray = new Ray();
+	assert(this->camera_ray);
 	
 	log->info("Raytracer created.");
 }
@@ -82,10 +83,7 @@ auto Raytracer::render() -> void
 					final_color += calculateAmbiantLight(coll_geo);
 					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
 					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
-			//////////////////////////
 					final_color += ReflectRay(coll_geo, this->geometry_list, camera_ray);
-//					final_color += calculateRefraction(coll_geo, this->geometry_list, camera_ray);
-			/////////////////////////
 
 					
 					this->render_buffer->setColorList(final_color);
@@ -123,11 +121,13 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 	if (rad != 0.f)
 	{
 		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
+		assert(sphere_buffer);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 	else
 	{
 		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);
+		assert(triangle_buffer);
 		this->geometry_list.push_back(triangle_buffer);
 	}
 
