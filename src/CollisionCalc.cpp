@@ -15,15 +15,13 @@ auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 	{
 		case EGeometry_type::SPHERE: 
 		{
-			SphereGeometryBuffer* derived = nullptr;
-			derived = static_cast<SphereGeometryBuffer*> (current_geometry);
+			SphereGeometryBuffer* derived = SphereCast(current_geometry);
 			return calculateSphereCollision(derived, ray);
 		}break;
 
 		default :
 		{
-			TriangleGeometryBuffer* derived = nullptr;
-			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
+			TriangleGeometryBuffer* derived = TriangleCast(current_geometry);
 			return calculateModelCollision(derived, ray);
 		}break;
 	}

@@ -42,7 +42,7 @@ struct GeometryBuffer
 
 struct SphereGeometryBuffer : public GeometryBuffer
 {
-	SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
+	SphereGeometryBuffer(Vector3D<float> position, float radius, std::vector<float> vertices_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
 	SphereGeometryBuffer(SphereGeometryBuffer const&) = delete;
 	SphereGeometryBuffer(SphereGeometryBuffer&&) = delete;
 	~SphereGeometryBuffer() = default;
@@ -55,7 +55,7 @@ struct SphereGeometryBuffer : public GeometryBuffer
 
 struct TriangleGeometryBuffer : public GeometryBuffer
 {
-	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
+	TriangleGeometryBuffer(Vector3D<float> position, std::vector<float> vertices_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
 	TriangleGeometryBuffer(TriangleGeometryBuffer const&) = delete;
 	TriangleGeometryBuffer(TriangleGeometryBuffer&&) = delete;
 	~TriangleGeometryBuffer() = default;
