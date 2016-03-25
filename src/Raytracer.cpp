@@ -1,5 +1,4 @@
 #include <iostream>
-//#include <SDL2/SDL.h>
 
 #include "Raytracer.h"
 #include "GeometryBuffer.h"
@@ -10,7 +9,6 @@
 #include "CollisionCalc.h"
 #include "LightCalc.h"
 #include "Tools.h"
-
 #include "ReflexionCalc.h"
 
 typedef unsigned char uint8;
@@ -55,12 +53,7 @@ auto Raytracer::init(Vector2D<float> rend_size) -> void
 
 auto Raytracer::render() -> void
 {
-	std::vector<GeometryBuffer*> light_list;
-	for (unsigned int i = 0; i < this->geometry_list.size(); ++i)
-	{
-		if (this->geometry_list[i]->material_buffer->is_light)
-			light_list.push_back(this->geometry_list[i]);
-	}
+	std::vector<GeometryBuffer*> light_list = extractLigthList();
 
 	for (float idx_y = 0.f; idx_y < this->render_size.y; ++idx_y)
 	{
@@ -70,37 +63,32 @@ auto Raytracer::render() -> void
 
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 					
-				float dist_min = 100.f;
-				GeometryBuffer* coll_geo = nullptr;
-
+			float dist_min = 100.f;
+			GeometryBuffer* coll_geo = nullptr;
 			coll_geo = FindNearestCollision(this->geometry_list, camera_ray, dist_min);
 
-				if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
-				{
-					calculateCollisionPoint(dist_min, camera_ray);
-					Vector3D<float> final_color;
-					final_color += calculateAmbiantLight(coll_geo);
-					final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
-					final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
-			//////////////////////////
-					final_color += ReflectRay(coll_geo, this->geometry_list, camera_ray);
-//					final_color += calculateRefraction(coll_geo, this->geometry_list, camera_ray);
-			/////////////////////////
-
-					
-					this->render_buffer->setColorList(final_color);
-					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-				}
-				else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
-				{
-					this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
-					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-				}
-				else
-				{
-					this->render_buffer->setColorList(Vector3D<float>(0.f,0.f,0.f));
-					this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
-				}
+			if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
+			{
+				calculateCollisionPoint(dist_min, camera_ray);
+				Vector3D<float> final_color;
+				final_color += calculateAmbiantLight(coll_geo);
+				final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
+				final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
+				final_color += ReflectRay(coll_geo, this->geometry_list, camera_ray);
+				
+				this->render_buffer->setColorList(final_color);
+				this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+			}
+			else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
+			{
+				this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
+				this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+			}
+			else
+			{
+				this->render_buffer->setColorList(Vector3D<float>(0.f,0.f,0.f));
+				this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
+			}
 		}
 	}
 }
@@ -147,6 +135,7 @@ auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vecto
 	for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)
 	{
 		current_geometry_buffer = this->geometry_list[idx];
+
 		if(current_geometry_buffer->getId() == id)
 		{
 			current_geometry_buffer->position = pos;
@@ -155,6 +144,22 @@ auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vecto
 			current_geometry_buffer->material_buffer->refraction_idx = refract_idx;
 		}
 	}
+}
+
+auto Raytracer::extractLigthList() -> std::vector<GeometryBuffer*>
+{
+	std::vector<GeometryBuffer*> light_list;
+	GeometryBuffer* current_geometry = nullptr;
+	for(unsigned int idx = 0; idx < this->geometry_list.size(); ++idx)
+	{
+		current_geometry = this->geometry_list[idx];
+		
+		if(current_geometry->material_buffer->is_light)
+		{
+			light_list.push_back(current_geometry);
+		}
+	}
+	return light_list;
 }
 
 auto Raytracer::close() -> void

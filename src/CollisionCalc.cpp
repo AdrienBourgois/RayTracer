@@ -180,4 +180,3 @@ auto isCollisionWithNode(GeometryBuffer* current_node, std::vector<GeometryBuffe
 	}
 	return nullptr;
 }
-
