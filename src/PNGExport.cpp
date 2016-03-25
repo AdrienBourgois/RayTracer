@@ -70,10 +70,10 @@ auto PNGExport::compressData() -> void
     this->defstream.zalloc = Z_NULL;
     this->defstream.zfree = Z_NULL;
     this->defstream.opaque = Z_NULL;
-    this->defstream.avail_in = (uInt)this->data.length+1; // size of input, string + terminator
-    this->defstream.next_in = (Bytef *)this->data.colorData; // input char array
-    this->defstream.avail_out = (uInt)sizeof(this->data.compressedData); // size of output
-    this->defstream.next_out = (Bytef *)this->data.compressedData; // output char array
+    this->defstream.avail_in = (uInt)this->data.length+1;
+    this->defstream.next_in = (Bytef *)this->data.colorData;
+    this->defstream.avail_out = (uInt)sizeof(this->data.compressedData);
+    this->defstream.next_out = (Bytef *)this->data.compressedData;
     
     deflateInit(&this->defstream, Z_BEST_COMPRESSION);
     deflate(&this->defstream, Z_FINISH);
