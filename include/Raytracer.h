@@ -30,6 +30,7 @@ class Raytracer final
 		auto genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id) -> void;
 		auto genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
 		auto updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void;
+		auto extractLigthList() -> std::vector<GeometryBuffer*>;
 
 		auto getRenderBuffer() -> RenderBuffer* { return this->render_buffer.get(); }
 
