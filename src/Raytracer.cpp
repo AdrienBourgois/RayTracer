@@ -48,7 +48,7 @@ auto Raytracer::init(Vector2D<float> rend_size) -> void
 
 	this->camera->init();
 
-	this->camera_ray->init(Eray_type::CAMERA_RAY, this->camera->position, 100.f, 1000.f);
+	this->camera_ray->init(Eray_type::CAMERA_RAY, this->camera->position, 100.f, 1000.f, 1.0f);
 
 	log->info("Raytracer initialized.");
 }
@@ -66,22 +66,22 @@ auto Raytracer::render() -> void
 			this->camera_ray->direction = this->camera_ray->direction.direction(this->camera_ray->origin, ray_dest_point);
 					
 			float dist_min = 100.f;
-			GeometryBuffer* coll_geo = nullptr;
-			coll_geo = FindNearestCollision(this->geometry_list, camera_ray, dist_min);
+			GeometryBuffer* collided_geometry = nullptr;
+			collided_geometry = FindNearestCollision(this->geometry_list, camera_ray, dist_min);
 
-			if (coll_geo != nullptr && !coll_geo->material_buffer->is_light)
+			if (collided_geometry != nullptr && !collided_geometry->material_buffer->is_light)
 			{
 				calculateCollisionPoint(dist_min, camera_ray);
 				Vector3D<float> final_color;
-				final_color += calculateAmbiantLight(coll_geo);
-				final_color += calculateDiffuseLight(coll_geo, this->geometry_list, light_list, camera_ray);
-				final_color += calculateSpecularLight(coll_geo, this->geometry_list, light_list, camera_ray);
-				final_color += ReflectAndRefractRay(coll_geo, this->geometry_list, camera_ray);
+				final_color += calculateAmbiantLight(collided_geometry);
+				final_color += calculateDiffuseLight(collided_geometry, this->geometry_list, light_list, camera_ray);
+				final_color += calculateSpecularLight(collided_geometry, this->geometry_list, light_list, camera_ray);
+				final_color += ReflectAndRefractRay(collided_geometry, this->geometry_list, camera_ray);
 				
 				this->render_buffer->setColorList(final_color);
 				this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));
 			}
-			else if (coll_geo != nullptr && coll_geo->material_buffer->is_light)
+			else if (collided_geometry != nullptr && collided_geometry->material_buffer->is_light)
 			{
 				this->render_buffer->setColorList(Vector3D<float>(255.f,255.f,255.f));
 				this->render_buffer->setScreenCoordList(Vector2D<float>(idx_x, idx_y));

@@ -10,5 +10,5 @@ auto ReflectAndRefractRay(GeometryBuffer* node, std::vector<GeometryBuffer*> nod
 
 auto calculateReflexion(Vector3D<float> normal, Vector3D<float> ray_dir) -> Vector3D<float>;
 
-auto calculateRefraction(Vector3D<float> normal, Vector3D<float> ray_dir) -> Vector3D<float>;
+auto calculateRefraction(Vector3D<float> normal, Vector3D<float> ray_dir, GeometryBuffer* collided_geometry, float ray_refraction_index) -> Vector3D<float>;
 #endif

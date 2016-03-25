@@ -55,9 +55,9 @@ auto Device::init() -> void
 	this->createSceneNode(Vector3D<float> (5.f, -3.f, -6.f), Vector3D<float> (0.f, 55.f, 55.f), false, 1.f, EGeometry_type::SPHERE);
 
 	this->createSceneNode(Vector3D<float> (-3.f, 1.f, -4.f), Vector3D<float> (255.f, 255.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
-	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
-	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+//	this->createSceneNode(Vector3D<float> (3.f, -3.f, 2.f), Vector3D<float> (255.f, 0.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
+//	this->createSceneNode(Vector3D<float> (0.f, 0.f, 2.f), Vector3D<float> (0.f, 0.f, 255.f), true, 0.01f, EGeometry_type::SPHERE);
+//	this->createSceneNode(Vector3D<float> (4.f, 8.f, -8.f), Vector3D<float> (0.f, 255.f, 0.f), true, 0.01f, EGeometry_type::SPHERE);
 
 
 	this->setLightList();
