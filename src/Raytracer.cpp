@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "Raytracer.h"
 #include "GeometryBuffer.h"
@@ -21,6 +22,7 @@ Raytracer::Raytracer()
 	this->render_buffer.reset(new RenderBuffer);
 	this->camera.reset(new Camera());
 	this->camera_ray = new Ray();
+	assert(this->camera_ray);
 	
 	log->info("Raytracer created.");
 }
@@ -111,11 +113,13 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 	if (rad != 0.f)
 	{
 		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
+		assert(sphere_buffer);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 	else
 	{
 		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);
+		assert(triangle_buffer);
 		this->geometry_list.push_back(triangle_buffer);
 	}
 

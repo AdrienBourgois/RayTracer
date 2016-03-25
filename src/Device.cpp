@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 
 #include "Device.h"
 #include "Driver.h"
@@ -83,6 +84,7 @@ auto Device::run() -> void
 auto Device::createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void
 {
 	SceneNode* scene_node = new SceneNode(this->raytracer.get());
+	assert(scene_node);
 	scene_node->init(pos, col, light, rad, type);
 
 	this->node_list.push_back(scene_node);

@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <cassert>
 
 #include "CollisionCalc.h"
 #include "Vector.h"
@@ -145,6 +146,8 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	GeometryBuffer* coll_geo = nullptr;
 
 	Ray* ray = new Ray();
+	assert(ray);
+
 	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f);
 	ray->direction = coll_point - light->position;
 
