@@ -12,7 +12,12 @@ class SceneNode
 {
 	public:
 		SceneNode(Raytracer* raytrace);
+		SceneNode(SceneNode const&) = delete;
+		SceneNode(SceneNode&&) = delete;
 		~SceneNode() {raytracer = nullptr;};
+
+		auto operator =(SceneNode const&) -> SceneNode& = delete;
+		auto operator =(SceneNode&&) -> SceneNode& = delete;
 
 		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
 		auto draw() -> void;

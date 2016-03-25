@@ -7,8 +7,12 @@ struct Camera
 {
 	Camera() = default;
 	Camera(Camera const&) = delete;
+	Camera(Camera&&) = delete;
 	~Camera() = default;
 	
+	auto operator =(Camera const&) -> Camera& = delete;
+	auto operator =(Camera&&) -> Camera& = delete;
+
 	auto init() -> void;
 
 	Vector3D<float> position;

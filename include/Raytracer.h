@@ -18,7 +18,11 @@ class Raytracer final
 	public:
 		Raytracer();
 		Raytracer(Raytracer const&) = delete;
+		Raytracer(Raytracer&&) = delete;
 		~Raytracer();
+
+		auto operator =(Raytracer const&) -> Raytracer& = delete;
+		auto operator =(Raytracer&&) -> Raytracer& = delete;
 
 		auto init(Vector2D<float> screen_res) -> void;
 		auto render() -> void;

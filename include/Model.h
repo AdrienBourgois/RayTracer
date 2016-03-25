@@ -32,8 +32,8 @@ struct Model_f
 class Model
 {
 public:
-	Model();
-	~Model();
+	Model() = default;
+	~Model() = default;
 
 	auto loadFile(std::string const& filename) -> void;
 	auto getMesh() const& -> std::vector<float> {return this->mesh;}

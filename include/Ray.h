@@ -11,7 +11,12 @@ struct Ray
 	public:
 	
 		Ray();
+		Ray(Ray const&) = delete;
+		Ray(Ray&&) = delete;
 		~Ray() = default;
+
+		auto operator =(Ray const&) -> Ray& = delete;
+		auto operator =(Ray&&) -> Ray& = delete;
 
 		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void;
 		auto close() -> void;

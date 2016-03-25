@@ -11,7 +11,12 @@ struct MaterialBuffer;
 struct GeometryBuffer
 {
 	GeometryBuffer() = default;
+	GeometryBuffer(GeometryBuffer const&) = delete;
+	GeometryBuffer(GeometryBuffer&&) = delete;
 	virtual ~GeometryBuffer();
+
+	auto operator =(GeometryBuffer const&) -> GeometryBuffer& = delete;
+	auto operator =(GeometryBuffer&&) -> GeometryBuffer& = delete;
 
 	auto createMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void;
  
@@ -38,7 +43,12 @@ struct GeometryBuffer
 struct SphereGeometryBuffer : public GeometryBuffer
 {
 	SphereGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
+	SphereGeometryBuffer(SphereGeometryBuffer const&) = delete;
+	SphereGeometryBuffer(SphereGeometryBuffer&&) = delete;
 	~SphereGeometryBuffer() = default;
+
+	auto operator =(SphereGeometryBuffer const&) -> SphereGeometryBuffer& = delete;
+	auto operator =(SphereGeometryBuffer&&) -> SphereGeometryBuffer& = delete;
 
 	float 					radius;
 };
@@ -46,7 +56,12 @@ struct SphereGeometryBuffer : public GeometryBuffer
 struct TriangleGeometryBuffer : public GeometryBuffer
 {
 	TriangleGeometryBuffer(Vector3D<float> pos, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id_geometry_buffer);
+	TriangleGeometryBuffer(TriangleGeometryBuffer const&) = delete;
+	TriangleGeometryBuffer(TriangleGeometryBuffer&&) = delete;
 	~TriangleGeometryBuffer() = default;
+
+	auto operator =(TriangleGeometryBuffer const&) -> TriangleGeometryBuffer& = delete;
+	auto operator =(TriangleGeometryBuffer&&) -> TriangleGeometryBuffer& = delete;
 
 	int coll_triangle = 0;
 };
