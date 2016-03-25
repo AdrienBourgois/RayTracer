@@ -6,7 +6,12 @@
 struct MaterialBuffer
 {
 	MaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light);
+	MaterialBuffer(MaterialBuffer const&) = delete;
+	MaterialBuffer(MaterialBuffer&&) = delete;
 	~MaterialBuffer() = default;
+
+	auto operator =(MaterialBuffer const&) -> MaterialBuffer& = delete;
+	auto operator =(MaterialBuffer&&) -> MaterialBuffer& = delete;
 
 	Vector3D<float> color;
 

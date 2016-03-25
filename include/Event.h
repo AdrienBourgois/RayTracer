@@ -9,8 +9,14 @@
 class Event
 {
 public:
-    ~Event() = default;
-    static auto eventListener(Device* device) -> void;
+	~Event() = default;
+	Event(Event const&) = delete;
+	Event(Event&&) = delete;
+
+	auto operator =(Event const&) -> Event& = delete;
+	auto operator =(Event&&) -> Event& = delete;
+
+	static auto eventListener(Device* device) -> void;
 	static unsigned int idx;
 	static bool node_mode;
 private:

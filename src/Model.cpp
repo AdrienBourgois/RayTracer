@@ -3,14 +3,6 @@
 
 #include "Model.h"
 
-Model::Model()
-{
-}
-
-Model::~Model()
-{
-}
-
 auto Model::loadFile(std::string const& filename) -> void
 {
 	std::ifstream file;
