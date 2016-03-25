@@ -3,7 +3,7 @@
 #include "MathCalc.h"
 #include "Tools.h"
 
-auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
+auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
 {
 	unsigned int max_rebound = 10;
 
@@ -23,71 +23,59 @@ auto calculateReflexion(GeometryBuffer* node, std::vector<GeometryBuffer*> node_
 
 		if (normal.dot(ray_dir) < 0.f)
 		{
-			float cl = normal.dot(ray_dir);
-			Vector3D<float> ref_ray_dir = ray_dir - (normal * 2.f * cl);
 			
-			ref_ray_dir = ref_ray_dir.normalize();
-			Ray *ref_ray = new Ray();
-			ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
-			ref_ray->direction = ref_ray_dir;
-			GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);	
-			if (coll_node)
-			{
-				Vector3D<float> ref_color = coll_node->material_buffer->color * 0.1f;
-				++rebound;
-				ref_color += calculateReflexion(coll_node, node_list, ref_ray, rebound);
+			Vector3D<float> refl_ray_dir = calculateReflexion(normal, ray_dir);
+			Vector3D<float> refr_ray_dir = calculateRefraction(normal, ray_dir);
 
-				delete ref_ray;
-				return ref_color;
+			Ray *refl_ray = new Ray();
+			Ray *refr_ray = new Ray();
+			refl_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
+			refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
+			refl_ray->direction = refl_ray_dir;
+			GeometryBuffer* refl_coll_node = isCollisionWithNode(node, node_list, refl_ray);	
+			refr_ray->direction = refr_ray_dir;
+			GeometryBuffer* refr_coll_node = isCollisionWithNode(node, node_list, refr_ray);	
+			Vector3D<float> ref_color;
+			if (refl_coll_node)
+			{
+				ref_color += refl_coll_node->material_buffer->color * 0.1f;
+				++rebound;
+				ref_color += ReflectRay(refl_coll_node, node_list, refl_ray, rebound);
+				
+				delete refl_ray;
 			}
-			delete ref_ray;
+			if (refr_coll_node)
+			{
+				ref_color += refr_coll_node->material_buffer->color * 0.1f;
+				++rebound;
+				ref_color += ReflectRay(refr_coll_node, node_list, refr_ray, rebound);
+				
+				delete refr_ray;
+			}
+
+			return ref_color;			
+			delete refl_ray;
+			delete refr_ray;
 		}
 	}
 	return Vector3D<float>(0.f, 0.f, 0.f);
 }
 
-auto calculateRefraction(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ray* ray, unsigned int rebound) -> Vector3D<float>
+auto calculateReflexion(Vector3D<float> normal, Vector3D<float> ray_dir) -> Vector3D<float>
 {
-        unsigned int max_rebound = 10;
+	float cl = normal.dot(ray_dir);
+	Vector3D<float> ref_ray_dir = ray_dir - (normal * 2.f * cl);
+	
+	return ref_ray_dir.normalize();
+}
 
-        if (rebound < max_rebound)
-        {
-                Vector3D<float> normal;
+auto calculateRefraction(Vector3D<float> normal, Vector3D<float> ray_dir) -> Vector3D<float>
+{
+	float cosI = -normal.dot(ray_dir);
+	float cosT2 = 1.f - 0.3f * 0.3f * (1.f - cosI * cosI);
+	Vector3D<float> ref_ray_dir;
+	if (cosT2 > 0.f)
+		ref_ray_dir = (ray_dir * 0.3f) + normal * (0.3f * cosI - std::sqrt(cosT2));
 
-                if (node->type == EGeometry_type::SPHERE)
-                        normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
-                else
-                {
-                        TriangleGeometryBuffer* derived = TriangleCast(node);
-                        normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
-                }
-
-                Vector3D<float> ray_dir = ray->direction.normalize();
-
-                if (normal.dot(ray_dir) < 0.f)
-                {
-			float cosI = -normal.dot(ray_dir);
-			float cosT2 = 1.f - 0.3f * 0.3f * (1.f - cosI * cosI);
-			Vector3D<float> ref_ray_dir;
-			if (cosT2 > 0.f)
-				ref_ray_dir = (ray_dir * 0.3f) + normal * (0.3f * cosI - std::sqrt(cosT2));
-
-                        ref_ray_dir = ref_ray_dir.normalize();
-                        Ray *ref_ray = new Ray();
-                        ref_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f);
-                        ref_ray->direction = ref_ray_dir;
-                        GeometryBuffer* coll_node = isCollisionWithNode(node, node_list, ref_ray);
-                        if (coll_node)
-                        {
-                                Vector3D<float> ref_color = coll_node->material_buffer->color * 0.1f;
-                                ++rebound;
-                                ref_color += calculateRefraction(coll_node, node_list, ref_ray, rebound);
-
-                                delete ref_ray;
-                                return ref_color;
-                        }
-                        delete ref_ray;
-                }
-	}
-	return Vector3D<float>(0.f,0.f,0.f);
+	return ref_ray_dir.normalize();
 }
