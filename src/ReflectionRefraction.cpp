@@ -33,14 +33,14 @@ auto ReflectAndRefractRay(GeometryBuffer* node, std::vector<GeometryBuffer*> nod
 			Ray *refr_ray = new Ray();
 			assert(refl_ray);
 			assert(refr_ray);
-			refl_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f, 1.0f);
+			refl_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.30f, 100.f, 1.0f);
 			if(ray->getCurrentMaterialRefractionIndex() == 1.0f)
 			{
-				refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f, node->material_buffer->refraction_idx);
+				refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.30f, 100.f, node->material_buffer->refraction_idx);
 			}
 			else
 			{
-				refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.85f, 100.f, 1.0f);
+				refr_ray->init(Eray_type::REFLECTION_RAY, ray->collision_point, ray->power * 0.30f, 100.f, 1.0f);
 			}
 			refl_ray->direction = refl_ray_dir;
 			GeometryBuffer* refl_coll_node = isCollisionWithNode(node, node_list, refl_ray);	
@@ -49,13 +49,13 @@ auto ReflectAndRefractRay(GeometryBuffer* node, std::vector<GeometryBuffer*> nod
 			Vector3D<float> ref_color;
 			if (refl_coll_node)
 			{
-				ref_color += refl_coll_node->material_buffer->color * 0.1f;
+				ref_color += refl_coll_node->material_buffer->color * (refl_ray->power / 100.0f);
 				++rebound;
 				ref_color += ReflectAndRefractRay(refl_coll_node, node_list, refl_ray, rebound);
 			}
 			if (refr_coll_node)
 			{
-				ref_color += refr_coll_node->material_buffer->color * 0.1f;
+				ref_color += refr_coll_node->material_buffer->color * (refr_ray->power / 100.0f);
 				++rebound;
 				ref_color += ReflectAndRefractRay(refr_coll_node, node_list, refr_ray, rebound);
 			}

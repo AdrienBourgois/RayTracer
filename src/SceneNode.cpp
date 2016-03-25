@@ -6,7 +6,7 @@
 SceneNode::SceneNode(Raytracer* raytrace)
 {
 	this->reflection_idx = 0.f;
-	this->refraction_idx = 1.31f;
+	this->refraction_idx = 1.5f;
 	this->radius = 0.f;
 	this->is_light = false;
 	this->geometry_buffer_id = 0;

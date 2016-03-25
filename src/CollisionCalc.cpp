@@ -15,16 +15,14 @@ auto calculateCollision(GeometryBuffer* current_geometry, Ray* ray) -> float
 	{
 		case EGeometry_type::SPHERE: 
 		{
-			SphereGeometryBuffer* derived = nullptr;
-			derived = static_cast<SphereGeometryBuffer*> (current_geometry);
-			return calculateSphereCollision(derived, ray);
+			SphereGeometryBuffer* derived_geometry = SphereCast(current_geometry);
+			return calculateSphereCollision(derived_geometry, ray);
 		}break;
 
 		default :
 		{
-			TriangleGeometryBuffer* derived = nullptr;
-			derived = static_cast<TriangleGeometryBuffer*> (current_geometry);
-			return calculateModelCollision(derived, ray);
+			TriangleGeometryBuffer* derived_geometry = TriangleCast(current_geometry);
+			return calculateModelCollision(derived_geometry, ray);
 		}break;
 	}
 	return -1.f;
@@ -37,27 +35,27 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 	if(current_geometry == nullptr)
 		log->error("Can't calculate collision. Reason: current_geometry is null.");
 
-	Vector3D<float> circle_posi = current_geometry->position;
+	Vector3D<float> circle_position = current_geometry->position;
 	float circle_radius = current_geometry->radius;
 
 	float A = ray->direction.dot(ray->direction);
-	Vector3D<float> dist = ray->origin - circle_posi;
+	Vector3D<float> distance = ray->origin - circle_position;
 
-	float B = 2 * ray->direction.dot(dist);
+	float B = 2 * ray->direction.dot(distance);
 
-	float C = dist.dot(dist) - (circle_radius * circle_radius);
+	float C = distance.dot(distance) - (circle_radius * circle_radius);
 
-	float discri = B * B - 4 * A * C;
+	float discriminant = B * B - 4 * A * C;
 
-	if (discri < 0)
+	if (discriminant < 0)
 		return -1.f; // no colision
 	
 	else
 	{
 		//std::cout<<"Collision inside else"<<std::endl;
-		float sqrt_discri = (float)(sqrt(discri));
-		float t0 = (-B + sqrt_discri)/(2 * A);
-		float t1 = (-B - sqrt_discri)/(2 * A);
+		float sqrt_discriminant = (float)(sqrt(discriminant));
+		float t0 = (-B + sqrt_discriminant)/(2 * A);
+		float t1 = (-B - sqrt_discriminant)/(2 * A);
 
 		// We want the closest one 
 		if (t0 > t1)
@@ -73,7 +71,7 @@ auto calculateSphereCollision(SphereGeometryBuffer* current_geometry, Ray* ray) 
 auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray) -> float
 {
         std::vector<float> list_vertice = current_geometry->vertice_list;
-	float t_coll = 100.f;
+	float ray_lenght = 100.f;
 	int triangle_num = -1;
 
 	for (unsigned int i = 0; i < list_vertice.size(); i += 9)
@@ -87,49 +85,46 @@ auto calculateModelCollision(TriangleGeometryBuffer* current_geometry, Ray* ray)
 
 		Vector3D<float> ab_edge = (b - a);
 		Vector3D<float> ac_edge = (c - a);
-		Vector3D<float> p = ray->origin.normalize();
-		Vector3D<float> d = ray->direction.normalize();
+		Vector3D<float> ray_origin = ray->origin.normalize();
+		Vector3D<float> ray_direction = ray->direction.normalize();
 
-		Vector3D<float> h = (d * ac_edge);
+		Vector3D<float> h = (ray_direction * ac_edge);
 
-		float _a = h.dot(ab_edge);
+		float determinant = h.dot(ab_edge);
 	 
-		if (_a > -0.00001f && _a < 0.00001f)
+		if (determinant > -0.00001f && determinant < 0.00001f)
 			continue;
 
-		float f = 1.f/_a;
-		Vector3D<float> s = (p - a);
-		float u = f * h.dot(s);
+		float inverse_determinant = 1.f/determinant;
+		Vector3D<float> s = (ray_origin - a);
+		float u = inverse_determinant * h.dot(s);
 
 		if (u < 0.0f || u > 1.0f)
 			continue;
 
 		Vector3D<float> q = (s * ab_edge);
-		float v = f * d.dot(q);
+		float v = inverse_determinant * ray_direction.dot(q);
 
 		if (v < 0.0f || u + v > 1.0f)
 			continue;
 	
-		// at this stage we can compute t to find out where
-		// the intersection point is on the line
-		float t = f * q.dot(ac_edge);
+		float distance = inverse_determinant * q.dot(ac_edge);
 
-		if (t > 0.00001f && t < t_coll) // ray intersection
+		if (distance > 0.00001f && distance < ray_lenght) 
 		{
 			triangle_num = i;
-			t_coll = t;
+			ray_lenght = distance;
 		}
 	}
 
 
-	if (t_coll != 100.f)
+	if (ray_lenght != 100.f)
 	{
 		if (current_geometry->coll_triangle != triangle_num)
 		{
 			current_geometry->coll_triangle = triangle_num;
-//		std::cout << "coll_triangle : " << triangle_num << std::endl;
 		}
-		return t_coll;
+		return ray_lenght;
 	}
 
 	return -1.f;

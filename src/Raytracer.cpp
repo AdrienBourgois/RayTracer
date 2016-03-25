@@ -105,20 +105,20 @@ auto Raytracer::genGeometryBufferId() -> unsigned int
 	return id;
 }
 
-auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<float> vert_list, EGeometry_type type_geometry, unsigned int id) -> void
+auto Raytracer::genGeometryBuffer(Vector3D<float> position, float radius, std::vector<float> vertice_list, EGeometry_type type_geometry, unsigned int id) -> void
 {
 	Log* log = Log::getInstance();
 	log->info("Geometry buffer creation...");
 
-	if (rad != 0.f)
+	if (radius != 0.f)
 	{
-		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(pos, rad, vert_list, type_geometry, id);
+		GeometryBuffer* sphere_buffer = new SphereGeometryBuffer(position, radius, vertice_list, type_geometry, id);
 		assert(sphere_buffer);
 		this->geometry_list.push_back(sphere_buffer);
 	}
 	else
 	{
-		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(pos, vert_list, type_geometry, id);
+		GeometryBuffer* triangle_buffer = new TriangleGeometryBuffer(position, vertice_list, type_geometry, id);
 		assert(triangle_buffer);
 		this->geometry_list.push_back(triangle_buffer);
 	}
@@ -126,13 +126,13 @@ auto Raytracer::genGeometryBuffer(Vector3D<float> pos, float rad, std::vector<fl
 	log->info("Geometry buffer created.");
 }
 
-auto Raytracer::genMaterialBuffer(Vector3D<float> color_node, float reflct_idx, float refrct_idx, bool light) -> void
+auto Raytracer::genMaterialBuffer(Vector3D<float> color_node, float reflection_idx, float refraction_idx, bool light) -> void
 {
 	long unsigned int last_element = this->geometry_list.size() - 1u;
-	this->geometry_list.at(last_element)->createMaterialBuffer(color_node, reflct_idx, refrct_idx, light);
+	this->geometry_list.at(last_element)->createMaterialBuffer(color_node, reflection_idx, refraction_idx, light);
 }
 
-auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vector3D<float> col, float reflect_idx, float refract_idx) -> void
+auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> position, Vector3D<float> color, float reflectn_idx, float refractn_idx) -> void
 {
 	GeometryBuffer* current_geometry_buffer = nullptr;
 
@@ -142,10 +142,10 @@ auto Raytracer::updateGeometryBuffer(unsigned int id, Vector3D<float> pos, Vecto
 
 		if(current_geometry_buffer->getId() == id)
 		{
-			current_geometry_buffer->position = pos;
-			current_geometry_buffer->material_buffer->color = col;
-			current_geometry_buffer->material_buffer->reflection_idx = reflect_idx;
-			current_geometry_buffer->material_buffer->refraction_idx = refract_idx;
+			current_geometry_buffer->position = position;
+			current_geometry_buffer->material_buffer->color = color;
+			current_geometry_buffer->material_buffer->reflection_idx = reflectn_idx;
+			current_geometry_buffer->material_buffer->refraction_idx = refractn_idx;
 		}
 	}
 }
