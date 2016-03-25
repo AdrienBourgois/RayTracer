@@ -103,7 +103,10 @@ auto calculateSpecularLight(GeometryBuffer* node, std::vector<GeometryBuffer*> n
 	return final_specular_light;
 }
 
-auto distanceFromLight(Vector3D<float> coll_point, Vector3D<float> light_posi) -> float
+auto distanceFromLight(Vector3D<float> collision_point, Vector3D<float> light_position) -> float
 {
-	return (coll_point - light_posi).dot(coll_point - light_posi);
+	return (collision_point - light_position).dot(collision_point - light_position);
 }
+
+
+

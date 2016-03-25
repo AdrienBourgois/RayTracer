@@ -11,7 +11,7 @@ Driver::Driver()
     this->window.reset(new Window);
     this->screenSurface = nullptr;
     this->format = nullptr;
-	this->raytracer = nullptr;
+    this->raytracer = nullptr;
     log->info("Driver created.");
 }
 
@@ -34,7 +34,7 @@ auto Driver::init(Vector2D<float> screen_res, Raytracer* raytr) -> void
         log->error("Error: in method Driver::init() SDL initialization failed.");
     else
         this->window->init("RayTracing", screen_res);
-		this->raytracer = raytr;
+    this->raytracer = raytr;
 
     this->screenSurface = SDL_GetWindowSurface(this->window->getWindow());
     this->format = this->screenSurface->format;
@@ -46,8 +46,8 @@ auto Driver::init(Vector2D<float> screen_res, Raytracer* raytr) -> void
 
 auto Driver::render() -> void
 {
-	this->changePixelColor(this->raytracer->getRenderBuffer()->getColorList(), this->raytracer->getRenderBuffer()->getScreenCoordList());
-	this->raytracer->getRenderBuffer()->clearBuffer();
+    this->changePixelColor(this->raytracer->getRenderBuffer()->getColorList(), this->raytracer->getRenderBuffer()->getScreenCoordList());
+    this->raytracer->getRenderBuffer()->clearBuffer();
     this->window->update();
 }
 

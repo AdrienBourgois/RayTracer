@@ -23,7 +23,7 @@ class Device final
     
         auto init() -> void;
         auto run() -> void;
-	auto createSceneNode(Vector3D<float> pos, Vector3D<float> col, bool light, float rad, EGeometry_type type) -> void;
+	auto createSceneNode(Vector3D<float> position, Vector3D<float> color, bool light, float radius, EGeometry_type type) -> void;
         auto quit() -> void;
         auto close() -> void;
 
