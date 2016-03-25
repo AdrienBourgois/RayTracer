@@ -19,10 +19,10 @@ class SceneNode
 		auto operator =(SceneNode const&) -> SceneNode& = delete;
 		auto operator =(SceneNode&&) -> SceneNode& = delete;
 
-		auto init(Vector3D<float> pos, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
+		auto init(Vector3D<float> position, Vector3D<float> color, bool light, float rad, EGeometry_type type) -> void;
 		auto draw() -> void;
 		
-		auto setPosition(Vector3D<float> pos) -> void;
+		auto setPosition(Vector3D<float> position) -> void;
 		auto setColor(Vector3D<float> col) -> void { this->color = col; }
 		auto setGeometryBufferId(unsigned int id) -> void { this->geometry_buffer_id = id; }
 
