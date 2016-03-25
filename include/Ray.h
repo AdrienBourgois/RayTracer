@@ -18,9 +18,10 @@ struct Ray
 		auto operator =(Ray const&) -> Ray& = delete;
 		auto operator =(Ray&&) -> Ray& = delete;
 
-		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray) -> void;
+		auto init(Eray_type type_ray, Vector3D<float> origin_ray, float power_ray, float lenght_ray, float new_material_refraction_index) -> void;
 		auto close() -> void;
 
+		auto getCurrentMaterialRefractionIndex() -> float { return this->current_material_refraction_index; }
 
 		Vector3D<float> origin;
 		Vector3D<float> direction;
@@ -31,6 +32,7 @@ struct Ray
 	private:
 		Eray_type type;
 		std::vector<Ray*> child_list;
+		float current_material_refraction_index;
 };
 
 #endif

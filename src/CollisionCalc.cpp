@@ -148,7 +148,7 @@ auto isNodeBeforeLightSource(GeometryBuffer* current_node, std::vector<GeometryB
 	Ray* ray = new Ray();
 	assert(ray);
 
-	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f);
+	ray->init(Eray_type::REFLECTION_RAY, light->position, 100.f, 100.f, 1.0f);
 	ray->direction = coll_point - light->position;
 
 	coll_geo = FindNearestCollision(node_list, ray, dist_min);
