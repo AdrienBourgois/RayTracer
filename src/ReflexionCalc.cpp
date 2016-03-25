@@ -14,11 +14,11 @@ auto ReflectRay(GeometryBuffer* node, std::vector<GeometryBuffer*> node_list, Ra
 		Vector3D<float> normal;
 
 		if (node->type == EGeometry_type::SPHERE)
-			normal = Vector3D<float>::normalOnSphere(ray->collision_point, node->position);
+			normal = normalOnSphere(ray->collision_point, node->position);
 		else
 		{
 			TriangleGeometryBuffer* derived = TriangleCast(node);
-			normal = Vector3D<float>::normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
+			normal = normalOnModel(derived->vertice_list, derived->position, derived->coll_triangle);
 		}	
 
 		Vector3D<float> ray_dir = ray->direction.normalize();

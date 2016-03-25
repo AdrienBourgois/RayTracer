@@ -38,6 +38,8 @@ template <typename T>
 class Vector3D
 {
     public:
+		using value_type = T;
+
         T x, y, z;
 
         Vector3D();
@@ -49,33 +51,38 @@ class Vector3D
         Vector3D&   operator =(Vector3D const& a);
         Vector3D    operator +(Vector3D const& a); 
         Vector3D    operator -(Vector3D const& a); 
+		Vector3D    operator -(T a);
         Vector3D&   operator +=(Vector3D const& a); 
         Vector3D&   operator -=(Vector3D const& a);
         Vector3D    operator *(Vector3D const& a);
-	Vector3D    operator /(T a);
+		Vector3D    operator /(T a);
         Vector3D    operator *(T a);
-
         bool        operator ==(Vector3D const& a); 
 
-        auto		convert() -> Vector3D;
-	auto		direction(Vector3D origin, Vector3D destination) -> Vector3D;
-	auto 		normalize() -> Vector3D;
-	auto 		pow(T exp) -> Vector3D;
-	auto		dot(Vector3D const& b) -> T;
-	static auto	normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D;
-	static auto	normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector3D;
-	static auto	normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi, int triangle_posi) -> Vector3D<float>;
+		auto		direction(Vector3D origin, Vector3D destination) -> Vector3D;
+		auto 		normalize() -> Vector3D;
+		auto 		pow(T exp) -> Vector3D;
+		auto		dot(Vector3D const& b) -> T;
 
-	template <typename U>
-	auto		cast(Vector3D<U> vec) -> Vector3D<T>;
-
+		template <typename U>
+		auto		cast(Vector3D<U> vec) -> Vector3D<T>;
     private:
 
 };
 
+using Vector = Vector3D<float>;
+
 template <typename T>
 std::ostream&   operator <<(std::ostream& os, Vector3D<T> const& a);
 
+template <typename T>
+auto		normalOnSphere(Vector3D<T> intersect_point, Vector3D<T> sphere_origin) -> Vector3D<T>;
+
+template <typename T>
+auto normalOnTriangle(Vector3D<T> a, Vector3D<T> b, Vector3D<T> c) -> Vector3D<T>;
+
+template <typename T, typename U>
+auto normalOnModel(std::vector<T> verti_list, Vector3D<T> node_posi, U triangle_posi) -> Vector3D<T>;
 
 template <typename T>
 class Vector4D

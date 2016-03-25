@@ -245,17 +245,26 @@ auto Vector3D<T>::dot(Vector3D const& b) -> T
 	return res = this->x * b.x + this->y * b.y + this->z * b.z;
 }
 
-template <typename T>
-auto Vector3D<T>::normalOnSphere(Vector3D intersect_point, Vector3D origin) -> Vector3D
+template <typename T> template <typename U>
+auto Vector3D<T>::cast(Vector3D<U> vec) -> Vector3D<T>
 {
-	Vector3D<T> vector;
-
-	vector = (origin - intersect_point) * -1.f;
-	return vector.normalize();
+    Vector3D<T> vector;
+    
+    vector.x = static_cast<T> (vec.x);
+    vector.y = static_cast<T> (vec.y);
+    vector.z = static_cast<T> (vec.z);
+    
+    return vector;
 }
 
 template <typename T>
-auto Vector3D<T>::normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector3D
+auto normalOnSphere(Vector3D<T> intersect_point, Vector3D<T> sphere_origin) -> Vector3D<T>
+{
+	return (intersect_point - sphere_origin).normalize();
+}
+
+template <typename T>
+auto normalOnTriangle(Vector3D<T> a, Vector3D<T> b, Vector3D<T> c) -> Vector3D<T>
 {
 	Vector3D<T> U = b - a;
 	Vector3D<T> V = c - a;
@@ -264,41 +273,18 @@ auto Vector3D<T>::normalOnTriangle(Vector3D a, Vector3D b, Vector3D c) -> Vector
 	return normal;
 }
 
-template <typename T>
-auto Vector3D<T>::normalOnModel(std::vector<float> verti_list, Vector3D<float> node_posi, int triangle_posi) -> Vector3D<float>
+template <typename T, typename U>
+auto normalOnModel(std::vector<T> verti_list, Vector3D<T> node_posi, U triangle_posi) -> Vector3D<T>
 {
-        Vector3D<float> normal;
-//	std::cout << "triangle_posi : " << triangle_posi << std::endl;
-(void)triangle_posi;
-/*	for (unsigned int i = 0; i < verti_list.size(); i += 9)
-	{
-		Vector3D<float> a = Vector3D<float>(verti_list[i], verti_list[i+1], verti_list[i+2]) + node_posi;
-        Vector3D<float> b = Vector3D<float>(verti_list[i+3], verti_list[i+4], verti_list[i+5]) + node_posi;
-        Vector3D<float> c = Vector3D<float>(verti_list[i+6], verti_list[i+7], verti_list[i+8]) + node_posi;
-		normal += normalOnTriangle(a, b, c);
-	}
-*/
-//	std::cout << "num triangle : " << triangle_posi/9 << std::endl;
+        Vector3D<T> normal;
 
-	Vector3D<float> a = Vector3D<float>(verti_list[triangle_posi], verti_list[triangle_posi+1], verti_list[triangle_posi+2]) + node_posi;
-        Vector3D<float> b = Vector3D<float>(verti_list[triangle_posi+3], verti_list[triangle_posi+4], verti_list[triangle_posi+5]) + node_posi;
-        Vector3D<float> c = Vector3D<float>(verti_list[triangle_posi+6], verti_list[triangle_posi+7], verti_list[triangle_posi+8]) + node_posi;
+	Vector3D<T> a = Vector3D<T>(verti_list[triangle_posi], verti_list[triangle_posi+1], verti_list[triangle_posi+2]) + node_posi;
+        Vector3D<T> b = Vector3D<T>(verti_list[triangle_posi+3], verti_list[triangle_posi+4], verti_list[triangle_posi+5]) + node_posi;
+        Vector3D<T> c = Vector3D<T>(verti_list[triangle_posi+6], verti_list[triangle_posi+7], verti_list[triangle_posi+8]) + node_posi;
 	
 	normal = normalOnTriangle(a, b, c);
 
         return normal.normalize();
-}
-
-template <typename T> template <typename U>
-auto Vector3D<T>::cast(Vector3D<U> vec) -> Vector3D<T>
-{
-	Vector3D<T> vector;
-	
-	vector.x = static_cast<T> (vec.x);
-	vector.y = static_cast<T> (vec.y);
-	vector.z = static_cast<T> (vec.z);
-	
-	return vector;
 }
 
 template <typename T>
